@@ -1,0 +1,73 @@
+name: koyar
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.5.3
+
+dependencies:
+  bloc:
+  dartz:
+  dio:
+  flutter:
+    sdk: flutter
+  flutter_bloc:
+  flutter_native_splash:
+  flutter_svg:
+  get_it: ^7.7.0
+  go_router:
+  google_fonts:
+  hive:
+  retrofit:
+
+
+dev_dependencies:
+  build_runner:
+  flutter_launcher_icons:
+  flutter_lints: ^4.0.0
+  flutter_test:
+    sdk: flutter
+  json_serializable:
+  retrofit_generator:
+
+
+flutter_launcher_icons:
+  android: "ic_launcher"
+  ios: true
+  image_path: "assets/png/appLogoPng.png"
+  min_sdk_android: 21
+  remove_alpha_ios: true
+  background_color_ios: "#ffffff"
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/png/
+    - assets/svg/
+  fonts:
+    - family: Zodiak
+      fonts:
+        - asset: assets/fonts/zodiak/Zodiak-Thin.otf
+          weight: 100
+    - family: Zodiak
+      fonts:
+        - asset: assets/fonts/zodiak/Zodiak-Light.otf
+          weight: 300
+    - family: Zodiak
+      fonts:
+        - asset: assets/fonts/zodiak/Zodiak-Regular.otf
+          weight: 400
+    - family: Zodiak
+      fonts:
+        - asset: assets/fonts/zodiak/Zodiak-Bold.otf
+          weight: 500
+    - family: Zodiak
+      fonts:
+        - asset: assets/fonts/zodiak/Zodiak-Extrabold.otf
+          weight: 600
+    - family: Zodiak
+      fonts:
+        - asset: assets/fonts/zodiak/Zodiak-Black.otf
+          weight: 700
+
