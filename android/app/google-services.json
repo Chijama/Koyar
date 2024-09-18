@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "564971901055",
+    "project_id": "koyar-f7ed3",
+    "storage_bucket": "koyar-f7ed3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:564971901055:android:201503cafedb3f262cef4a",
+        "android_client_info": {
+          "package_name": "com.Koyar.koyar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhZYvCePofYPxP9_DgUThbevZ02xF1VA8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

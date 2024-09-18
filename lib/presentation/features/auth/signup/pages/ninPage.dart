@@ -1,9 +1,13 @@
+import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:koyar/presentation/common/appButton.dart';
 import 'package:koyar/presentation/common/inquiryModal.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
+import 'package:koyar/presentation/manager/routeManager.dart';
+import 'package:koyar/presentation/manager/stringManager.dart';
 import 'package:koyar/presentation/manager/styleManager.dart';
 
 class NINPage extends StatelessWidget {
@@ -28,7 +32,7 @@ class NINPage extends StatelessWidget {
                         horizontal: 100,
                       ),
                       child: Text(
-                        'YOUR NIN ?',
+                        'YOUR NIN?',
                         textAlign: TextAlign.center,
                         style: getBlackZodiak(
                           textColor: AppColors.appBlack,
@@ -81,9 +85,19 @@ class NINPage extends StatelessWidget {
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
                       showModalBottomSheet(
+                        backgroundColor: Colors.transparent,
                         context: context,
                         builder: (context) {
-                          return const InquiryModalSheet();
+                          return BackdropFilter(
+                            filter: ImageFilter.blur(
+                              sigmaX: 10,
+                              sigmaY: 10,
+                            ),
+                            child: const InquiryModalSheet(
+                              answer: StringManager.whyWeNeedYourNINAnswer,
+                              question: StringManager.whyWeNeedYourNINqueston,
+                            ),
+                          );
                         },
                       );
                     },
@@ -101,7 +115,9 @@ class NINPage extends StatelessWidget {
                 height: 30,
               ),
               KoyarButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.go(BaseRouteName.stateOfOriginPage);
+                },
                 buttonText: "Next",
               ),
               const SizedBox(

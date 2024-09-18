@@ -14,6 +14,7 @@ dependencies:
     sdk: flutter
   flutter_bloc:
   flutter_native_splash:
+  firebase_core:
   flutter_svg:
   get_it: ^7.7.0
   go_router:
