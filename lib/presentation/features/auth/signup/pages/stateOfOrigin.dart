@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -89,18 +88,12 @@ class StateOfOriginScreen extends StatelessWidget {
                         backgroundColor: Colors.transparent,
                         context: context,
                         builder: (context) {
-                          return BackdropFilter(
-                            filter: ImageFilter.blur(
-                              sigmaX: 10,
-                              sigmaY: 10,
-                            ),
-                            child: const InquiryModalSheet(
+                          return   const InquiryModalSheet(
                               answer: StringManager
                                   .whyWeNeedYourStateOfOriginanswer,
                               question: StringManager
                                   .whyWeNeedYourStateOfOriginquestion,
-                            ),
-                          );
+                            ) ;
                         },
                       );
                     },

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -88,15 +86,9 @@ class NINPage extends StatelessWidget {
                         backgroundColor: Colors.transparent,
                         context: context,
                         builder: (context) {
-                          return BackdropFilter(
-                            filter: ImageFilter.blur(
-                              sigmaX: 10,
-                              sigmaY: 10,
-                            ),
-                            child: const InquiryModalSheet(
-                              answer: StringManager.whyWeNeedYourNINAnswer,
-                              question: StringManager.whyWeNeedYourNINqueston,
-                            ),
+                          return const InquiryModalSheet(
+                            answer: StringManager.whyWeNeedYourNINAnswer,
+                            question: StringManager.whyWeNeedYourNINqueston,
                           );
                         },
                       );
@@ -107,7 +99,6 @@ class NINPage extends StatelessWidget {
                     fontweight: FontWeight.w500,
                   ).copyWith(
                     decoration: TextDecoration.underline,
-                    decorationColor: AppColors.appBlack.withOpacity(0.5),
                   ),
                 ),
               ),
