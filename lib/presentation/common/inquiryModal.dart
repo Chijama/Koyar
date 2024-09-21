@@ -41,7 +41,8 @@ class InquiryModalSheet extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColors.appGreen,
             ),
-            child: Column(mainAxisSize: MainAxisSize.min,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Center(
                   child: SvgPicture.asset(SvgAssetManager.manginifyingGlass),
@@ -54,8 +55,7 @@ class InquiryModalSheet extends StatelessWidget {
                     : Column(
                         children: [
                           Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 30),
+                            padding: const EdgeInsets.symmetric(horizontal: 30),
                             child: Text(
                               question ?? "",
                               textAlign: TextAlign.center,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:koyar/app/api.dart';
 import 'package:koyar/presentation/common/inquiryModal.dart';
+import 'package:koyar/presentation/manager/stringManager.dart';
 
 import '../../../../common/appButton.dart';
 import '../../../../manager/colorManager.dart';
@@ -70,10 +72,11 @@ class ElectionPreferencePage extends StatelessWidget {
                 onPressed: () {
                   // context.go(BaseRouteName.electionPreferencePage);
                   showModalBottomSheet(
-                      enableDrag: true,
+                      // enableDrag: true,
                       backgroundColor: Colors.transparent,
                       context: context,
                       // barrierColor: Colors.transparent,
+                      isScrollControlled: true,
                       builder: (context) {
                         return InquiryModalSheet(
                           content: Column(
@@ -105,17 +108,27 @@ class ElectionPreferencePage extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 40),
-                              _reusableText("Registration Reminders"),
-                              _reusableText("Election Alerts"),
-                              _reusableText("Candidate Updates"),
-                              _reusableText("Election News"),
-                              const SizedBox(height: 40),
+                              _reusableText(
+                                  "Registration Reminders",
+                                  StringManager
+                                      .allowNotificationsRegistrationReminders),
+                              _reusableText(
+                                  "Election Alerts",
+                                  StringManager
+                                      .allowNotificationsEletionAlerts),
+                              _reusableText(
+                                  "Candidate Updates",
+                                  StringManager
+                                      .allowNotificationsCandidateUpdates),
+                              const SizedBox(height: 30),
                               KoyarButton(
-                                onPressed: () {},
-                                buttonText: "Saved Preferences",
+                                onPressed: () async {
+                                  await FirebaseApi().initNotifications();
+                                },
+                                buttonText: "Allow Notifications",
                                 buttonColor: AppColors.appWhite,
+                                textColor: AppColors.appBlack,
                               ),
-                              const SizedBox(height: 40),
                             ],
                           ),
                         );
@@ -133,20 +146,37 @@ class ElectionPreferencePage extends StatelessWidget {
     );
   }
 
-  Column _reusableText(String text) {
-    return Column(
-      children: [
-        Text(
-          text,
-          textAlign: TextAlign.center,
-          style: getPlusJakartaSans(
-            textColor: AppColors.appWhite,
-            fontweight: FontWeight.w400,
-            fontsize: 12,
+  Widget _reusableText(String headerText, String subText) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.only(bottom: 10),
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.white),
+          borderRadius: const BorderRadius.all(Radius.circular(8))),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            headerText,
+            textAlign: TextAlign.start,
+            style: getPlusJakartaSans(
+              textColor: AppColors.appWhite,
+              fontweight: FontWeight.w600,
+              fontsize: 16,
+            ),
           ),
-        ),
-        const SizedBox(height: 12),
-      ],
+          const SizedBox(height: 8),
+          Text(
+            subText,
+            textAlign: TextAlign.start,
+            style: getPlusJakartaSans(
+              textColor: AppColors.appWhite,
+              fontweight: FontWeight.w400,
+              fontsize: 12,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
