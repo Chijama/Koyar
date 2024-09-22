@@ -1,7 +1,7 @@
 class StringManager {
   static const getStartedString =
-      'Welcome to Koyar Empowering Nigerian voters with easy access to election information.';
-
+      'Welcome to $appName Empowering Nigerian voters with easy access to election information.';
+  static const appName = "Koyar";
   static const whyWeNeedYourNINqueston = "Why we need your NIN?";
 
   static const whyWeNeedYourNINAnswer =

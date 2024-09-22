@@ -24,12 +24,15 @@ class ElectionPreferencePage extends StatelessWidget {
               Column(
                 children: [
                   Center(
-                    child: Text(
-                      "ELECTION PREFERENCES",
-                      textAlign: TextAlign.center,
-                      style: getBlackZodiak(
-                        textColor: AppColors.appBlack,
-                        fontsize: 36,
+                    child: Semantics(
+                      label: "ELECTION PREFERENCES",
+                      child: Text(
+                        "ELECTION PREFERENCES",
+                        textAlign: TextAlign.center,
+                        style: getBlackZodiak(
+                          textColor: AppColors.appBlack,
+                          fontsize: 36,
+                        ),
                       ),
                     ),
                   ),
@@ -79,57 +82,61 @@ class ElectionPreferencePage extends StatelessWidget {
                       isScrollControlled: true,
                       builder: (context) {
                         return InquiryModalSheet(
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 30),
-                                child: Text(
-                                  "Allow Notifications?",
-                                  textAlign: TextAlign.center,
-                                  style: getNormalZodiak(
-                                    textColor: AppColors.appWhite,
-                                    fontsize: 18,
-                                    fontweight: FontWeight.w600,
-                                  ).copyWith(
-                                    color: AppColors.appWhite,
+                          content: MergeSemantics(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 30),
+                                  child: Text(
+                                    "Allow Notifications?",
+                                    textAlign: TextAlign.center,
+                                    style: getNormalZodiak(
+                                      textColor: AppColors.appWhite,
+                                      fontsize: 18,
+                                      fontweight: FontWeight.w600,
+                                    ).copyWith(
+                                      color: AppColors.appWhite,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 25),
-                              Text(
-                                'Opt-in to get timely updates on key election dates, registration deadlines, and candidate info',
-                                textAlign: TextAlign.center,
-                                style: getPlusJakartaSans(
-                                  textColor: AppColors.appWhite,
-                                  fontweight: FontWeight.w400,
-                                  fontsize: 12,
+                                const SizedBox(height: 25),
+                                Text(
+                                  'Opt-in to get timely updates on key election dates, registration deadlines, and candidate info',
+                                  textAlign: TextAlign.center,
+                                  style: getPlusJakartaSans(
+                                    textColor: AppColors.appWhite,
+                                    fontweight: FontWeight.w400,
+                                    fontsize: 12,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 40),
-                              _reusableText(
-                                  "Registration Reminders",
-                                  StringManager
-                                      .allowNotificationsRegistrationReminders),
-                              _reusableText(
-                                  "Election Alerts",
-                                  StringManager
-                                      .allowNotificationsEletionAlerts),
-                              _reusableText(
-                                  "Candidate Updates",
-                                  StringManager
-                                      .allowNotificationsCandidateUpdates),
-                              const SizedBox(height: 30),
-                              KoyarButton(
-                                onPressed: () async {
-                                  await FirebaseApi().initNotifications();
-                                },
-                                buttonText: "Allow Notifications",
-                                buttonColor: AppColors.appWhite,
-                                textColor: AppColors.appBlack,
-                              ),
-                            ],
+                                const SizedBox(height: 40),
+                                _reusableText(
+                                    "Registration Reminders",
+                                    StringManager
+                                        .allowNotificationsRegistrationReminders),
+                                _reusableText(
+                                    "Election Alerts",
+                                    StringManager
+                                        .allowNotificationsEletionAlerts),
+                                _reusableText(
+                                    "Candidate Updates",
+                                    StringManager
+                                        .allowNotificationsCandidateUpdates),
+                                const SizedBox(height: 30),
+                                Semantics(label: "Enable Notifications", button: true,
+                                  child: KoyarButton(
+                                    onPressed: () async {
+                                      await FirebaseApi().initNotifications();
+                                    },
+                                    buttonText: "Allow Notifications",
+                                    buttonColor: AppColors.appWhite,
+                                    textColor: AppColors.appBlack,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       });

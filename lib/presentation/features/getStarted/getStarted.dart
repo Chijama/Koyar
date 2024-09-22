@@ -17,14 +17,18 @@ class GetStarted extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Center(
-              child: Container(
-                width: 100,
-                height: 100,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                      PngAssetManager.appLogo,
+            Semantics(
+              image: true,
+              label: " ${StringManager.appName} logo",
+              child: Center(
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(
+                        PngAssetManager.appLogo,
+                      ),
                     ),
                   ),
                 ),
@@ -37,12 +41,15 @@ class GetStarted extends StatelessWidget {
                 bottom: 20,
                 top: 100,
               ),
-              child: Text(
-                StringManager.getStartedString,
-                textAlign: TextAlign.center,
-                style: getNormalZodiak(
-                  textColor: Colors.black,
-                  fontsize: 24,
+              child: Semantics(  
+                label: StringManager.getStartedString,
+                child: Text(
+                  StringManager.getStartedString,
+                  textAlign: TextAlign.center,
+                  style: getNormalZodiak(
+                    textColor: Colors.black,
+                    fontsize: 24,
+                  ),
                 ),
               ),
             ),
@@ -53,11 +60,15 @@ class GetStarted extends StatelessWidget {
                 left: 20,
                 right: 20,
               ),
-              child: KoyarButton(
-                buttonText: 'Get Started',
-                onPressed: () {
-                  context.go(BaseRouteName.ninPage);
-                },
+              child: Semantics(
+                button: true,
+                label: "Get Started Button",
+                child: KoyarButton(
+                  buttonText: 'Get Started',
+                  onPressed: () {
+                    context.go(BaseRouteName.ninPage);
+                  },
+                ),
               ),
             )
           ],
