@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:koyar/presentation/common/customTextField.dart';
 
 import '../../../../common/appButton.dart';
 import '../../../../manager/colorManager.dart';
@@ -28,12 +28,15 @@ class LGAscreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                         horizontal: 50,
                       ),
-                      child: Text(
-                        "WHAT'S YOUR LGA",
-                        textAlign: TextAlign.center,
-                        style: getBlackZodiak(
-                          textColor: AppColors.appBlack,
-                          fontsize: 36,
+                      child: Semantics(
+                        label: "What is your Local Government of Registeration",
+                        child: Text(
+                          "LOCAL GOVERNMENT OF REGISTERATION",
+                          textAlign: TextAlign.center,
+                          style: getBlackZodiak(
+                            textColor: AppColors.appBlack,
+                            fontsize: 36,
+                          ),
                         ),
                       ),
                     ),
@@ -41,46 +44,27 @@ class LGAscreen extends StatelessWidget {
                   const SizedBox(
                     height: 30,
                   ),
-                  TextFormField(
-                    keyboardType: TextInputType.name,
-                    cursorColor: AppColors.appBlack,
-                    onTapOutside: (event) {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                    },
-                    textAlign: TextAlign.center,
-                    style: getPlusJakartaSans(
-                      textColor: AppColors.appBlack.withOpacity(0.5),
-                      fontsize: 16,
-                      fontweight: FontWeight.w600,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: 'Local Government Area',
-                      hintStyle: getPlusJakartaSans(
-                        textColor: AppColors.appBlack.withOpacity(0.5),
-                        fontsize: 16,
-                        fontweight: FontWeight.w600,
-                      ),
-                      border: const OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                      ),
-                      enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                      ),
+                  Semantics(
+                    button: true,
+                    label: "Select Your Local Government of Registeration here",
+                    // dropdown
+                    child: const CustomTextField(
+                      hintText: 'Local Government of Registeration',
                     ),
                   ),
+                   
                 ],
               ),
               const SizedBox(
                 height: 100,
               ),
-              KoyarButton(
-                onPressed: () {
-                  context.go(BaseRouteName.electionPreferencePage);
-                },
-                buttonText: "Next",
+              Semantics(label: "Next, submit your Local Government of Registeration",
+                child: KoyarButton(
+                  onPressed: () {
+                    context.go(BaseRouteName.electionPreferencePage);
+                  },
+                  buttonText: "Next",
+                ),
               ),
               const SizedBox(
                 height: 30,

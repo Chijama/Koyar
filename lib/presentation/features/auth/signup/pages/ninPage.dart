@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -9,6 +7,8 @@ import 'package:koyar/presentation/manager/colorManager.dart';
 import 'package:koyar/presentation/manager/routeManager.dart';
 import 'package:koyar/presentation/manager/stringManager.dart';
 import 'package:koyar/presentation/manager/styleManager.dart';
+
+import '../../../../common/customTextField.dart';
 
 class NINPage extends StatelessWidget {
   const NINPage({super.key});
@@ -27,16 +27,19 @@ class NINPage extends StatelessWidget {
               Column(
                 children: [
                   Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 100,
-                      ),
-                      child: Text(
-                        'YOUR NIN?',
-                        textAlign: TextAlign.center,
-                        style: getBlackZodiak(
-                          textColor: AppColors.appBlack,
-                          fontsize: 36,
+                    child: Semantics(
+                      label: '"Enter your National Identification Number',
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 100,
+                        ),
+                        child: Text(
+                          'YOUR NIN?',
+                          textAlign: TextAlign.center,
+                          style: getBlackZodiak(
+                            textColor: AppColors.appBlack,
+                            fontsize: 36,
+                          ),
                         ),
                       ),
                     ),
@@ -44,81 +47,57 @@ class NINPage extends StatelessWidget {
                   const SizedBox(
                     height: 30,
                   ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    cursorColor: AppColors.appBlack,
-                    onTapOutside: (event) {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                    },
-                    textAlign: TextAlign.center,
-                    style: getPlusJakartaSans(
-                      textColor: AppColors.appBlack.withOpacity(0.5),
-                      fontsize: 16,
-                      fontweight: FontWeight.w600,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: '0000-0000-000',
-                      hintStyle: getPlusJakartaSans(
-                        textColor: AppColors.appBlack.withOpacity(0.5),
-                        fontsize: 16,
-                        fontweight: FontWeight.w600,
-                      ),
-                      border: const OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                      ),
-                      enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
+                  Semantics(
+                    textField: true,
+                    label: "National Identification Number, 11-digit format",
+                    child: const CustomTextField(hintText: '0000-0000-000', keyboardType: TextInputType.number,),
                   ),
                 ],
               ),
               const SizedBox(
                 height: 100,
               ),
-              Text.rich(
-                TextSpan(
-                  text: "Why does Koyar need my NIN?",
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () {
-                      showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        context: context,
-                        builder: (context) {
-                          return BackdropFilter(
-                            filter: ImageFilter.blur(
-                              sigmaX: 10,
-                              sigmaY: 10,
-                            ),
-                            child: const InquiryModalSheet(
+              Semantics(
+                label: "See why ${StringManager.appName} needs your NIN?",
+                button: true,
+                child: Text.rich(
+                  TextSpan(
+                    text: "Why does ${StringManager.appName} need my NIN?",
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        showModalBottomSheet(
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          builder: (context) {
+                            return const InquiryModalSheet(
                               answer: StringManager.whyWeNeedYourNINAnswer,
                               question: StringManager.whyWeNeedYourNINqueston,
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  style: getPlusJakartaSans(
-                    textColor: AppColors.appBlack.withOpacity(0.5),
-                    fontsize: 12,
-                    fontweight: FontWeight.w500,
-                  ).copyWith(
-                    decoration: TextDecoration.underline,
-                    decorationColor: AppColors.appBlack.withOpacity(0.5),
+                            );
+                          },
+                        );
+                      },
+                    style: getPlusJakartaSans(
+                      textColor: AppColors.appBlack.withOpacity(0.5),
+                      fontsize: 12,
+                      fontweight: FontWeight.w500,
+                    ).copyWith(
+                      decoration: TextDecoration.underline,
+                    ),
                   ),
                 ),
               ),
               const SizedBox(
                 height: 30,
               ),
-              KoyarButton(
-                onPressed: () {
-                  context.go(BaseRouteName.stateOfOriginPage);
-                },
-                buttonText: "Next",
+              Semantics(
+                label: "Next, submit your NIN",
+                button: true,
+                child: KoyarButton(
+                  onPressed: () {
+                    context.go(BaseRouteName.stateOfOriginPage);
+                  },
+                  buttonText: "Next",
+                ),
               ),
               const SizedBox(
                 height: 30,

@@ -4,14 +4,20 @@ import 'package:koyar/presentation/manager/styleManager.dart';
 
 class KoyarButton extends StatelessWidget {
   const KoyarButton(
-      {super.key, required this.onPressed, required this.buttonText});
+      {super.key,
+      required this.onPressed,
+      required this.buttonText,
+      this.buttonColor,
+      this.textColor});
   final void Function()? onPressed;
   final String buttonText;
+  final Color? buttonColor;
+  final Color? textColor;
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.appGreen,
+        backgroundColor: buttonColor ?? AppColors.appGreen,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4),
         ),
@@ -25,7 +31,7 @@ class KoyarButton extends StatelessWidget {
         child: Text(
           buttonText,
           style: getPlusJakartaSans(
-            textColor: Colors.white,
+            textColor: textColor ?? Colors.white,
             fontweight: FontWeight.w500,
             fontsize: 16,
           ),
