@@ -30,7 +30,6 @@ class ElectionPreferencePage extends StatelessWidget {
                         "ELECTION PREFERENCES",
                         textAlign: TextAlign.center,
                         style: getBlackZodiak(
-                          textColor: AppColors.appBlack,
                           fontsize: 36,
                         ),
                       ),
