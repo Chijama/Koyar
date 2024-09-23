@@ -7,3 +7,4 @@ void main() async {
   await InitializeApp.init();
   runApp(AppRoot());
 }
+

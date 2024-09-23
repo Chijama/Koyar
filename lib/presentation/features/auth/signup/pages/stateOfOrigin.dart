@@ -36,7 +36,6 @@ class StateOfOriginScreen extends StatelessWidget {
                           'STATE OF REGISTERATION?',
                           textAlign: TextAlign.center,
                           style: getBlackZodiak(
-                            textColor: AppColors.appBlack,
                             fontsize: 36,
                           ),
                         ),

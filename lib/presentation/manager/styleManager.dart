@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:koyar/presentation/manager/colorManager.dart';
 
 TextStyle getNormalZodiak(
     {required Color textColor,
@@ -14,10 +15,10 @@ TextStyle getNormalZodiak(
 }
 
 TextStyle getBlackZodiak(
-    {required Color textColor,
+    {   
     FontWeight fontweight = FontWeight.w700,
     double fontsize = 14}) {
-  return TextStyle(
+  return TextStyle(color: AppColors.appBlack,
     fontFamily: 'Zodiak',
     fontSize: fontsize,
     fontStyle: FontStyle.normal,

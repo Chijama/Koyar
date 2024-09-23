@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:koyar/presentation/common/customTextField.dart';
 
 import '../../../../common/appButton.dart';
-import '../../../../manager/colorManager.dart';
 import '../../../../manager/routeManager.dart';
 import '../../../../manager/styleManager.dart';
 
@@ -34,8 +33,7 @@ class LGAscreen extends StatelessWidget {
                           "LOCAL GOVERNMENT OF REGISTERATION",
                           textAlign: TextAlign.center,
                           style: getBlackZodiak(
-                            textColor: AppColors.appBlack,
-                            fontsize: 36,
+                             fontsize: 36,
                           ),
                         ),
                       ),
