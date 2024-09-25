@@ -7,32 +7,31 @@ environment:
   sdk: ">=2.17.0 <4.0.0"
 
 dependencies:
-  bloc:
-  dartz:
-  dio:
+  bloc: null
+  dartz: null
+  dio: null
+  dropdown_search: ^6.0.1
+  firebase_core: null
+  firebase_messaging: null
   flutter:
     sdk: flutter
-  flutter_bloc:
-  flutter_native_splash:
-  firebase_core:
-  flutter_svg:
+  flutter_bloc: null
+  flutter_native_splash: null
+  flutter_svg: null
   get_it: ^8.0.0
-  go_router:
-  google_fonts:
-  hive:
-  retrofit:
-  firebase_messaging:
-
+  go_router: null
+  google_fonts: null
+  hive: null
+  retrofit: null
 
 dev_dependencies:
-  build_runner:
-  flutter_launcher_icons:
+  build_runner: null
+  flutter_launcher_icons: null
   flutter_lints: ^4.0.0
   flutter_test:
     sdk: flutter
-  json_serializable:
-  retrofit_generator:
-
+  json_serializable: null
+  retrofit_generator: null
 
 flutter_launcher_icons:
   android: "ic_launcher"
@@ -72,4 +71,3 @@ flutter:
       fonts:
         - asset: assets/fonts/zodiak/Zodiak-Black.otf
           weight: 700
-

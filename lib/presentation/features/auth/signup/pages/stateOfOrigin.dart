@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:koyar/presentation/common/customTextField.dart';
 
 import '../../../../common/appButton.dart';
-import '../../../../common/inquiryModal.dart';
+import '../../../../common/bottomModals.dart';
 import '../../../../manager/colorManager.dart';
 import '../../../../manager/routeManager.dart';
 import '../../../../manager/stringManager.dart';
