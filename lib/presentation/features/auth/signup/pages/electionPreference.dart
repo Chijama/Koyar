@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:koyar/app/api.dart';
 import 'package:koyar/presentation/common/inquiryModal.dart';
+import 'package:koyar/presentation/manager/routeManager.dart';
 import 'package:koyar/presentation/manager/stringManager.dart';
-
+import 'package:go_router/go_router.dart';
 import '../../../../common/appButton.dart';
 import '../../../../manager/colorManager.dart';
 import '../../../../manager/styleManager.dart';
@@ -86,8 +87,8 @@ class ElectionPreferencePage extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 30),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30),
                                   child: Text(
                                     "Allow Notifications?",
                                     textAlign: TextAlign.center,
@@ -124,10 +125,18 @@ class ElectionPreferencePage extends StatelessWidget {
                                     StringManager
                                         .allowNotificationsCandidateUpdates),
                                 const SizedBox(height: 30),
-                                Semantics(label: "Enable Notifications", button: true,
+                                Semantics(
+                                  label: "Enable Notifications",
+                                  button: true,
                                   child: KoyarButton(
                                     onPressed: () async {
-                                      await FirebaseApi().initNotifications();
+                                      await FirebaseApi()
+                                          .initNotifications()
+                                          .whenComplete(
+                                        () {
+                                          context.go(BaseRouteName.home);
+                                        },
+                                      );
                                     },
                                     buttonText: "Allow Notifications",
                                     buttonColor: AppColors.appWhite,
