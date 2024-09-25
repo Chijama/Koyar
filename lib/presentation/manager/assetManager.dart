@@ -3,6 +3,9 @@ const String svgPath = "assets/svg/";
 
 class PngAssetManager {
   static const appLogo = "${pngPath}appLogoPng.png";
+  static const card = "${pngPath}card.png";
+  static const failed = "${pngPath}failed.png";
+  static const success = "${pngPath}success.png";
 }
 
 class SvgAssetManager {

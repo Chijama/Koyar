@@ -27,7 +27,7 @@ TextStyle getBlackZodiak(
 }
 
 TextStyle getPlusJakartaSans(
-    {required Color textColor,
+    {required Color? textColor,
     FontWeight fontweight = FontWeight.w400,
     double fontsize = 14}) {
   return GoogleFonts.plusJakartaSans(

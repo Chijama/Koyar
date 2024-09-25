@@ -90,3 +90,54 @@ class InquiryModalSheet extends StatelessWidget {
     );
   }
 }
+
+class AppModalSheet extends StatelessWidget {
+  const AppModalSheet({
+    super.key,
+    required this.content,
+  });
+
+  final Widget content;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      children: [
+        Container(
+          width: MediaQuery.sizeOf(context).width,
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 16,
+          ),
+          // margin: const EdgeInsets.symmetric(
+          //   horizontal: 20,
+          //   vertical: 20,
+          // ),
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadiusDirectional.only(
+                topStart: Radius.circular(30), topEnd: Radius.circular(30)),
+            color: AppColors.appWhite,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Center(
+                child: Container(
+                  // margin: const EdgeInsets.only(
+                  //   top: 16,
+                  // ),
+                  height: 6,
+                  width: 70,
+                  decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(50)),
+                      color: AppColors.appDividerLineLightGray),
+                ),
+              ),
+              content
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}

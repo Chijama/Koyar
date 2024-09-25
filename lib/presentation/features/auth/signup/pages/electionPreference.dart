@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:koyar/app/api.dart';
-import 'package:koyar/presentation/common/inquiryModal.dart';
+import 'package:koyar/presentation/common/bottomModals.dart';
 import 'package:koyar/presentation/manager/stringManager.dart';
 
 import '../../../../common/appButton.dart';
