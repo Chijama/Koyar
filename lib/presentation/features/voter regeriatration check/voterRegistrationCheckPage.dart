@@ -1,5 +1,3 @@
-import 'dart:ui_web';
-
 import 'package:flutter/material.dart';
 import 'package:koyar/presentation/common/appBar.dart';
 import 'package:koyar/presentation/common/appButton.dart';
@@ -111,12 +109,12 @@ class _VoterRegistrationCheckPageState
 class GombeBottomSheet extends StatelessWidget {
   final bool isSuccess;
 
-  const GombeBottomSheet({Key? key, required this.isSuccess}) : super(key: key);
+  const GombeBottomSheet({super.key, required this.isSuccess});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(24.0),
+      padding: const EdgeInsets.all(24.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,15 +123,15 @@ class GombeBottomSheet extends StatelessWidget {
           isSuccess
               ? Image.asset(PngAssetManager.success)
               : Image.asset(PngAssetManager.failed),
-          SizedBox(height: 40),
+          const SizedBox(height: 40),
           Image.asset(PngAssetManager.card),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Container(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: isSuccess
-                  ? Color.fromARGB(255, 114, 61, 61)
-                  : Color(0xffB7F9B7),
+                  ? const Color.fromARGB(255, 114, 61, 61)
+                  : const Color(0xffB7F9B7),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
@@ -143,7 +141,7 @@ class GombeBottomSheet extends StatelessWidget {
                   isSuccess ? Icons.check_circle : Icons.cancel,
                   color: isSuccess ? Colors.green : Colors.red,
                 ),
-                SizedBox(width: 12),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Text(
                     isSuccess
@@ -152,7 +150,7 @@ class GombeBottomSheet extends StatelessWidget {
                     style: getPlusJakartaSans(
                       fontsize: 14,
                       textColor:
-                          isSuccess ? AppColors.appBlack : Color(0xff640000),
+                          isSuccess ? AppColors.appBlack : const Color(0xff640000),
                     ),
                   ),
                 ),
