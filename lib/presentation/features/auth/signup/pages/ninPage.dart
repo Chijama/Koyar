@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:koyar/presentation/common/appButton.dart';
-import 'package:koyar/presentation/common/inquiryModal.dart';
+import 'package:koyar/presentation/common/bottomModals.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
 import 'package:koyar/presentation/manager/routeManager.dart';
 import 'package:koyar/presentation/manager/stringManager.dart';
