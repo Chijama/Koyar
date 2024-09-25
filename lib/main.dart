@@ -9,6 +9,7 @@ void main() async {
 }
 
 // import 'package:flutter/material.dart';
+// import 'package:koyar/presentation/features/polling%20unit%20locator/pollingUnitLocator.dart';
 // import 'package:koyar/presentation/features/voter%20regeriatration%20check/voterRegistrationCheckPage.dart';
 
 // void main() => runApp(const MyApp());
@@ -20,7 +21,7 @@ void main() async {
 //   Widget build(BuildContext context) {
 //     return const MaterialApp(
 //       title: 'Your app name',
-//       home:  VoterRegistrationCheckPage()
+//       home:  PollingUnitLocatorPage()
 //     );
 //   }
 // }

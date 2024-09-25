@@ -8,16 +8,9 @@ import 'package:koyar/presentation/manager/assetManager.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
 import 'package:koyar/presentation/manager/styleManager.dart';
 
-class VoterRegistrationCheckPage extends StatefulWidget {
+class VoterRegistrationCheckPage extends StatelessWidget {
   const VoterRegistrationCheckPage({super.key});
 
-  @override
-  State<VoterRegistrationCheckPage> createState() =>
-      _VoterRegistrationCheckPageState();
-}
-
-class _VoterRegistrationCheckPageState
-    extends State<VoterRegistrationCheckPage> {
   @override
   Widget build(BuildContext context) {
     List<String> countriesList = [
@@ -29,6 +22,7 @@ class _VoterRegistrationCheckPageState
     ];
     String itemSelected = '';
     return Scaffold(
+      
       appBar: const CustomAppBar(title: 'Voter Registeration check'),
       backgroundColor: AppColors.appBackgroundColor,
       body: SafeArea(
@@ -42,11 +36,7 @@ class _VoterRegistrationCheckPageState
                 hintText: "Select  State",
                 searchHintText: "Search State",
                 label: 'State of Registration',
-                onChanged: (value) {
-                  setState(() {
-                    itemSelected = value.toString();
-                  });
-                },
+                
                 items: (f, cs) => countriesList,
               ),
               CustomDropDownSearch(
@@ -54,11 +44,7 @@ class _VoterRegistrationCheckPageState
                 hintText: "Select Local Government",
                 searchHintText: "Search Local Government",
                 label: 'Local Government of Registration',
-                onChanged: (value) {
-                  setState(() {
-                    itemSelected = value.toString();
-                  });
-                },
+                
                 items: (f, cs) => countriesList,
               ),
               Semantics(
