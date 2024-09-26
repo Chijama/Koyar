@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   static Color appBlack = HexColor.toHexColor("#1E1E1E");
+  static Color appNavBarBlack = HexColor.toHexColor('#1C1C1C');
   static Color appGreen = HexColor.toHexColor('#2B3C2C');
   static Color appWhite = Colors.white;
   static Color appBackgroundColor = Colors.white;

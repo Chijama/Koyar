@@ -29,9 +29,10 @@ class StateOfOriginScreen extends StatelessWidget {
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 60,
+                        horizontal: 20,
                       ),
-                      child: Semantics(label: "State of Registeration",
+                      child: Semantics(
+                        label: "State of Registeration",
                         child: Text(
                           'STATE OF REGISTERATION?',
                           textAlign: TextAlign.center,
@@ -59,7 +60,9 @@ class StateOfOriginScreen extends StatelessWidget {
                 height: 100,
               ),
               Semantics(
-                label: "See why ${StringManager.appName} needs your State Registeration?",button: true,
+                label:
+                    "See why ${StringManager.appName} needs your State Registeration?",
+                button: true,
                 child: Text.rich(
                   TextSpan(
                     text:
@@ -93,8 +96,9 @@ class StateOfOriginScreen extends StatelessWidget {
               const SizedBox(
                 height: 30,
               ),
-              Semantics(button: true,
-              label: "Next, submit your State of Registeration" ,
+              Semantics(
+                button: true,
+                label: "Next, submit your State of Registeration",
                 child: KoyarButton(
                   onPressed: () {
                     context.go(BaseRouteName.lgaPage);
