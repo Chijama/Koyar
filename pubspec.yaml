@@ -16,15 +16,13 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc:
-  flutter_native_splash:
-  firebase_core:
+  flutter_native_splash: 
   flutter_svg:
   get_it: ^8.0.0
   go_router:
   google_fonts:
   hive:
   retrofit:
-  firebase_messaging:
 
 
 dev_dependencies:

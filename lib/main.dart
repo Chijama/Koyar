@@ -20,9 +20,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Your app name',
-      home:  CandidateSelectionPage()
-    );
+    return MaterialApp(title: 'Your app name', home: CandidateSelectionPage());
   }
 }

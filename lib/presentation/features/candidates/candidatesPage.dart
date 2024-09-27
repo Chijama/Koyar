@@ -1,15 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
+import 'package:koyar/presentation/common/appBar.dart';
+import 'package:koyar/presentation/common/customTextField.dart';
+import 'package:koyar/presentation/features/candidates/widgets/federalCandidatesWidget.dart';
+import 'package:koyar/presentation/features/candidates/widgets/localCandidatesWidget.dart.dart';
+import 'package:koyar/presentation/features/candidates/widgets/stateCandidatesWidget.dart';
+import 'package:koyar/presentation/manager/colorManager.dart';
+import 'package:koyar/presentation/manager/styleManager.dart';
 
 class CandidateSelectionPage extends StatefulWidget {
+  const CandidateSelectionPage({super.key});
+
   @override
-  _CandidateSelectionPageState createState() => _CandidateSelectionPageState();
+  State<CandidateSelectionPage> createState() => _CandidateSelectionPageState();
 }
 
-class _CandidateSelectionPageState extends State<CandidateSelectionPage> {
+class _CandidateSelectionPageState extends State<CandidateSelectionPage>
+    with SingleTickerProviderStateMixin {
   bool _selectionMode = false;
   List<bool> _selectedCandidates = List.generate(6, (_) => false);
   int _selectedCount = 0;
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   void _toggleSelectionMode() {
     setState(() {
@@ -39,7 +61,7 @@ class _CandidateSelectionPageState extends State<CandidateSelectionPage> {
     if (_selectedCount == 2) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => ComparisonPage()),
+        MaterialPageRoute(builder: (context) => const ComparisonPage()),
       );
     }
   }
@@ -47,322 +69,147 @@ class _CandidateSelectionPageState extends State<CandidateSelectionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Semantics(
-          label:
-              "List of candidates. Select candidates to view details or compare.",
-          child: Text('Candidates'),
-        ),
-        leading: Semantics(
-          label: "Go back to the previous screen.",
-          child: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ),
+      backgroundColor: AppColors.appBackgroundColor,
+      appBar: CustomAppBar(
+        title: "Candidates",
         actions: [
           TextButton(
             onPressed: _toggleSelectionMode,
-            child: Text(_selectionMode ? 'Cancel' : 'Select'),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Semantics(
-              label: "Search for candidates.",
-              child: TextField(
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search),
-                  hintText: 'Search candidates...',
-                  border: OutlineInputBorder(),
-                ),
-              ),
+            child: Text(
+              _selectionMode ? 'Cancel' : 'Select',
+              style: getPlusJakartaSans(
+                  textColor:
+                      _selectionMode ? Colors.red : AppColors.appLinkBlue),
             ),
           ),
+        ],
+        semanticsLabel:
+            "List of candidates. Select candidates to view details or compare.",
+      ),
+      body: Stack(
+        children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+              bottom: 20,
+            ),
+            child: Column(
               children: [
                 Semantics(
-                  label: "Currently filtering by category: Presidential.",
-                  child: Text('Category: Presidential'),
+                    label: "Search for candidates.",
+                    child: const CustomBoxTextField(
+                        hintText: 'Search candidates...')),
+                SizedBox(
+                  height: 10,
                 ),
-                Semantics(
-                  label: "Filter by state.",
-                  child: Text('State'),
+                Container(
+                  height: kToolbarHeight - 8.0,
+                  padding: EdgeInsets.all(3),
+                  // width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: AppColors.appSecondaryBackgroundLightGray,
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: TabBar(
+                    controller: _tabController,
+                    tabs: const [
+                      Tab(text: 'Local'),
+                      Tab(text: 'State'),
+                      Tab(text: 'Federal'),
+                    ].reversed.toList(),
+                    labelColor: AppColors.appGreen,
+                    dividerColor: Colors.transparent,
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    labelStyle: getPlusJakartaSans(
+                        textColor: AppColors.appBlack,
+                        fontsize: 14,
+                        fontweight: FontWeight.w500),
+                    indicator: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                        color: AppColors.appWhite),
+                    unselectedLabelColor: Colors.grey,
+                    indicatorColor: AppColors.appGreen,
+                  ),
+                ),
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      FederalCandidatesWidget(
+                        selectedCandidates: _selectedCandidates,
+                        selectionMode: _selectionMode,
+                        onTap: (index) => _toggleCandidate(index),
+                      ),
+                      SizedBox(),
+                      SizedBox()
+                      // StateCandidatesWidget(selectedCandidates: _selectedCandidates, selectionMode: _selectionMode),
+                      // LocalCandidatesWidget(selectedCandidates: _selectedCandidates, selectionMode: _selectionMode),
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
-          Expanded(
-            child: GridView.builder(
-              padding: EdgeInsets.all(8),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.75,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-              ),
-              itemCount: 6,
-              itemBuilder: (context, index) {
-                return Semantics(
-                  label: _selectedCandidates[index]
-                      ? "Candidate ${index + 1} selected. Tap to deselect."
-                      : "Candidate ${index + 1}, tap to ${_selectionMode ? 'select' : 'view profile'}.",
-                  child: GestureDetector(
-                    onTap: () => _toggleCandidate(index),
-                    child: Stack(
-                      children: [
-                        Container(
-                          color: Colors.black,
-                        ),
-                        if (_selectionMode)
-                          Positioned(
-                            top: 8,
-                            right: 8,
-                            child: Container(
-                              width: 24,
-                              height: 24,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: _selectedCandidates[index]
-                                    ? Colors.blue
-                                    : Colors.white,
-                                border: Border.all(color: Colors.white),
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: _selectionMode
-          ? BottomAppBar(
-              child: Semantics(
-                label:
-                    "Compare selected candidates. $_selectedCount candidates selected.",
-                child: ElevatedButton(
-                  onPressed: _compareSelections,
-                  child: Text('Compare Selections ($_selectedCount)'),
-                ),
-              ),
-            )
-          : null,
-    );
-  }
-}
-
-class ComparisonPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Comparison')),
-      body: Center(child: Text('Comparison Page')),
-    );
-  }
-}
-
-
-
-
-
-
-import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
-
-class CandidateSelectionPage extends StatefulWidget {
-  @override
-  _CandidateSelectionPageState createState() => _CandidateSelectionPageState();
-}
-
-class _CandidateSelectionPageState extends State<CandidateSelectionPage> {
-  bool _selectionMode = false;
-  List<bool> _selectedCandidates = List.generate(6, (_) => false);
-  int _selectedCount = 0;
-
-  void _toggleSelectionMode() {
-    setState(() {
-      _selectionMode = !_selectionMode;
-      if (!_selectionMode) {
-        _selectedCandidates = List.generate(6, (_) => false);
-        _selectedCount = 0;
-      }
-    });
-  }
-
-  void _toggleCandidate(int index) {
-    if (_selectionMode) {
-      setState(() {
-        _selectedCandidates[index] = !_selectedCandidates[index];
-        _selectedCount += _selectedCandidates[index] ? 1 : -1;
-      });
-    }
-  }
-
-  void _compareSelections() {
-    if (_selectedCount == 2) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => ComparisonPage()),
-      );
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: Semantics(
-          label: "Go back to the previous screen.",
-          child: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ),
-        title: Semantics(
-          label: _selectionMode
-              ? "List of candidates. Select candidates to compare."
-              : "List of candidates. Select candidates to view details or compare.",
-          child: Text('Candidates'),
-        ),
-        actions: [
-          TextButton(
-            onPressed: _toggleSelectionMode,
-            child: Text(_selectionMode ? 'Cancel' : 'Select'),
-          ),
-        ],
-      ),
-      body: FocusTraversalGroup(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Semantics(
-                label: "Search for candidates.",
-                child: TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search),
-                    hintText: 'Search candidates...',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Semantics(
-                    label: "Filter candidates by category or state.",
-                    child: IconButton(
-                      icon: Icon(Icons.filter_list),
-                      onPressed: () {/* Implement filter functionality */},
-                    ),
-                  ),
-                  Semantics(
-                    label: "Currently filtering by category: Presidential. Filter by state.",
-                    child: Row(
-                      children: [
-                        Text('Category: Presidential'),
-                        SizedBox(width: 10),
-                        Text('State'),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: GridView.builder(
-                padding: EdgeInsets.all(8),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.75,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                ),
-                itemCount: 6,
-                itemBuilder: (context, index) {
-                  return FocusTraversalOrder(
-                    order: NumericFocusOrder(index + 6.0),
+          _selectionMode
+              ? Positioned(
+                  bottom: 10,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.all(22),
+                    alignment: Alignment.center,
+                    color: AppColors.appLinkBlue.withOpacity(0.85),
                     child: Semantics(
-                      label: _selectionMode
-                          ? (_selectedCandidates[index]
-                              ? "Candidate ${index + 1} selected. Tap to deselect."
-                              : "Candidate ${index + 1}, tap to select.")
-                          : "Candidate ${index + 1}, tap to view profile.",
-                      child: GestureDetector(
-                        onTap: () => _toggleCandidate(index),
-                        child: Stack(
-                          children: [
-                            Container(color: Colors.black),
-                            if (_selectionMode)
-                              Positioned(
-                                top: 8,
-                                right: 8,
-                                child: Container(
-                                  width: 24,
-                                  height: 24,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: _selectedCandidates[index]
-                                        ? Colors.blue
-                                        : Colors.white,
-                                    border: Border.all(color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                          ],
+                      label:
+                          "Compare selected candidates. $_selectedCount candidates selected.",
+                      child: TextButton(
+                        onPressed: _compareSelections,
+                        child: Text(
+                          'Compare Selections ($_selectedCount)',
+                          style: getNormalZodiak(
+                              textColor: AppColors.appWhite,
+                              fontsize: 14,
+                              fontweight: FontWeight.w500),
                         ),
                       ),
                     ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: _selectionMode
-          ? BottomAppBar(
-              child: Semantics(
-                label: "Compare selected candidates. $_selectedCount candidates selected.",
-                child: FocusTraversalOrder(
-                  order: NumericFocusOrder(12.0),
-                  child: ElevatedButton(
-                    onPressed: _compareSelections,
-                    child: Text('Compare Selections ($_selectedCount)'),
                   ),
-                ),
-              ),
-            )
-          : null,
+                )
+              : SizedBox(),
+        ],
+      ),
+      // bottomNavigationBar: _selectionMode
+      //     ? BottomAppBar(
+      //         color: AppColors.appLinkBlue,
+      //         notchMargin: 0,
+      //         child: Semantics(
+      //           label:
+      //               "Compare selected candidates. $_selectedCount candidates selected.",
+      //           child: TextButton(
+      //             onPressed: _compareSelections,
+      //             child: Text(
+      //               'Compare Selections ($_selectedCount)',
+      //               style: getNormalZodiak(
+      //                   textColor: AppColors.appWhite,
+      //                   fontsize: 14,
+      //                   fontweight: FontWeight.w500),
+      //             ),
+      //           ),
+      //         ),
+      //       )
+      //     : null,
     );
   }
 }
 
 class ComparisonPage extends StatelessWidget {
+  const ComparisonPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Comparison')),
-      body: Center(child: Text('Comparison Page')),
+      appBar: AppBar(title: const Text('Comparison')),
+      body: const Center(child: Text('Comparison Page')),
     );
   }
 }
-
-
-
-
-
-
