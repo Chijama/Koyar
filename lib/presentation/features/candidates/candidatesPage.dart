@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:koyar/presentation/common/appBar.dart';
 import 'package:koyar/presentation/common/customTextField.dart';
 import 'package:koyar/presentation/features/candidates/widgets/federalCandidatesWidget.dart';
-import 'package:koyar/presentation/features/candidates/widgets/localCandidatesWidget.dart.dart';
-import 'package:koyar/presentation/features/candidates/widgets/stateCandidatesWidget.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
 import 'package:koyar/presentation/manager/styleManager.dart';
 
@@ -100,12 +98,12 @@ class _CandidateSelectionPageState extends State<CandidateSelectionPage>
                     label: "Search for candidates.",
                     child: const CustomBoxTextField(
                         hintText: 'Search candidates...')),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Container(
                   height: kToolbarHeight - 8.0,
-                  padding: EdgeInsets.all(3),
+                  padding: const EdgeInsets.all(3),
                   // width: double.infinity,
                   decoration: BoxDecoration(
                     color: AppColors.appSecondaryBackgroundLightGray,
@@ -141,8 +139,8 @@ class _CandidateSelectionPageState extends State<CandidateSelectionPage>
                         selectionMode: _selectionMode,
                         onTap: (index) => _toggleCandidate(index),
                       ),
-                      SizedBox(),
-                      SizedBox()
+                      const SizedBox(),
+                      const SizedBox()
                       // StateCandidatesWidget(selectedCandidates: _selectedCandidates, selectionMode: _selectionMode),
                       // LocalCandidatesWidget(selectedCandidates: _selectedCandidates, selectionMode: _selectionMode),
                     ],
@@ -156,7 +154,7 @@ class _CandidateSelectionPageState extends State<CandidateSelectionPage>
                   bottom: 10,
                   child: Container(
                     width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.all(22),
+                    padding: const EdgeInsets.all(22),
                     alignment: Alignment.center,
                     color: AppColors.appLinkBlue.withOpacity(0.85),
                     child: Semantics(
@@ -175,7 +173,7 @@ class _CandidateSelectionPageState extends State<CandidateSelectionPage>
                     ),
                   ),
                 )
-              : SizedBox(),
+              : const SizedBox(),
         ],
       ),
       // bottomNavigationBar: _selectionMode
