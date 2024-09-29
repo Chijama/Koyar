@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:koyar/presentation/common/appBar.dart';
 import 'package:koyar/presentation/common/customTextField.dart';
 import 'package:koyar/presentation/features/candidates/widgets/federalCandidatesWidget.dart';
+import 'package:koyar/presentation/features/candidates/widgets/localCandidatesWidget.dart.dart';
+import 'package:koyar/presentation/features/candidates/widgets/stateCandidatesWidget.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
 import 'package:koyar/presentation/manager/styleManager.dart';
 
@@ -139,10 +141,9 @@ class _CandidateSelectionPageState extends State<CandidateSelectionPage>
                         selectionMode: _selectionMode,
                         onTap: (index) => _toggleCandidate(index),
                       ),
-                      const SizedBox(),
-                      const SizedBox()
-                      // StateCandidatesWidget(selectedCandidates: _selectedCandidates, selectionMode: _selectionMode),
-                      // LocalCandidatesWidget(selectedCandidates: _selectedCandidates, selectionMode: _selectionMode),
+                     
+                      StateCandidatesWidget(selectedCandidates: _selectedCandidates, selectionMode: _selectionMode , onTap: (index) => _toggleCandidate(index)),
+                      LocalCandidatesWidget(selectedCandidates: _selectedCandidates, selectionMode: _selectionMode, onTap: (index) => _toggleCandidate(index)),
                     ],
                   ),
                 ),

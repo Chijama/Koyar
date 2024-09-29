@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
                   Text(
                     "To Your Next Election",
                     style: getPlusJakartaSans(
-                        textColor: AppColors.appTextGrey,
+                        textColor: AppColors.appSecondaryTextMediumGray,
                         fontsize: 20,
                         fontweight: FontWeight.w500),
                     semanticsLabel: "To Your Next Election",
