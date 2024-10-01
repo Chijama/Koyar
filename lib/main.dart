@@ -9,8 +9,7 @@
 // }
 
 import 'package:flutter/material.dart';
-import 'package:koyar/presentation/features/votersGuide/votersGuide.dart';
- 
+import 'package:koyar/presentation/features/candidates/candidatesSelectionPage.dart';
 
 void main() => runApp(const MyApp());
 
@@ -19,7 +18,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
-        title: 'Your app name', home: VotingGuidesScreen());
+    return const MaterialApp(title: 'Your app name', home: CandidateSelectionPage());
   }
 }

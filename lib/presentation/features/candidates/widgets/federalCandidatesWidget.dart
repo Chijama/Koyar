@@ -1,5 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:koyar/presentation/features/candidates/widgets/filterWidget.dart';
+import 'package:koyar/presentation/features/candidates/widgets/profileImageOverlay.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
 
 class FederalCandidatesWidget extends StatelessWidget {
@@ -47,8 +49,10 @@ class FederalCandidatesWidget extends StatelessWidget {
                   },
                   child: Stack(
                     children: [
-                      Container(
-                        color: Colors.black,
+                      const ProfileImageOverlay(
+                        imagePath: 'assets/profile_image.jpg',
+                        name: 'James Doe',
+                        title: 'VP, Product and Concierge',
                       ),
                       if (_selectionMode)
                         Positioned(

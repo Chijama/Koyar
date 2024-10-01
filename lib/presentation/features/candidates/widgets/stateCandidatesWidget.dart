@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:koyar/presentation/features/candidates/widgets/filterWidget.dart';
+import 'package:koyar/presentation/features/candidates/widgets/profileImageOverlay.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
 import 'package:nigerian_states_and_lga/nigerian_states_and_lga.dart';
 
@@ -63,9 +64,8 @@ class StateCandidatesWidget extends StatelessWidget {
                   // onTap: () => _toggleCandidate(index),
                   child: Stack(
                     children: [
-                      Container(
-                        color: Colors.black,
-                      ),
+                       ProfileImageOverlay(
+                          imagePath: 'imagePath', name: 'name', title: 'title'),
                       if (_selectionMode)
                         Positioned(
                           top: 8,
