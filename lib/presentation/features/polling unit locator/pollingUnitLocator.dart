@@ -19,7 +19,7 @@ class PollingUnitLocatorPage extends StatelessWidget {
     ];
     String itemSelected = '';
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Voter Registeration check'),
+      appBar: const CustomAppBar(title: 'Polling Unit Check',semanticsLabel: "Check your polling unit location",),
       backgroundColor: AppColors.appBackgroundColor,
       body: SafeArea(
           child: Padding(

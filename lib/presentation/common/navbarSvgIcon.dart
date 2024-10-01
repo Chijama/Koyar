@@ -29,7 +29,9 @@ class NavBarWidget extends StatelessWidget {
         ),
         SvgPicture.asset(
           svgicon,
-          color: isSvgIconSelected ? Colors.black : AppColors.appTextGrey,
+          color: isSvgIconSelected
+              ? Colors.black
+              : AppColors.appSecondaryTextMediumGray,
         ),
         const SizedBox(
           height: 4,
@@ -37,7 +39,7 @@ class NavBarWidget extends StatelessWidget {
         Text(
           navName,
           style: getPlusJakartaSans(
-            textColor: AppColors.appTextGrey,
+            textColor: AppColors.appSecondaryTextMediumGray,
             fontweight: FontWeight.w500,
             fontsize: 12,
           ).copyWith(
