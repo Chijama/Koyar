@@ -6,11 +6,12 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
     super.key,
     required this.title,
     required this.semanticsLabel,
-    this.actions,
+    this.actions, this.bottom,
   }) : preferredSize = const Size.fromHeight(kToolbarHeight);
   final String title;
   final String semanticsLabel;
   final List<Widget>? actions;
+  final PreferredSizeWidget? bottom;
   @override
   final Size preferredSize;
 
@@ -25,7 +26,7 @@ class CustomAppBarState extends State<CustomAppBar> {
       // foregroundColor: kcBackgroundColor,
       actions: widget.actions,
       surfaceTintColor: Colors.transparent,
-      leadingWidth: 70,
+      leadingWidth: 70, bottom: widget.bottom,
       leading: Semantics(
         label: "Go back to the previous screen.",
         child: GestureDetector(
