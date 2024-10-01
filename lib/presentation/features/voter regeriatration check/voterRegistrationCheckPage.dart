@@ -23,7 +23,7 @@ class VoterRegistrationCheckPage extends StatelessWidget {
     String itemSelected = '';
     return Scaffold(
       
-      appBar: const CustomAppBar(title: 'Voter Registeration check'),
+      appBar: const CustomAppBar(title: 'Voter Registeration check',semanticsLabel: "Check your voter's registeration status",),
       backgroundColor: AppColors.appBackgroundColor,
       body: SafeArea(
           child: Padding(

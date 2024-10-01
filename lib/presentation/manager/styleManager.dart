@@ -7,18 +7,17 @@ TextStyle getNormalZodiak(
     FontWeight fontweight = FontWeight.w400,
     double fontsize = 14}) {
   return TextStyle(
-    fontFamily: 'Zodiak',
-    fontSize: fontsize,
-    fontStyle: FontStyle.normal,
-    fontWeight: fontweight,
-  );
+      fontFamily: 'Zodiak',
+      fontSize: fontsize,
+      fontStyle: FontStyle.normal,
+      fontWeight: fontweight,
+      color: textColor);
 }
 
 TextStyle getBlackZodiak(
-    {   
-    FontWeight fontweight = FontWeight.w700,
-    double fontsize = 14}) {
-  return TextStyle(color: AppColors.appBlack,
+    {FontWeight fontweight = FontWeight.w700, double fontsize = 14}) {
+  return TextStyle(
+    color: AppColors.appBlack,
     fontFamily: 'Zodiak',
     fontSize: fontsize,
     fontStyle: FontStyle.normal,
