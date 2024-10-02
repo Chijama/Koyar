@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:koyar/presentation/features/candidates/candidatesSelectionPage.dart';
 import 'package:koyar/presentation/features/candidates/widgets/filterWidget.dart';
 import 'package:koyar/presentation/features/candidates/widgets/profileImageOverlay.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';

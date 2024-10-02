@@ -9,15 +9,15 @@ class ReadMoreText extends StatefulWidget {
   final TextStyle? buttonStyle;
 
   const ReadMoreText({
-    Key? key,
+    super.key,
     required this.text,
     this.maxWords = 30,
     this.style,
     this.buttonStyle,
-  }) : super(key: key);
+  });
 
   @override
-  _ReadMoreTextState createState() => _ReadMoreTextState();
+  State<ReadMoreText> createState() => _ReadMoreTextState();
 }
 
 class _ReadMoreTextState extends State<ReadMoreText> {

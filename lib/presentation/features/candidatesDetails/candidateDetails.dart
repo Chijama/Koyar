@@ -7,7 +7,7 @@ import 'package:koyar/presentation/manager/styleManager.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CandidateDetailsPage extends StatelessWidget {
-  const CandidateDetailsPage({Key? key}) : super(key: key);
+  const CandidateDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
