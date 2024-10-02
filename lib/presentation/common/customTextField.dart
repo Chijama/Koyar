@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:koyar/presentation/cubit/cubit/custom_dropdownsearch_cubit.dart';
 import 'package:koyar/presentation/cubit/custom_dropdown_search_cubit.dart'  ;
 import 'package:koyar/presentation/manager/colorManager.dart';
 import 'package:koyar/presentation/manager/styleManager.dart';
@@ -205,22 +206,26 @@ class CustomDropDownSearch extends StatelessWidget {
   final String? searchHintText;
   final void Function(String?)? onChanged;
   final FutureOr<List<String>> Function(String, LoadProps?)? items;
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DropdownSearchCubit, DropdownSearchxState>(
+    return BlocBuilder<CustomDropdownsearchCubit, CustomDropdownsearchState>(
       builder: (context, state) {
+        
         return Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              label!,
-              style: getPlusJakartaSans(
-                  textColor: AppColors.appBlack,
-                  fontsize: 14,
-                  fontweight: FontWeight.w500),
-            ),
-            const SizedBox(height: 9),
+            if (label != null) ...[
+              Text(
+                label!,
+                style: getPlusJakartaSans(
+                    textColor: AppColors.appBlack,
+                    fontsize: 14,
+                    fontweight: FontWeight.w500),
+              ),
+              const SizedBox(height: 9),
+            ],
             DropdownSearch<String>(
               items: items,
               mode: Mode.form,
@@ -228,8 +233,6 @@ class CustomDropDownSearch extends StatelessWidget {
                   showSearchBox: true,
                   searchFieldProps: TextFieldProps(
                     decoration: InputDecoration(
-                      // filled: true,
-                      // fillColor: Colors.transparent,
                       hintText: searchHintText,
                       hintStyle: getPlusJakartaSans(
                           textColor: const Color(0xffB0BEC5),
@@ -277,12 +280,6 @@ class CustomDropDownSearch extends StatelessWidget {
                   menuProps: MenuProps(
                     backgroundColor: AppColors.appBackgroundColor,
                   )),
-              // dropdownBuilder: (context, selectedItem) => Icon(
-              //   Icons.keyboard_arrow_down_rounded,
-              //   color: AppColors.appBlack,
-              //   size: 10,
-              // ),
-
               suffixProps: const DropdownSuffixProps(
                 dropdownButtonProps: DropdownButtonProps(
                   iconClosed: Icon(Icons.keyboard_arrow_down_rounded),
@@ -292,8 +289,6 @@ class CustomDropDownSearch extends StatelessWidget {
               decoratorProps: DropDownDecoratorProps(
                 textAlignVertical: TextAlignVertical.center,
                 decoration: InputDecoration(
-                  // filled: true,
-                  // fillColor: Colors.transparent,
                   hintText: hintText,
                   hintStyle: getPlusJakartaSans(
                       textColor: const Color(0xffB0BEC5),
@@ -331,7 +326,8 @@ class CustomDropDownSearch extends StatelessWidget {
               ),
               onChanged: (value) {
                 if (value != null) {
-                  context.read<DropdownSearchCubit>().selectItem(value);
+                  context.read<CustomDropdownsearchCubit>().selectItem(value);
+                  onChanged?.call(value);
                 }
               },
               selectedItem: state.selectedItem,

@@ -27,18 +27,17 @@ class LGAscreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                         horizontal: 50,
                       ),
-                      child: Semantics(
-                        label: "What is your Local Government of Registeration",
-                        child: Text(
+                      child:  Text(
                           "LOCAL GOVERNMENT OF REGISTERATION",
                           textAlign: TextAlign.center,
                           style: getBlackZodiak(
-                             fontsize: 36,
-                          ),
+                            fontsize: 36,
+                          ),semanticsLabel:"What is your Local Government of Registeration",
+                          softWrap: false,
                         ),
                       ),
                     ),
-                  ),
+                   
                   const SizedBox(
                     height: 30,
                   ),
@@ -50,13 +49,13 @@ class LGAscreen extends StatelessWidget {
                       hintText: 'Local Government of Registeration',
                     ),
                   ),
-                   
                 ],
               ),
               const SizedBox(
                 height: 100,
               ),
-              Semantics(label: "Next, submit your Local Government of Registeration",
+              Semantics(
+                label: "Next, submit your Local Government of Registeration",
                 child: KoyarButton(
                   onPressed: () {
                     context.go(BaseRouteName.electionPreferencePage);

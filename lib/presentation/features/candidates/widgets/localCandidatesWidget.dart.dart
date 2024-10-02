@@ -83,7 +83,7 @@ class _LocalCandidatesWidgetState extends State<LocalCandidatesWidget> {
                   // onTap: () => _toggleCandidate(index),
                   child: Stack(
                     children: [
-                      ProfileImageOverlay(
+                      const ProfileImageOverlay(
                           imagePath: 'imagePath', name: 'name', title: 'title'),
                       if (widget._selectionMode)
                         Positioned(

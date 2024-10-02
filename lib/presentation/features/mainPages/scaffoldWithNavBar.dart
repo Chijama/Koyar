@@ -65,7 +65,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       bottomnavcubit.navigateToScreen(pageNumber: 1);
-                      context.go(BaseRouteName.candidates);
+                      context.go(BaseRouteName.candidatesSelectionPage);
                     },
                     child: NavBarWidget(
                       navName: "Candidates",

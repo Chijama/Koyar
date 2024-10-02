@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:koyar/presentation/manager/styleManager.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -6,7 +7,8 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
     super.key,
     required this.title,
     required this.semanticsLabel,
-    this.actions, this.bottom,
+    this.actions,
+    this.bottom,
   }) : preferredSize = const Size.fromHeight(kToolbarHeight);
   final String title;
   final String semanticsLabel;
@@ -32,7 +34,7 @@ class CustomAppBarState extends State<CustomAppBar> {
         child: GestureDetector(
           onTap: () {
             // pop
-            Navigator.pop(context);
+            context.pop();
           },
           child: Container(
               margin: const EdgeInsets.only(left: 34, right: 8),

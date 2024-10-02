@@ -17,6 +17,7 @@ TextStyle getNormalZodiak(
 TextStyle getBlackZodiak(
     {FontWeight fontweight = FontWeight.w700, double fontsize = 14}) {
   return TextStyle(
+    overflow: TextOverflow.clip ,
     color: AppColors.appBlack,
     fontFamily: 'Zodiak',
     fontSize: fontsize,

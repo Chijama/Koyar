@@ -3,8 +3,8 @@ import "package:koyar/presentation/common/appBar.dart";
 import "package:koyar/presentation/manager/colorManager.dart";
 import "package:koyar/presentation/manager/styleManager.dart";
 
-class VotingGuidesScreen extends StatelessWidget {
-  const VotingGuidesScreen({super.key});
+class VotingGuidePage extends StatelessWidget {
+  const VotingGuidePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,9 @@ class NewVoterGuide extends StatelessWidget {
         );
       },
       itemBuilder: (context, index) {
-        return   VotersGuideWidget(index: index,);
+        return VotersGuideWidget(
+          index: index,
+        );
       },
       itemCount: 8,
       // const ExpansionTile(
@@ -72,6 +74,7 @@ class NewVoterGuide extends StatelessWidget {
     );
   }
 }
+
 class ReturningVoterGuide extends StatelessWidget {
   const ReturningVoterGuide({super.key});
 
@@ -86,7 +89,9 @@ class ReturningVoterGuide extends StatelessWidget {
         );
       },
       itemBuilder: (context, index) {
-        return   VotersGuideWidget(index: index,);
+        return VotersGuideWidget(
+          index: index,
+        );
       },
       itemCount: 8,
       // const ExpansionTile(
@@ -96,9 +101,11 @@ class ReturningVoterGuide extends StatelessWidget {
     );
   }
 }
+
 class VotersGuideWidget extends StatelessWidget {
   const VotersGuideWidget({
-    super.key, required this.index,
+    super.key,
+    required this.index,
   });
   final int index;
   @override
@@ -113,7 +120,7 @@ class VotersGuideWidget extends StatelessWidget {
             fontsize: 17,
             fontweight: FontWeight.w500),
       ),
-      initiallyExpanded: index==0? true:false,
+      initiallyExpanded: index == 0 ? true : false,
       children: [
         Padding(
           padding: const EdgeInsets.all(16.0),

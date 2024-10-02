@@ -3,8 +3,8 @@ import 'package:koyar/presentation/common/appBar.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
 import 'package:koyar/presentation/manager/styleManager.dart';
 
-class CandidateComparisonPage extends StatelessWidget {
-  const CandidateComparisonPage({super.key});
+class CandidatesComparisonPage extends StatelessWidget {
+  const CandidatesComparisonPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class CandidateComparisonPage extends StatelessWidget {
     return Scaffold(
       appBar: const CustomAppBar(
           title: 'Compare Candidates',
-          semanticsLabel: 'Candidates Comparision page'),
+          semanticsLabel: 'Candidates Comparison page'),
       backgroundColor: AppColors.appBackgroundColor,
       body: SingleChildScrollView(
         child: Padding(
@@ -172,30 +172,28 @@ class CandidateComparisonPage extends StatelessWidget {
         Divider(
           color: AppColors.appDividerLineLightGray,
         ),
-        ...rows
-            .map((row) => Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Text(row[0] ?? 'nil',
-                            style: getPlusJakartaSans(
-                                textColor: AppColors.appSecondaryTextMediumGray,
-                                fontsize: 12,
-                                fontweight: FontWeight.w400)),
-                      ),
-                      Expanded(
-                        child: Text(row[1] ?? 'nil',
-                            style: getPlusJakartaSans(
-                                textColor: AppColors.appSecondaryTextMediumGray,
-                                fontsize: 12,
-                                fontweight: FontWeight.w400)),
-                      ),
-                    ],
+        ...rows.map((row) => Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Text(row[0] ?? 'nil',
+                        style: getPlusJakartaSans(
+                            textColor: AppColors.appSecondaryTextMediumGray,
+                            fontsize: 12,
+                            fontweight: FontWeight.w400)),
                   ),
-                ))
-            ,
+                  Expanded(
+                    child: Text(row[1] ?? 'nil',
+                        style: getPlusJakartaSans(
+                            textColor: AppColors.appSecondaryTextMediumGray,
+                            fontsize: 12,
+                            fontweight: FontWeight.w400)),
+                  ),
+                ],
+              ),
+            )),
       ],
     );
   }

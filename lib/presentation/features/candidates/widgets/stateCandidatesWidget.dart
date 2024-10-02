@@ -64,7 +64,7 @@ class StateCandidatesWidget extends StatelessWidget {
                   // onTap: () => _toggleCandidate(index),
                   child: Stack(
                     children: [
-                       ProfileImageOverlay(
+                       const ProfileImageOverlay(
                           imagePath: 'imagePath', name: 'name', title: 'title'),
                       if (_selectionMode)
                         Positioned(

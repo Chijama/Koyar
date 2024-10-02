@@ -3,7 +3,7 @@ import 'package:koyar/presentation/common/appBar.dart';
 import 'package:koyar/presentation/common/appButton.dart';
 import 'package:koyar/presentation/common/bottomModals.dart';
 import 'package:koyar/presentation/common/customTextField.dart';
-import 'package:koyar/presentation/features/voter%20regeriatration%20check/date_time_picker.dart';
+import 'package:koyar/presentation/features/voterRegisterationCheck/date_time_picker.dart';
 import 'package:koyar/presentation/manager/assetManager.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
 import 'package:koyar/presentation/manager/styleManager.dart';
