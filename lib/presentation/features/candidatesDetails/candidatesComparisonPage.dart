@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:koyar/presentation/common/appBar.dart';
+import 'package:koyar/presentation/features/candidatesDetails/widgets/buildSection.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
 import 'package:koyar/presentation/manager/styleManager.dart';
 
@@ -102,7 +103,7 @@ class CandidatesComparisonPage extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 24),
-              _buildSection('Personal Information', [
+              const CompareSection(title: 'Personal Information', rows: [
                 ['Jane Doe', 'John Smith'],
                 ['45', '52'],
                 ['Female', 'Male'],
@@ -113,14 +114,19 @@ class CandidatesComparisonPage extends StatelessWidget {
                 ],
               ]),
               const SizedBox(height: 24),
-              _buildSection('Deputy Information', [[]]),
-              _buildSection('Political Party', [[]]),
-              _buildSection('Profile Overview', [[]]),
-              _buildSection('Achievements', [[]]),
-              _buildSection('Expected Policies', [[]]),
-              _buildSection('Notable Fact', [[]]),
-              _buildSection('Useful links', [[]]),
-              _buildSection('Political Ideology', [
+              const CompareSection(title: 'Deputy Information', rows: [
+                [
+                  "He had a long-standing military career before rising to the role of CSO. His career involved serving in various capacities in the Nigerian Army, including intelligence and surveillance roles, where he earned a reputation for his loyalty to the leadership. Al-Mustapha’s career has been mired in controversy, especially related to allegations of human rights abuses during his time with the Abacha regime. Although he was acquitted of the charges in 2013",
+                  "He had a long-standing military career before rising to the role of CSO. His career involved serving in various capacities in the Nigerian Army, including intelligence and surveillance roles, where he earned a reputation for his loyalty to the leadership. Al-Mustapha’s career has been mired in controversy, especially related to allegations of human rights abuses during his time with the Abacha regime. Although he was acquitted of the charges in 2013"
+                ]
+              ]),
+              const CompareSection(title: 'Political Party', rows: [[]]),
+              const CompareSection(title: 'Profile Overview', rows: [[]]),
+              const CompareSection(title: 'Achievements', rows: [[]]),
+              const CompareSection(title: 'Expected Policies', rows: [[]]),
+              const CompareSection(title: 'Notable Fact', rows: [[]]),
+              const CompareSection(title: 'Useful links', rows: [[]]),
+              const CompareSection(title: 'Political Ideology', rows: [
                 [
                   'Economist, Public Policy\nConsultant',
                   'Lawyer, Former UN Diplomat'
@@ -139,62 +145,6 @@ class CandidatesComparisonPage extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  DropdownMenuItem<String> rightDropdownMenuItem(String candidate) {
-    return DropdownMenuItem(
-      child: Text(
-        candidate,
-        style: getBlackZodiak(fontsize: 12, fontweight: FontWeight.w500),
-      ),
-    );
-  }
-
-  DropdownMenuItem<String> leftDropdownMenuItem(String candidate) {
-    return DropdownMenuItem(
-      child: Text(
-        candidate,
-        style: getBlackZodiak(fontsize: 12, fontweight: FontWeight.w500),
-      ),
-    );
-  }
-
-  Widget _buildSection(String title, List<List<String?>> rows) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: getBlackZodiak(fontsize: 20, fontweight: FontWeight.w500),
-        ),
-        const SizedBox(height: 5),
-        Divider(
-          color: AppColors.appDividerLineLightGray,
-        ),
-        ...rows.map((row) => Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Text(row[0] ?? 'nil',
-                        style: getPlusJakartaSans(
-                            textColor: AppColors.appSecondaryTextMediumGray,
-                            fontsize: 12,
-                            fontweight: FontWeight.w400)),
-                  ),
-                  Expanded(
-                    child: Text(row[1] ?? 'nil',
-                        style: getPlusJakartaSans(
-                            textColor: AppColors.appSecondaryTextMediumGray,
-                            fontsize: 12,
-                            fontweight: FontWeight.w400)),
-                  ),
-                ],
-              ),
-            )),
-      ],
     );
   }
 }

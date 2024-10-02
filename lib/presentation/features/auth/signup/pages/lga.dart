@@ -33,7 +33,7 @@ class LGAscreen extends StatelessWidget {
                           style: getBlackZodiak(
                             fontsize: 36,
                           ),semanticsLabel:"What is your Local Government of Registeration",
-                          softWrap: false,
+                          softWrap: true,
                         ),
                       ),
                     ),

@@ -10,6 +10,7 @@ void main() async {
 
 // import 'package:flutter/material.dart';
 // import 'package:koyar/presentation/features/candidates/candidatesSelectionPage.dart';
+// import 'package:koyar/presentation/features/candidatesDetails/candidateDetails.dart';
 
 // void main() => runApp(const MyApp());
 
@@ -18,6 +19,6 @@ void main() async {
 
 //   @override
 //   Widget build(BuildContext context) {
-//     return const MaterialApp(title: 'Your app name', home: CandidateSelectionPage());
+//     return const MaterialApp(title: 'Your app name', home: CandidateDetailsPage());
 //   }
 // }

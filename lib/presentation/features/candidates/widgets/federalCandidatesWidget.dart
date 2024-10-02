@@ -1,8 +1,10 @@
-
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:koyar/presentation/features/candidates/candidatesSelectionPage.dart';
 import 'package:koyar/presentation/features/candidates/widgets/filterWidget.dart';
 import 'package:koyar/presentation/features/candidates/widgets/profileImageOverlay.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
+import 'package:koyar/presentation/manager/routeManager.dart';
 
 class FederalCandidatesWidget extends StatelessWidget {
   const FederalCandidatesWidget({
@@ -46,6 +48,7 @@ class FederalCandidatesWidget extends StatelessWidget {
                 child: GestureDetector(
                   onTap: () {
                     onTap(index);
+                    context.push(BaseRouteName.candidatesDetailsPage);
                   },
                   child: Stack(
                     children: [

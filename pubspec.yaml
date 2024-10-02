@@ -22,6 +22,7 @@ dependencies:
   go_router: null
   google_fonts: null
   hive: null
+  meta: ^1.15.0
   nigerian_states_and_lga: ^1.0.0
   retrofit: null
 

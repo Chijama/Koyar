@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:koyar/presentation/features/candidates/widgets/filterWidget.dart';
 import 'package:koyar/presentation/features/candidates/widgets/profileImageOverlay.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
+import 'package:koyar/presentation/manager/routeManager.dart';
 import 'package:nigerian_states_and_lga/nigerian_states_and_lga.dart';
 
 class LocalCandidatesWidget extends StatefulWidget {
@@ -53,7 +55,7 @@ class _LocalCandidatesWidgetState extends State<LocalCandidatesWidget> {
                   itemsList: NigerianStatesAndLGA.allStates,
                   onChanged: (val) {
                     setState(() {
-                    stateLga.addAll(NigerianStatesAndLGA.getStateLGAs(val!));
+                      stateLga.addAll(NigerianStatesAndLGA.getStateLGAs(val!));
                     });
                   }),
               Filterwidget(
@@ -80,7 +82,10 @@ class _LocalCandidatesWidgetState extends State<LocalCandidatesWidget> {
                     ? "Candidate ${index + 1} selected. Tap to deselect."
                     : "Candidate ${index + 1}, tap to ${widget._selectionMode ? 'select' : 'view profile'}.",
                 child: GestureDetector(
-                  // onTap: () => _toggleCandidate(index),
+                  onTap: () {
+                    widget.onTap(index);
+                    context.push(BaseRouteName.candidatesDetailsPage);
+                  },
                   child: Stack(
                     children: [
                       const ProfileImageOverlay(

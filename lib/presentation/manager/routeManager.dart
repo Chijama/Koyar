@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:koyar/presentation/features/auth/signup/pages/ninPage.dart';
+import 'package:koyar/presentation/features/candidatesDetails/candidateDetails.dart';
 import 'package:koyar/presentation/features/candidatesDetails/candidatesComparisonPage.dart';
 import 'package:koyar/presentation/features/candidates/candidatesSelectionPage.dart';
 import 'package:koyar/presentation/features/mainPages/education/education.dart';
@@ -38,6 +39,8 @@ class BaseRouteName {
   static const voterRegistrationCheckPage = "/home/voterRegistrationCheckPage";
   static const pollingUnitLocatorPage = "/home/pollingUnitLocatorPage";
   static const votersGuidePage = "/home/votersGuidePage";
+    static const candidatesDetailsPage =
+      "/home/candidatesSelectionPage/candidatesDetailsPage";
 }
 
 class SubRouteName {
@@ -51,6 +54,7 @@ class SubRouteName {
   static const candidatesComparisonPage = "candidatesComparisonPage";
   static const voterRegistrationCheckPage = "voterRegistrationCheckPage";
   static const pollingUnitLocatorPage = "pollingUnitLocatorPage";
+  static const candidatesDetailsPage = "candidatesDetailsPage";
   static const votersGuidePage = "votersGuidePage";
 }
 
@@ -261,6 +265,16 @@ class AppRouter {
           );
         },
         path: BaseRouteName.votersGuidePage,
+      ),//! Candidate's Details
+      GoRoute(
+        parentNavigatorKey: _rootNavigationKey,
+        pageBuilder: (context, state) {
+          return customTransitionPage(
+            pageKey: state.pageKey,
+            child: const CandidateDetailsPage(),
+          );
+        },
+        path: BaseRouteName.candidatesDetailsPage,
       ),
     ],
   );

@@ -50,11 +50,11 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Row(
                   children: [
-                    HomePageItem(
+                    const HomePageItem(
                       label: "Election Dates",
                       asset: SvgAssetManager.electionDates,
                     ),
-                    SizedBox(width: 15),
+                    const SizedBox(width: 15),
                     HomePageItem(
                         label: "Voting guides",
                         asset: SvgAssetManager.votersGuide,

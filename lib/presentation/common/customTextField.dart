@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:koyar/presentation/cubit/cubit/custom_dropdownsearch_cubit.dart';
-import 'package:koyar/presentation/cubit/custom_dropdown_search_cubit.dart'  ;
+import 'package:koyar/presentation/cubit/customDropdown/custom_dropdownsearch_cubit.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
 import 'package:koyar/presentation/manager/styleManager.dart';
 

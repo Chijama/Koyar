@@ -33,12 +33,12 @@ class StateOfOriginScreen extends StatelessWidget {
                       ),
                       child: Semantics(
                         label: "State of Registeration",
-                        child: Text(
+                        child: Text( 
                           'STATE OF REGISTERATION?',
                           textAlign: TextAlign.center,
                           style: getBlackZodiak(
                             fontsize: 36,
-                          ),
+                          ),softWrap: true,
                         ),
                       ),
                     ),

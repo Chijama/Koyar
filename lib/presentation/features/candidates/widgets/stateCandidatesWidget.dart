@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:koyar/presentation/features/candidates/widgets/filterWidget.dart';
 import 'package:koyar/presentation/features/candidates/widgets/profileImageOverlay.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
+import 'package:koyar/presentation/manager/routeManager.dart';
 import 'package:nigerian_states_and_lga/nigerian_states_and_lga.dart';
 
 class StateCandidatesWidget extends StatelessWidget {
   const StateCandidatesWidget({
     super.key,
     required List<bool> selectedCandidates,
-    required bool selectionMode, required this.onTap,
+    required bool selectionMode,
+    required this.onTap,
   })  : _selectedCandidates = selectedCandidates,
         _selectionMode = selectionMode;
 
@@ -27,7 +30,8 @@ class StateCandidatesWidget extends StatelessWidget {
         SizedBox(
           height: 50,
           // width: 100,
-          child: Row(
+          child: ListView(
+            scrollDirection: Axis.horizontal,
             children: [
               Filterwidget(
                 text: 'Category',
@@ -61,10 +65,13 @@ class StateCandidatesWidget extends StatelessWidget {
                     ? "Candidate ${index + 1} selected. Tap to deselect."
                     : "Candidate ${index + 1}, tap to ${_selectionMode ? 'select' : 'view profile'}.",
                 child: GestureDetector(
-                  // onTap: () => _toggleCandidate(index),
+                  onTap: () {
+                    onTap(index);
+                    context.push(BaseRouteName.candidatesDetailsPage);
+                  },
                   child: Stack(
                     children: [
-                       const ProfileImageOverlay(
+                      const ProfileImageOverlay(
                           imagePath: 'imagePath', name: 'name', title: 'title'),
                       if (_selectionMode)
                         Positioned(
@@ -93,5 +100,3 @@ class StateCandidatesWidget extends StatelessWidget {
     );
   }
 }
-
-

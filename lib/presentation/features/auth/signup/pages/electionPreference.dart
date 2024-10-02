@@ -32,7 +32,7 @@ class ElectionPreferencePage extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: getBlackZodiak(
                           fontsize: 36,
-                        ),
+                        ),softWrap: true,
                       ),
                     ),
                   ),
@@ -134,7 +134,9 @@ class ElectionPreferencePage extends StatelessWidget {
                                           .initNotifications()
                                           .whenComplete(
                                         () {
-                                          context.go(BaseRouteName.home);
+                                          if (context.mounted) {
+                                            context.go(BaseRouteName.home);
+                                          }
                                         },
                                       );
                                     },
