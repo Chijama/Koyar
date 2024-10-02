@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:koyar/presentation/features/candidates/widgets/filterWidget.dart';
+import 'package:koyar/presentation/features/candidates/widgets/profileImageOverlay.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
 import 'package:nigerian_states_and_lga/nigerian_states_and_lga.dart';
 
@@ -27,8 +28,6 @@ class _LocalCandidatesWidgetState extends State<LocalCandidatesWidget> {
 
     List<String> categoryItemList = ['Chairmanship', 'Councillorship'];
 
-    String stateValue = '';
-
     List<String> stateLga = [];
     String lgaItemSelected = stateLga[0];
 
@@ -53,9 +52,8 @@ class _LocalCandidatesWidgetState extends State<LocalCandidatesWidget> {
                   itemSelected: stateItemSelected,
                   itemsList: NigerianStatesAndLGA.allStates,
                   onChanged: (val) {
-                    stateLga.addAll(NigerianStatesAndLGA.getStateLGAs(val!));
                     setState(() {
-                      stateValue = val;
+                    stateLga.addAll(NigerianStatesAndLGA.getStateLGAs(val!));
                     });
                   }),
               Filterwidget(
@@ -85,9 +83,8 @@ class _LocalCandidatesWidgetState extends State<LocalCandidatesWidget> {
                   // onTap: () => _toggleCandidate(index),
                   child: Stack(
                     children: [
-                      Container(
-                        color: Colors.black,
-                      ),
+                      ProfileImageOverlay(
+                          imagePath: 'imagePath', name: 'name', title: 'title'),
                       if (widget._selectionMode)
                         Positioned(
                           top: 8,

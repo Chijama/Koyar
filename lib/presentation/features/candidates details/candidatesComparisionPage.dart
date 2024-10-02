@@ -35,11 +35,11 @@ class CandidateComparisonPage extends StatelessWidget {
                           'Buhariasidu',
                         ]
                             .map<DropdownMenuItem<String>>(
-                                (String _value) => DropdownMenuItem<String>(
+                                (String value) => DropdownMenuItem<String>(
                                       value:
-                                          _value, // add this property an pass the _value to it
+                                          value, // add this property an pass the _value to it
                                       child: Text(
-                                        _value,
+                                        value,
                                         style: getBlackZodiak(
                                             fontsize: 12,
                                             fontweight: FontWeight.w500),
@@ -65,11 +65,11 @@ class CandidateComparisonPage extends StatelessWidget {
                           'Buhariasidu',
                         ]
                             .map<DropdownMenuItem<String>>(
-                                (String _value) => DropdownMenuItem<String>(
+                                (String value) => DropdownMenuItem<String>(
                                       value:
-                                          _value, // add this property an pass the _value to it
+                                          value, // add this property an pass the _value to it
                                       child: Text(
-                                        _value,
+                                        value,
                                         style: getBlackZodiak(
                                             fontsize: 12,
                                             fontweight: FontWeight.w500),
@@ -195,7 +195,7 @@ class CandidateComparisonPage extends StatelessWidget {
                     ],
                   ),
                 ))
-            .toList(),
+            ,
       ],
     );
   }
