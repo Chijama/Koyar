@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
 import 'package:koyar/presentation/manager/styleManager.dart';
@@ -84,7 +85,7 @@ class InquiryModalSheet extends StatelessWidget {
                       ),
               ],
             ),
-          ),
+          ).animate().slideY(begin: 1.0, end: 0.0, duration: 500.milliseconds),
         ],
       ),
     );
@@ -136,7 +137,7 @@ class AppModalSheet extends StatelessWidget {
               content
             ],
           ),
-        ),
+        ).animate().slideY(begin: 1.0, end: 0.0, duration: 500.milliseconds),
       ],
     );
   }

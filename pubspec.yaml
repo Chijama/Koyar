@@ -15,13 +15,16 @@ dependencies:
   firebase_messaging: null
   flutter:
     sdk: flutter
+  flutter_animate: ^4.5.0
   flutter_bloc: null
+  flutter_hooks: ^0.20.5
   flutter_native_splash: null
   flutter_svg: null
   get_it: ^8.0.0
   go_router: null
   google_fonts: null
   hive: null
+  intl: ^0.19.0
   meta: ^1.15.0
   nigerian_states_and_lga: ^1.0.0
   retrofit: null

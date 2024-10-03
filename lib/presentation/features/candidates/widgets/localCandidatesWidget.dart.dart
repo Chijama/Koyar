@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:koyar/presentation/features/candidates/widgets/candidateItem.dart';
 import 'package:koyar/presentation/features/candidates/widgets/filterWidget.dart';
-import 'package:koyar/presentation/features/candidates/widgets/profileImageOverlay.dart';
-import 'package:koyar/presentation/manager/colorManager.dart';
-import 'package:koyar/presentation/manager/routeManager.dart';
 import 'package:nigerian_states_and_lga/nigerian_states_and_lga.dart';
 
 class LocalCandidatesWidget extends StatefulWidget {
@@ -77,39 +74,12 @@ class _LocalCandidatesWidgetState extends State<LocalCandidatesWidget> {
             ),
             itemCount: 6,
             itemBuilder: (context, index) {
-              return Semantics(
-                label: widget._selectedCandidates[index]
-                    ? "Candidate ${index + 1} selected. Tap to deselect."
-                    : "Candidate ${index + 1}, tap to ${widget._selectionMode ? 'select' : 'view profile'}.",
-                child: GestureDetector(
-                  onTap: () {
-                    widget.onTap(index);
-                    context.push(BaseRouteName.candidatesDetailsPage);
-                  },
-                  child: Stack(
-                    children: [
-                      const ProfileImageOverlay(
-                          imagePath: 'imagePath', name: 'name', title: 'title'),
-                      if (widget._selectionMode)
-                        Positioned(
-                          top: 8,
-                          right: 8,
-                          child: Container(
-                            width: 24,
-                            height: 24,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: widget._selectedCandidates[index]
-                                  ? AppColors.appLinkBlue
-                                  : AppColors.appWhite,
-                              border: Border.all(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              );
+              return CandidateItem(
+                    selectedCandidates: widget._selectedCandidates,
+                    selectionMode: widget._selectionMode,
+                    onTap: widget.onTap,
+                    index: index,
+                  );
             },
           ),
         ),

@@ -1,17 +1,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:koyar/presentation/features/auth/signup/pages/ninPage.dart';
-import 'package:koyar/presentation/features/candidatesDetails/candidateDetails.dart';
-import 'package:koyar/presentation/features/candidatesDetails/candidatesComparisonPage.dart';
-import 'package:koyar/presentation/features/candidates/candidatesSelectionPage.dart';
-import 'package:koyar/presentation/features/mainPages/education/education.dart';
-import 'package:koyar/presentation/features/mainPages/profile/profile.dart';
-import 'package:koyar/presentation/features/mainPages/scaffoldWithNavBar.dart';
-import 'package:koyar/presentation/features/pollingUnitLocator/pollingUnitLocator.dart';
-import 'package:koyar/presentation/features/voterRegisterationCheck/voterRegistrationCheckPage.dart';
-import 'package:koyar/presentation/features/votersGuide/votersGuide.dart';
-
+import '../features/auth/signup/pages/ninPage.dart';
+import '../features/candidatesDetails/candidateDetails.dart';
+import '../features/candidatesDetails/candidatesComparisonPage.dart';
+import '../features/candidates/candidatesSelectionPage.dart';
+import '../features/mainPages/profile/profile.dart';
+import '../features/mainPages/scaffoldWithNavBar.dart';
+import '../features/news/newsDetailsPage.dart';
+import '../features/news/newsModel.dart';
+import '../features/news/newsPage.dart';
+import '../features/pollingUnitLocator/pollingUnitLocator.dart';
+import '../features/voterRegisterationCheck/voterRegistrationCheckPage.dart';
+import '../features/votersGuide/votersGuide.dart';
 import '../common/cutomePageTransition.dart';
 import '../features/auth/signup/pages/electionPreference.dart';
 import '../features/auth/signup/pages/lga.dart';
@@ -26,11 +27,12 @@ final _shellNavidationKey = GlobalKey<NavigatorState>();
 class BaseRouteName {
   static const home = '/home';
   static const candidatesSelectionPage = '/home/candidatesSelectionPage';
-  static const education = '/home/education';
+  static const newsPage = '/home/newsPage';
   static const profile = '/home/profile';
   static const getStarted = '/getStarted';
   static const ninPage = '/ninPage';
   static const stateOfOriginPage = '/ninPage/stateOfOriginPage';
+  static const newsDetailPage = "/home/newsPage/newsDetailPage";
   static const lgaPage = '/ninPage/stateOfOriginPage/lgaPage';
   static const electionPreferencePage =
       '/ninPage/stateOfOriginPage/lgaPage/electionPreferencePage';
@@ -39,7 +41,7 @@ class BaseRouteName {
   static const voterRegistrationCheckPage = "/home/voterRegistrationCheckPage";
   static const pollingUnitLocatorPage = "/home/pollingUnitLocatorPage";
   static const votersGuidePage = "/home/votersGuidePage";
-    static const candidatesDetailsPage =
+  static const candidatesDetailsPage =
       "/home/candidatesSelectionPage/candidatesDetailsPage";
 }
 
@@ -47,7 +49,6 @@ class SubRouteName {
   static const stateOfOriginPage = "stateOfOriginPage";
   static const lgaPage = "lgaPage";
   static const candidatesSelectionPage = 'candidatesSelectionPage';
-  static const education = 'education';
   static const profile = 'profile';
   static const electionPreferencePage = "electionPreferencePage";
 
@@ -56,6 +57,8 @@ class SubRouteName {
   static const pollingUnitLocatorPage = "pollingUnitLocatorPage";
   static const candidatesDetailsPage = "candidatesDetailsPage";
   static const votersGuidePage = "votersGuidePage";
+  static const newsPage = "newsPage";
+  static const newsDetailPage = "newsDetailPage";
 }
 
 class AppRouter {
@@ -87,7 +90,7 @@ class AppRouter {
           //! State of Origin
           GoRoute(
             routes: [
-              //! LGA page
+              // ! LGA of registeration
               GoRoute(
                 routes: [
                   //! Election Preference
@@ -104,13 +107,14 @@ class AppRouter {
                 ],
                 parentNavigatorKey: _rootNavigationKey,
                 pageBuilder: (context, state) {
+                  final stateItemSelected = state.extra as String?;
                   return customTransitionPage(
                     pageKey: state.pageKey,
-                    child: const LGAscreen(),
+                    child: LGAscreen(stateItemSelected: stateItemSelected ?? ''),
                   );
                 },
                 path: SubRouteName.lgaPage,
-              ),
+              )
             ],
             parentNavigatorKey: _rootNavigationKey,
             pageBuilder: (context, state) {
@@ -176,9 +180,9 @@ class AppRouter {
                   );
                 },
               ),
-              //! Education
+              //! News Page
               GoRoute(
-                path: SubRouteName.education,
+                path: SubRouteName.newsPage,
                 parentNavigatorKey: _shellNavidationKey,
                 pageBuilder: (context, state) {
                   if (kDebugMode) {
@@ -186,7 +190,7 @@ class AppRouter {
                   }
                   return customTransitionPage(
                     pageKey: state.pageKey,
-                    child: const EducationPage(),
+                    child: const NewsPage(),
                   );
                 },
               ),
@@ -265,7 +269,7 @@ class AppRouter {
           );
         },
         path: BaseRouteName.votersGuidePage,
-      ),//! Candidate's Details
+      ), //! Candidate's Details
       GoRoute(
         parentNavigatorKey: _rootNavigationKey,
         pageBuilder: (context, state) {
@@ -275,6 +279,16 @@ class AppRouter {
           );
         },
         path: BaseRouteName.candidatesDetailsPage,
+      ),
+      //! News Details
+      GoRoute(
+        parentNavigatorKey: _rootNavigationKey,
+        builder: (context, state) {
+          // Access the passed argument
+          final newsItem = state.extra as NewsItem;
+          return NewsDetailPage(newsItem: newsItem);
+        },
+        path: BaseRouteName.newsDetailPage,
       ),
     ],
   );

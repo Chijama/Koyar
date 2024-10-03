@@ -61,7 +61,7 @@ class CandidateDetailsPage extends StatelessWidget {
                       softWrap: true,
                       style: getNormalZodiak(
                         textColor: AppColors.appWhite,
-                        fontsize: state.isCollapsed ? 20 : 56,
+                        fontsize: state.isCollapsed ? 20 : 40,
                         fontweight: FontWeight.w500,
                       ),
                     ),
@@ -149,8 +149,7 @@ class CandidateDetailsPage extends StatelessWidget {
       ),
     );
   }
-
- }
+}
 
 Widget _buildInfoSection(String title, Map<String, dynamic> info) {
   return Column(
@@ -213,7 +212,7 @@ Widget _buildLinksSection(String title, List<dynamic> links) {
         title,
         style: getBlackZodiak(fontsize: 20, fontweight: FontWeight.w500),
       ),
-       const SizedBox(height: 5),
+      const SizedBox(height: 5),
       Divider(
         color: AppColors.appDividerLineLightGray,
       ),

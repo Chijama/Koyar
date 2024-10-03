@@ -37,7 +37,7 @@ class NINPage extends StatelessWidget {
                           'YOUR NIN?',
                           textAlign: TextAlign.center,
                           style: getBlackZodiak(
-                            fontsize: 36,
+                            fontsize: 32,
                           ),
                         ),
                       ),
