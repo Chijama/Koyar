@@ -7,14 +7,14 @@ environment:
   sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
-  bloc: null
-  dartz: null
-  dio: null
+  bloc: 
+  dartz: 
+  dio:
   dropdown_search: ^6.0.1
   firebase_core: null
   firebase_database: ^11.1.4
   firebase_messaging: null
-  flutter:
+   flutter:
     sdk: flutter
   flutter_animate: ^4.5.0
   flutter_bloc: null
