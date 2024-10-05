@@ -232,9 +232,12 @@ class AppRouter {
       GoRoute(
         parentNavigatorKey: _rootNavigationKey,
         pageBuilder: (context, state) {
+          final candidates = state.extra as List<CandidateModel>;
+          final selectedCandidates = state.extra as List<CandidateModel>;
+          final subCategory = state.extra as String;
           return customTransitionPage(
             pageKey: state.pageKey,
-            child: const CandidatesComparisonPage(),
+            child:   CandidatesComparisonPage(candidates: candidates,subCategory: subCategory,selectedCandidates: selectedCandidates,),
           );
         },
         path: BaseRouteName.candidatesComparisonPage,

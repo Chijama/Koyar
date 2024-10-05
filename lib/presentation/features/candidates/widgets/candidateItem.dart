@@ -35,6 +35,7 @@ class CandidateItem extends StatelessWidget {
           if (selectionMode) {
             onTap(index);
           } else {
+            
             context.push(BaseRouteName.candidatesDetailsPage,
                 extra: candidateData);
           }

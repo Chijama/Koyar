@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:koyar/presentation/common/appBar.dart';
+import 'package:koyar/presentation/features/candidates/models/candidateModel.dart';
 import 'package:koyar/presentation/features/candidatesDetails/widgets/buildSection.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
 import 'package:koyar/presentation/manager/styleManager.dart';
 
 class CandidatesComparisonPage extends StatelessWidget {
-  const CandidatesComparisonPage({super.key});
-
+  const CandidatesComparisonPage({super.key, required this.candidates, required this.subCategory, required this.selectedCandidates});
+  final List<CandidateModel> candidates;
+  final List<CandidateModel> selectedCandidates;
+  final String subCategory;
   @override
   Widget build(BuildContext context) {
     String? dropDownValue = 'Buhar';
@@ -27,7 +30,7 @@ class CandidatesComparisonPage extends StatelessWidget {
                     child: Semantics(
                       label: 'Select first candidate',
                       child: DropdownButton<String>(
-                        value: dropDownValue,
+                        value: candidates[0].candidate,
                         items: [
                           'Buhar',
                           'Buhari',

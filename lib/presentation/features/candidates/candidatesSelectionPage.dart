@@ -74,10 +74,17 @@ class _CandidateSelectionPageState extends State<CandidateSelectionPage>
             // selectedCandidates.add(/* Fetch CandidateModel for category and index i */);
           }
         }
-      });
-      context.push(BaseRouteName.candidatesComparisonPage, extra: selectedCandidates);
+      }); 
+  //final args = {
+  //   'candidates': candidates,
+  //   'selectedCandidates': selectedCandidates,
+  //   'subCategory': subCategory,
+  // };
+      context.push(BaseRouteName.candidatesComparisonPage,
+          extra: selectedCandidates);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -174,7 +181,7 @@ class _CandidateSelectionPageState extends State<CandidateSelectionPage>
               bottom: 10,
               child: Container(
                 width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.all(22),
+                padding: const EdgeInsets.all(14),
                 alignment: Alignment.center,
                 color: AppColors.appLinkBlue.withOpacity(0.85),
                 child: Semantics(
