@@ -45,6 +45,19 @@ class FirebaseDatabaseService {
     }
   }
 
+  Future<Map<String, dynamic>> getVotersGuide() async {
+    try {
+      DataSnapshot snapshot = await _dbRef.child('Voting Guide').get();
+      if (snapshot.value != null) {
+        return Map<String, dynamic>.from(
+            snapshot.value as Map<Object?, Object?>);
+      }
+      return {};
+    } catch (error) {
+      debugPrint('Failed to get Voters guide: $error');
+      return {}; // Return an empty map in case of error
+    }
+  }
   // Function to fetch presidential candidates from the database
 
   Future<List<CandidateModel>> fetchPresidentialCandidates() async {

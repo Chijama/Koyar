@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:koyar/presentation/common/appBar.dart';
 import 'package:koyar/presentation/common/customTextField.dart';
 import 'package:koyar/presentation/features/news/models/newsModel.dart';
-import 'package:koyar/presentation/features/news/newsModel.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
 import 'package:koyar/presentation/manager/routeManager.dart';
 import 'package:koyar/presentation/manager/styleManager.dart';
@@ -24,11 +23,11 @@ class NewsPage extends StatelessWidget {
               .fetchArticles(), // Call the fetch function
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(child: Text('No news available'));
+              return const Center(child: Text('No news available'));
             } else {
               final newsItems = snapshot.data!;
               return Column(

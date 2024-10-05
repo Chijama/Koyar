@@ -5,7 +5,9 @@ import 'package:koyar/presentation/manager/styleManager.dart';
 
 class CompareSection extends StatelessWidget {
   const CompareSection({
-    super.key, required this.title, required this.rows,
+    super.key,
+    required this.title,
+    required this.rows,
   });
   final String title;
   final List<List<String?>> rows;
@@ -58,6 +60,7 @@ class CompareSection extends StatelessWidget {
                 ],
               ),
             )),
+        const SizedBox(height: 15)
       ],
     );
   }

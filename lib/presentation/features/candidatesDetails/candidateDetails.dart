@@ -22,6 +22,7 @@ class CandidateDetailsPage extends StatelessWidget {
             controller: scrollCubit.scrollController,
             slivers: [
               SliverAppBar(
+                automaticallyImplyLeading: true,
                 expandedHeight: scrollCubit.expandedBarHeight,
                 collapsedHeight: scrollCubit.collapsedBarHeight,
                 floating: false,
@@ -93,6 +94,7 @@ class CandidateDetailsPage extends StatelessWidget {
                             candidateData.candidateInfo.qualification,
                         'Occupation': candidateData.candidateInfo.occupation,
                       }),
+                      _buildTextSection('Party', candidateData.party),
                       _buildInfoSection('Deputy Information', {
                         'Name': candidateData.deputyInfo.name,
                         'Age': candidateData.deputyInfo.age,

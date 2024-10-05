@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int daysTillNextElection = 5;
+  int daysTillNextElection = 42;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

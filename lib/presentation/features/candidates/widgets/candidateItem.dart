@@ -6,68 +6,55 @@ import 'package:koyar/presentation/manager/colorManager.dart';
 import 'package:koyar/presentation/manager/routeManager.dart';
 
 class CandidateItem extends StatelessWidget {
-  final List<bool> selectedCandidates;
+  final bool selected;
   final bool selectionMode;
-  final void Function(int) onTap;
-  final int index;
+  final void Function() onTap;
   final CandidateModel candidateData;
 
   const CandidateItem({
-    Key? key,
-    required this.selectedCandidates,
+    super.key,
+    required this.selected,
     required this.selectionMode,
     required this.onTap,
-    required this.index,
     required this.candidateData,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    bool isSelected =
-        selectedCandidates.length > index && selectedCandidates[index];
-
-    return Semantics(
-      label: isSelected
-          ? "Candidate ${candidateData.candidate} selected. Tap to deselect."
-          : "Candidate ${candidateData.candidate}, tap to ${selectionMode ? 'select' : 'view profile'}.",
-      child: GestureDetector(
-        onTap: () {
-          if (selectionMode) {
-            onTap(index);
-          } else {
-            
+    return Stack(
+      children: [
+        GestureDetector(
+          onTap: () {
             context.push(BaseRouteName.candidatesDetailsPage,
                 extra: candidateData);
-          }
-        },
-        child: Stack(
-          children: [
-            ProfileImageOverlay(
-              imagePath: candidateData.headshots,
-              name: candidateData.candidate,
-              title: candidateData.candidateInfo.qualification,
-            ),
-            if (selectionMode)
-              Positioned(
-                top: 8,
-                right: 8,
-                child: Container(
-                  width: 24,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color:
-                        isSelected ? AppColors.appLinkBlue : AppColors.appWhite,
-                    border: Border.all(color: Colors.black),
-                  ),
-                  child: isSelected
-                      ? Icon(Icons.check, color: AppColors.appWhite, size: 18)
-                      : null,
-                ),
-              ),
-          ],
+          },
+          child: ProfileImageOverlay(
+            imagePath: candidateData.headshots,
+            name: candidateData.candidate,
+            title: candidateData.candidateInfo.qualification,
+          ),
         ),
-      ),
+        if (selectionMode)
+          Positioned(
+            top: 8,
+            right: 8,
+            child: GestureDetector(
+              onTap: onTap,
+              child: Container(
+                width: 24,
+                height: 24,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: selected ? AppColors.appLinkBlue : AppColors.appWhite,
+                  border: Border.all(color: Colors.black),
+                ),
+                child: selected
+                    ? Icon(Icons.check, color: AppColors.appWhite, size: 18)
+                    : null,
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

@@ -29,6 +29,8 @@ dependencies:
   meta: ^1.15.0
   nigerian_states_and_lga: ^1.0.0
   retrofit: null
+  url_launcher: ^6.3.0
+  uuid: ^4.5.1
 
 dev_dependencies:
   build_runner: null

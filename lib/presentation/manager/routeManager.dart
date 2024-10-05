@@ -115,7 +115,8 @@ class AppRouter {
                   final stateItemSelected = state.extra as String?;
                   return customTransitionPage(
                     pageKey: state.pageKey,
-                    child: LGAscreen(stateItemSelected: stateItemSelected ?? ''),
+                    child:
+                        LGAscreen(stateItemSelected: stateItemSelected ?? ''),
                   );
                 },
                 path: SubRouteName.lgaPage,
@@ -233,11 +234,12 @@ class AppRouter {
         parentNavigatorKey: _rootNavigationKey,
         pageBuilder: (context, state) {
           final candidates = state.extra as List<CandidateModel>;
-          final selectedCandidates = state.extra as List<CandidateModel>;
-          final subCategory = state.extra as String;
+
           return customTransitionPage(
             pageKey: state.pageKey,
-            child:   CandidatesComparisonPage(candidates: candidates,subCategory: subCategory,selectedCandidates: selectedCandidates,),
+            child: CandidatesComparisonPage(
+              candidates: candidates,
+            ),
           );
         },
         path: BaseRouteName.candidatesComparisonPage,
@@ -255,7 +257,7 @@ class AppRouter {
             child: const VoterRegistrationCheckPage(),
           );
         },
-      ),//! Voter Registeration Check
+      ), //! Voter Registeration Check
       GoRoute(
         path: BaseRouteName.electionTimelinePage,
         parentNavigatorKey: _rootNavigationKey,
@@ -297,7 +299,9 @@ class AppRouter {
           final candidate = state.extra as CandidateModel;
           return customTransitionPage(
             pageKey: state.pageKey,
-            child:  CandidateDetailsPage(candidateData: candidate,),
+            child: CandidateDetailsPage(
+              candidateData: candidate,
+            ),
           );
         },
         path: BaseRouteName.candidatesDetailsPage,

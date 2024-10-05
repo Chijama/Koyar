@@ -1,5 +1,10 @@
-// lib/presentation/features/candidates/models/candidateModel.dart
+import 'package:uuid/uuid.dart';
+
+// Create a UUID generator
+final Uuid uuid = Uuid();
+
 class CandidateModel {
+  final String id;
   final String candidate;
   final String expectedPolicies;
   final String headshots;
@@ -12,6 +17,7 @@ class CandidateModel {
   final bool isFakePicture;
 
   CandidateModel({
+    String? id,
     required this.candidate,
     required this.expectedPolicies,
     required this.headshots,
@@ -22,10 +28,11 @@ class CandidateModel {
     required this.candidateInfo,
     required this.deputyInfo,
     required this.isFakePicture,
-  });
+  }) : id = id ?? uuid.v4();
 
   factory CandidateModel.fromJson(Map<String, dynamic> json) {
     return CandidateModel(
+      id: json['id'] ?? uuid.v4(), // Generate ID if not in JSON
       candidate: json['Candidate'] ?? '',
       expectedPolicies: json['Expected Policies'] ?? '',
       headshots: json['Headshots'] ?? '',
@@ -35,7 +42,8 @@ class CandidateModel {
       usefulLinks: json['Useful Links'] ?? '',
       candidateInfo: CandidateInfo.fromJson(json['candidateInfo']),
       deputyInfo: DeputyInfo.fromJson(json['deputyinfo']),
-      isFakePicture: json['isFakePicture'] == 'Yes', // assuming isFakePicture is a string
+      isFakePicture:
+          json['isFakePicture'] == 'Yes', // assuming isFakePicture is a string
     );
   }
 }

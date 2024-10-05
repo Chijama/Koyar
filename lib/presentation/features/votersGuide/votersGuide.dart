@@ -1,13 +1,18 @@
-import "package:flutter/material.dart";
-import "package:koyar/presentation/common/appBar.dart";
-import "package:koyar/presentation/manager/colorManager.dart";
-import "package:koyar/presentation/manager/styleManager.dart";
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:koyar/presentation/common/appBar.dart';
+import 'package:koyar/presentation/manager/colorManager.dart';
+import 'package:koyar/presentation/manager/styleManager.dart';
+import 'package:koyar/presentation/service/firebaseDatabaseService.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class VotingGuidePage extends StatelessWidget {
   const VotingGuidePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseDatabaseService dataService = FirebaseDatabaseService();
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -33,14 +38,45 @@ class VotingGuidePage extends StatelessWidget {
               unselectedLabelColor: Colors.grey,
               indicatorColor: AppColors.appLinkBlue,
             ),
-            const Expanded(
-              child: TabBarView(
-                children: [
-                  NewVoterGuide(),
-                  ReturningVoterGuide(),
-                ],
-              ),
-            ),
+            FutureBuilder<Map<String, dynamic>>(
+                future: dataService.getVotersGuide(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return const Center(child: Text("Error fetching data"));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(child: Text("No data available"));
+                  }
+                  debugPrint("Voter's guide data ${snapshot.data}");
+                  debugPrint("Voter's guide data ${snapshot.data}");
+                  // Process the data from Firebase
+                  final data = snapshot.data!;
+                  final entries = data.entries
+                      .map((e) => Map<String, dynamic>.from(e.value))
+                      .toList();
+
+                  // Separate data based on Category
+                  final newVoterData = entries
+                      .where((entry) => entry['Category'] == 'New Voters')
+                      .toList();
+
+                  final returningVoterData = entries
+                      .where((entry) => entry['Category'] == 'Returning Voters')
+                      .toList();
+                  debugPrint("new Voter's guide data ${newVoterData}");
+                  debugPrint(
+                      "returning Voter's guide data ${returningVoterData}");
+
+                  return Expanded(
+                    child: TabBarView(
+                      children: [
+                        VoterGuideList(data: newVoterData),
+                        VoterGuideList(data: returningVoterData),
+                      ],
+                    ),
+                  );
+                })
           ],
         ),
       ),
@@ -48,8 +84,10 @@ class VotingGuidePage extends StatelessWidget {
   }
 }
 
-class NewVoterGuide extends StatelessWidget {
-  const NewVoterGuide({super.key});
+class VoterGuideList extends StatelessWidget {
+  const VoterGuideList({super.key, required this.data});
+
+  final List<Map<String, dynamic>> data;
 
   @override
   Widget build(BuildContext context) {
@@ -61,43 +99,16 @@ class NewVoterGuide extends StatelessWidget {
           endIndent: 20,
         );
       },
+      itemCount: data.length,
       itemBuilder: (context, index) {
+        final guide = data[index];
         return VotersGuideWidget(
-          index: index,
+          title: guide['Title'],
+          url: guide['Link'],
+          content: guide['Content'],
+          initiallyExpanded: index == 0,
         );
       },
-      itemCount: 8,
-      // const ExpansionTile(
-      //     title: Text("Collect Your Permanent Voter's Card (PVC)")),
-      // const ExpansionTile(title: Text("Know Your Polling Unit")),
-      // const ExpansionTile(title: Text("Election Day Preparation")),
-    );
-  }
-}
-
-class ReturningVoterGuide extends StatelessWidget {
-  const ReturningVoterGuide({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.separated(
-      separatorBuilder: (context, index) {
-        return Divider(
-          color: AppColors.appDividerLineLightGray,
-          indent: 20,
-          endIndent: 20,
-        );
-      },
-      itemBuilder: (context, index) {
-        return VotersGuideWidget(
-          index: index,
-        );
-      },
-      itemCount: 8,
-      // const ExpansionTile(
-      //     title: Text("Collect Your Permanent Voter's Card (PVC)")),
-      // const ExpansionTile(title: Text("Know Your Polling Unit")),
-      // const ExpansionTile(title: Text("Election Day Preparation")),
     );
   }
 }
@@ -105,22 +116,29 @@ class ReturningVoterGuide extends StatelessWidget {
 class VotersGuideWidget extends StatelessWidget {
   const VotersGuideWidget({
     super.key,
-    required this.index,
+    required this.title,
+    required this.content,
+    this.initiallyExpanded = false,
+    required this.url,
   });
-  final int index;
+
+  final String title;
+  final String content;
+  final bool initiallyExpanded;
+  final String url;
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
       shape: const Border(),
       tilePadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 16),
       title: Text(
-        "Register to Vote",
+        title,
         style: getPlusJakartaSans(
             textColor: AppColors.appBlack,
             fontsize: 17,
             fontweight: FontWeight.w500),
       ),
-      initiallyExpanded: index == 0 ? true : false,
+      initiallyExpanded: initiallyExpanded,
       children: [
         Padding(
           padding: const EdgeInsets.all(16.0),
@@ -130,20 +148,32 @@ class VotersGuideWidget extends StatelessWidget {
                 border: Border.all(color: AppColors.appBlack.withOpacity(0.2)),
                 borderRadius: const BorderRadius.all(Radius.circular(4)),
                 color: AppColors.appMainBackgroundOffWhite),
-            child: const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                    "Visit the nearest INEC (Independent National Electoral Commission) office to register."),
-                SizedBox(height: 8),
-                Text(
-                    "Ensure you bring a valid means of identification (National ID, passport, or driver's license). You will be issued a Temporary Voter's Card (TVC)."),
-                SizedBox(height: 8),
-                Text(
-                  "Not sure how to register? Watch this step-by-step video tutorial on how to register with INEC",
-                  style: TextStyle(color: Colors.blue),
-                ),
-              ],
+            child: RichText(
+              textAlign: TextAlign.left,
+              text: TextSpan(
+                text: content,
+                style:
+                    getBlackZodiak(fontsize: 13, fontweight: FontWeight.w400),
+                children: [
+                  TextSpan(
+                    text: " Click here to learn more",
+                    style: getNormalZodiak(
+                        textColor: AppColors.appLinkBlue,
+                        fontsize: 14,
+                        fontweight: FontWeight.w600),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () async {
+                        final Uri _url = Uri.parse(url);
+
+                        if (await canLaunchUrl(_url)) {
+                          await launchUrl(_url);
+                        } else {
+                          throw 'Could not launch $url';
+                        }
+                      },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -151,40 +181,3 @@ class VotersGuideWidget extends StatelessWidget {
     );
   }
 }
-
-// class ReturningVoterGuide extends StatelessWidget {
-//   const ReturningVoterGuide({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return ListView(
-//       children: const [
-//         ExpansionTile(
-//           title: Text("Ensure Your PVC is Valid and Accessible"),
-//           initiallyExpanded: true,
-//           children: [
-//             Padding(
-//               padding: EdgeInsets.all(16.0),
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   Text(
-//                       "Make sure you know where your PVC is ahead of the election. If it's lost, check with INEC for replacement procedures before the election."),
-//                   SizedBox(height: 8),
-//                   Text(
-//                     "Need help replacing a lost PVC? Watch this tutorial video for guidance.",
-//                     style: TextStyle(color: Colors.blue),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//         ExpansionTile(title: Text("Verify Your Polling Unit")),
-//         ExpansionTile(title: Text("Know the Election Schedule")),
-//         ExpansionTile(title: Text("On Election Day")),
-//         ExpansionTile(title: Text("Observe Electoral Safety")),
-//       ],
-//     );
-//   }
-// }

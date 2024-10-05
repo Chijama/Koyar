@@ -18,7 +18,7 @@ class CandidateSelectionPage extends StatefulWidget {
 class _CandidateSelectionPageState extends State<CandidateSelectionPage>
     with SingleTickerProviderStateMixin {
   bool _selectionMode = false;
-  Map<String, List<bool>> _selectedCandidates = {
+  final Map<String, List<CandidateModel>> _selectedCandidates = {
     'Federal': [],
     'State': [],
     'Local': [],
@@ -48,14 +48,15 @@ class _CandidateSelectionPageState extends State<CandidateSelectionPage>
     });
   }
 
-  void _toggleCandidate(String category, int index) {
+  void _toggleCandidate(String category, CandidateModel candidate) {
     if (_selectionMode) {
       setState(() {
-        if (_selectedCandidates[category]![index]) {
-          _selectedCandidates[category]![index] = false;
+        if (_selectedCandidates[category]!.any((c) => c.id == candidate.id)) {
+          _selectedCandidates[category]!
+              .removeWhere((c) => c.id == candidate.id);
           _selectedCount--;
         } else if (_selectedCount < 2) {
-          _selectedCandidates[category]![index] = true;
+          _selectedCandidates[category]!.add(candidate);
           _selectedCount++;
         }
       });
@@ -65,23 +66,18 @@ class _CandidateSelectionPageState extends State<CandidateSelectionPage>
   void _compareSelections() {
     if (_selectedCount == 2) {
       List<CandidateModel> selectedCandidates = [];
-      _selectedCandidates.forEach((category, selections) {
-        for (int i = 0; i < selections.length; i++) {
-          if (selections[i]) {
-            // Fetch the actual CandidateModel for the selected index
-            // This might require passing the candidates data to this page
-            // or fetching it again from the database
-            // selectedCandidates.add(/* Fetch CandidateModel for category and index i */);
-          }
-        }
-      }); 
-  //final args = {
-  //   'candidates': candidates,
-  //   'selectedCandidates': selectedCandidates,
-  //   'subCategory': subCategory,
-  // };
+      _selectedCandidates.forEach((category, candidates) {
+        selectedCandidates.addAll(candidates);
+      });
+
+      // Push to comparison page with selected candidates
       context.push(BaseRouteName.candidatesComparisonPage,
           extra: selectedCandidates);
+    } else {
+      // Show a message to select exactly 2 candidates
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select exactly 2 candidates.')),
+      );
     }
   }
 
@@ -95,7 +91,7 @@ class _CandidateSelectionPageState extends State<CandidateSelectionPage>
           TextButton(
             onPressed: _toggleSelectionMode,
             child: Text(
-              _selectionMode ? 'Cancel' : 'Select',
+              _selectionMode ? 'Cancel' : 'Compare',
               style: getPlusJakartaSans(
                   textColor:
                       _selectionMode ? Colors.red : AppColors.appLinkBlue),
@@ -154,21 +150,30 @@ class _CandidateSelectionPageState extends State<CandidateSelectionPage>
                     children: [
                       CandidatesWidget(
                         category: 'Federal',
-                        selectedCandidates: _selectedCandidates['Federal']!,
+                        selectedCandidates: _selectedCandidates['Federal']!
+                            .map((c) => c.id) // Use unique IDs
+                            .toList(),
                         selectionMode: _selectionMode,
-                        onTap: (index) => _toggleCandidate('Federal', index),
+                        onTap: (candidate) =>
+                            _toggleCandidate('Federal', candidate),
                       ),
                       CandidatesWidget(
                         category: 'State',
-                        selectedCandidates: _selectedCandidates['State']!,
+                        selectedCandidates: _selectedCandidates['State']!
+                            .map((c) => c.id)
+                            .toList(),
                         selectionMode: _selectionMode,
-                        onTap: (index) => _toggleCandidate('State', index),
+                        onTap: (candidate) =>
+                            _toggleCandidate('State', candidate),
                       ),
                       CandidatesWidget(
                         category: 'Local',
-                        selectedCandidates: _selectedCandidates['Local']!,
+                        selectedCandidates: _selectedCandidates['Local']!
+                            .map((c) => c.id)
+                            .toList(),
                         selectionMode: _selectionMode,
-                        onTap: (index) => _toggleCandidate('Local', index),
+                        onTap: (candidate) =>
+                            _toggleCandidate('Local', candidate),
                       ),
                     ],
                   ),

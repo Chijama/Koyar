@@ -1,6 +1,5 @@
 import "package:flutter/material.dart";
 import "package:koyar/presentation/features/news/models/newsModel.dart";
-import "package:koyar/presentation/features/news/newsModel.dart";
 import "package:koyar/presentation/manager/colorManager.dart";
 import "package:koyar/presentation/manager/styleManager.dart";
 

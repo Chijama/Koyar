@@ -7,24 +7,23 @@ import 'package:nigerian_states_and_lga/nigerian_states_and_lga.dart';
 
 class CandidatesWidget extends StatefulWidget {
   final String category;
-  final List<bool> selectedCandidates;
+  final List<String> selectedCandidates; // Compare by unique candidate IDs
   final bool selectionMode;
-  final void Function(int) onTap;
+  final void Function(CandidateModel) onTap; // Return full CandidateModel
 
   const CandidatesWidget({
-    Key? key,
+    super.key,
     required this.category,
     required this.selectedCandidates,
     required this.selectionMode,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
-  _CandidatesWidgetState createState() => _CandidatesWidgetState();
+  State<CandidatesWidget> createState() => _CandidatesWidgetState();
 }
 
 class _CandidatesWidgetState extends State<CandidatesWidget> {
-  late FirebaseDatabaseService _firebaseService;
   String _categorySelected = '';
   String _stateSelected = 'Ondo';
   String _lgaSelected = '';
@@ -34,7 +33,6 @@ class _CandidatesWidgetState extends State<CandidatesWidget> {
   @override
   void initState() {
     super.initState();
-    _firebaseService = FirebaseDatabaseService();
     _initializeCategories();
     if (widget.category == 'Local') {
       _updateLGAList(_stateSelected);
@@ -91,6 +89,7 @@ class _CandidatesWidgetState extends State<CandidatesWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        // Filter widgets here
         SizedBox(
           height: 50,
           child: ListView(
@@ -142,11 +141,11 @@ class _CandidatesWidgetState extends State<CandidatesWidget> {
             future: _fetchCandidates(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
                 return Center(child: Text('Error: ${snapshot.error}'));
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Center(child: Text('No candidates found.'));
+                return const Center(child: Text('No candidates found.'));
               }
 
               List<CandidateModel> candidates = snapshot.data!;
@@ -159,13 +158,15 @@ class _CandidatesWidgetState extends State<CandidatesWidget> {
                   mainAxisSpacing: 20,
                 ),
                 itemCount: candidates.length,
-                itemBuilder: (context, index) => CandidateItem(
-                  selectedCandidates: widget.selectedCandidates,
-                  selectionMode: widget.selectionMode,
-                  onTap: widget.onTap,
-                  index: index,
-                  candidateData: candidates[index],
-                ),
+                itemBuilder: (context, index) {
+                  CandidateModel candidate = candidates[index];
+                  return CandidateItem(
+                    selected: widget.selectedCandidates.contains(candidate.id),
+                    selectionMode: widget.selectionMode,
+                    onTap: () => widget.onTap(candidate), // Return full model
+                    candidateData: candidate,
+                  );
+                },
               );
             },
           ),

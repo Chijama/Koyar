@@ -3,16 +3,16 @@ import 'package:koyar/presentation/common/appBar.dart';
 import 'package:koyar/presentation/features/candidates/models/candidateModel.dart';
 import 'package:koyar/presentation/features/candidatesDetails/widgets/buildSection.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
-import 'package:koyar/presentation/manager/styleManager.dart';
 
 class CandidatesComparisonPage extends StatelessWidget {
-  const CandidatesComparisonPage({super.key, required this.candidates, required this.subCategory, required this.selectedCandidates});
+  const CandidatesComparisonPage({
+    super.key,
+    required this.candidates,
+  });
   final List<CandidateModel> candidates;
-  final List<CandidateModel> selectedCandidates;
-  final String subCategory;
+
   @override
   Widget build(BuildContext context) {
-    String? dropDownValue = 'Buhar';
     return Scaffold(
       appBar: const CustomAppBar(
           title: 'Compare Candidates',
@@ -24,125 +24,153 @@ class CandidatesComparisonPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Semantics(
-                      label: 'Select first candidate',
-                      child: DropdownButton<String>(
-                        value: candidates[0].candidate,
-                        items: [
-                          'Buhar',
-                          'Buhari',
-                          'Buharia',
-                          'Buhariasi',
-                          'Buhariasidu',
-                        ]
-                            .map<DropdownMenuItem<String>>(
-                                (String value) => DropdownMenuItem<String>(
-                                      value:
-                                          value, // add this property an pass the _value to it
-                                      child: Text(
-                                        value,
-                                        style: getBlackZodiak(
-                                            fontsize: 12,
-                                            fontweight: FontWeight.w500),
-                                      ),
-                                    ))
-                            .toList(),
-                        onChanged: (_) {},
-                        isExpanded: true,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Semantics(
-                      label: 'Select second candidate',
-                      child: DropdownButton<String>(
-                        value: dropDownValue,
-                        items: [
-                          'Buhar',
-                          'Buhari',
-                          'Buharia',
-                          'Buhariasi',
-                          'Buhariasidu',
-                        ]
-                            .map<DropdownMenuItem<String>>(
-                                (String value) => DropdownMenuItem<String>(
-                                      value:
-                                          value, // add this property an pass the _value to it
-                                      child: Text(
-                                        value,
-                                        style: getBlackZodiak(
-                                            fontsize: 12,
-                                            fontweight: FontWeight.w500),
-                                      ),
-                                    ))
-                            .toList(),
-                        onChanged: (_) {},
-                        isExpanded: true,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              // Row(
+              //   children: [
+              //     Expanded(
+              //       child: Semantics(
+              //         label: candidates[0].candidate,
+              //         child: DropdownButton<String>(
+              //           value: dropDownValue,
+              //           items: [
+              //             'Buhar',
+              //             'Buhari',
+              //             'Buharia',
+              //             'Buhariasi',
+              //             'Buhariasidu',
+              //           ]
+              //               .map<DropdownMenuItem<String>>(
+              //                   (String value) => DropdownMenuItem<String>(
+              //                         value:
+              //                             value, // add this property an pass the _value to it
+              //                         child: Text(
+              //                           value,
+              //                           style: getBlackZodiak(
+              //                               fontsize: 12,
+              //                               fontweight: FontWeight.w500),
+              //                         ),
+              //                       ))
+              //               .toList(),
+              //           onChanged: null,
+              //           iconDisabledColor: Colors.grey,
+              //           isExpanded: true,
+              //         ),
+              //       ),
+              //     ),
+              //     const SizedBox(width: 16),
+              //     Expanded(
+              //       child: Semantics(
+              //         label: candidates[0].candidate,
+              //         child: DropdownButton<String>(
+              //           value: dropDownValue,
+              //           items: [
+              //             'Buhar',
+              //             'Buhari',
+              //             'Buharia',
+              //             'Buhariasi',
+              //             'Buhariasidu',
+              //           ]
+              //               .map<DropdownMenuItem<String>>(
+              //                   (String value) => DropdownMenuItem<String>(
+              //                         value:
+              //                             value, // add this property an pass the _value to it
+              //                         child: Text(
+              //                           value,
+              //                           style: getBlackZodiak(
+              //                               fontsize: 12,
+              //                               fontweight: FontWeight.w500),
+              //                         ),
+              //                       ))
+              //               .toList(),
+              //           onChanged: null,
+              //           isExpanded: true,
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
               const SizedBox(height: 16),
               Row(
                 children: [
                   Expanded(
-                    child: Container(
+                    child: SizedBox(
                       height: 150,
-                      color: Colors.grey[300],
+                      child: Image.network(
+                        candidates[0].headshots,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          color: Colors.grey,
+                          child:
+                              const Center(child: Text('Image not available')),
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
-                    child: Container(
+                    child: SizedBox(
                       height: 150,
-                      color: Colors.grey[300],
+                      child: Image.network(
+                        candidates[1].headshots,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          color: Colors.grey,
+                          child:
+                              const Center(child: Text('Image not available')),
+                        ),
+                      ),
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 24),
-              const CompareSection(title: 'Personal Information', rows: [
-                ['Jane Doe', 'John Smith'],
-                ['45', '52'],
-                ['Female', 'Male'],
-                ['Married', 'Single'],
+              CompareSection(title: 'Personal Information', rows: [
+                [candidates[0].candidate, candidates[1].candidate],
                 [
-                  'B.Sc. Economics, MPA Public\nAdministration',
-                  'B.A. Political Science, PhD\nInternational Relations'
+                  candidates[0].candidateInfo.age.toString(),
+                  candidates[1].candidateInfo.age.toString()
+                ],
+                [
+                  candidates[0].candidateInfo.gender,
+                  candidates[1].candidateInfo.gender
+                ],
+                [
+                  candidates[0].candidateInfo.occupation,
+                  candidates[1].candidateInfo.occupation
+                ],
+                [
+                  candidates[0].candidateInfo.qualification,
+                  candidates[1].candidateInfo.qualification,
                 ],
               ]),
-              const SizedBox(height: 24),
-              const CompareSection(title: 'Deputy Information', rows: [
+              CompareSection(title: 'Deputy Information', rows: [
+                [candidates[0].deputyInfo.name, candidates[1].deputyInfo.name],
                 [
-                  "He had a long-standing military career before rising to the role of CSO. His career involved serving in various capacities in the Nigerian Army, including intelligence and surveillance roles, where he earned a reputation for his loyalty to the leadership. Al-Mustapha’s career has been mired in controversy, especially related to allegations of human rights abuses during his time with the Abacha regime. Although he was acquitted of the charges in 2013",
-                  "He had a long-standing military career before rising to the role of CSO. His career involved serving in various capacities in the Nigerian Army, including intelligence and surveillance roles, where he earned a reputation for his loyalty to the leadership. Al-Mustapha’s career has been mired in controversy, especially related to allegations of human rights abuses during his time with the Abacha regime. Although he was acquitted of the charges in 2013"
-                ]
+                  candidates[0].deputyInfo.age.toString(),
+                  candidates[1].deputyInfo.age.toString()
+                ],
+                [
+                  candidates[0].deputyInfo.gender,
+                  candidates[1].deputyInfo.gender
+                ],
+                [
+                  candidates[0].deputyInfo.qualification,
+                  candidates[1].deputyInfo.qualification,
+                ],
               ]),
-              const CompareSection(title: 'Political Party', rows: [[]]),
-              const CompareSection(title: 'Profile Overview', rows: [[]]),
-              const CompareSection(title: 'Achievements', rows: [[]]),
-              const CompareSection(title: 'Expected Policies', rows: [[]]),
-              const CompareSection(title: 'Notable Fact', rows: [[]]),
-              const CompareSection(title: 'Useful links', rows: [[]]),
-              const CompareSection(title: 'Political Ideology', rows: [
-                [
-                  'Economist, Public Policy\nConsultant',
-                  'Lawyer, Former UN Diplomat'
-                ],
-                [
-                  'Progressive National Party\n(PNP)',
-                  'Unity for All Party (UAP)'
-                ],
-                [
-                  'Progressive National Party\n(PNP)',
-                  'Unity for All Party (UAP)'
-                ],
-                ['Social Democracy', 'Centrist Liberalism'],
+              CompareSection(title: 'Political Party', rows: [
+                [candidates[0].party, candidates[1].party]
+              ]),
+              CompareSection(title: 'Profile Overview', rows: [
+                [candidates[0].profileOverview, candidates[1].profileOverview]
+              ]),
+              CompareSection(title: 'Expected Policies', rows: [
+                [candidates[0].expectedPolicies, candidates[1].expectedPolicies]
+              ]),
+              CompareSection(title: 'Notable Fact', rows: [
+                [candidates[0].noteableFacts, candidates[1].noteableFacts]
+              ]),
+              CompareSection(title: 'Useful links', rows: [
+                [candidates[0].usefulLinks, candidates[1].usefulLinks]
               ]),
             ],
           ),

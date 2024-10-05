@@ -40,38 +40,4 @@ class FirebaseNotficationService {
     FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
   }
 }
-
-class RealtimeDatabase {
-  /// static method for write operation
-  static void write({
-    required String nin,
-    required Map<String, dynamic> data,
-  }) async {
-    try {
-      DatabaseReference databaseReference =
-          FirebaseDatabase.instance.ref("NIN/$nin");
-
-      await databaseReference.set(data);
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  /// static method for red operation
-  static Future<String> read({required String userId}) async {
-    try {
-      DatabaseReference databaseReference =
-          FirebaseDatabase.instance.ref("users/$userId");
-      final snapshot = await databaseReference.get();
-      if (snapshot.exists) {
-        Map<String, dynamic> snapshotValue =
-            Map<String, dynamic>.from(snapshot.value as Map);
-        return snapshotValue['name'] ?? '';
-      } else {
-        return '';
-      }
-    } catch (e) {
-      rethrow;
-    }
-  }
-}
+ 
