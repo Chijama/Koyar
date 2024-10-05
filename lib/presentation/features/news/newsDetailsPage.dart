@@ -1,10 +1,11 @@
 import "package:flutter/material.dart";
+import "package:koyar/presentation/features/news/models/newsModel.dart";
 import "package:koyar/presentation/features/news/newsModel.dart";
 import "package:koyar/presentation/manager/colorManager.dart";
 import "package:koyar/presentation/manager/styleManager.dart";
 
 class NewsDetailPage extends StatelessWidget {
-  final NewsItem newsItem;
+  final NewsModel newsItem;
 
   const NewsDetailPage({super.key, required this.newsItem});
 
@@ -22,10 +23,10 @@ class NewsDetailPage extends StatelessWidget {
             backgroundColor: AppColors.appBackgroundColor,
             flexibleSpace: FlexibleSpaceBar(
               title: const Text(""),
-              background: Hero(  
+              background: Hero(
                 tag: newsItem.title,
                 child: Image.network(
-                  newsItem.imageUrl,
+                  newsItem.image,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
                     return Container(
@@ -58,6 +59,7 @@ class NewsDetailPage extends StatelessWidget {
                   Wrap(
                     spacing: 8,
                     children: newsItem.tags
+                        .split(",")
                         .map((tag) => Chip(
                               label: Text(
                                 tag,

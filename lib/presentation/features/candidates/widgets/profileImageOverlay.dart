@@ -5,14 +5,14 @@ import 'package:koyar/presentation/manager/colorManager.dart';
 import 'package:koyar/presentation/manager/styleManager.dart';
 
 class ProfileImageOverlay extends StatelessWidget {
-  final String imagePath;
-  final String name;
-  final String title;
+  final String? imagePath;
+  final String? name;
+  final String? title;
 
   const ProfileImageOverlay({
     super.key,
     required this.imagePath,
-    required this.name,
+    required this.name ,
     required this.title,
   });
 
@@ -24,7 +24,7 @@ class ProfileImageOverlay extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.purple,
         image: DecorationImage(
-          image: AssetImage(imagePath),
+          image: Image.network(imagePath??"").image,
           fit: BoxFit.cover,
         ),
       ),
@@ -46,13 +46,13 @@ class ProfileImageOverlay extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(name,
+                        Text(name?? "Jane Doe",overflow: TextOverflow.ellipsis,
                             style: getNormalZodiak(
                                 textColor: AppColors.appWhite,
                                 fontsize: 14,
                                 fontweight: FontWeight.w500)),
                         const SizedBox(height: 4),
-                        Text(title,
+                        Text(title ?? "",overflow: TextOverflow.ellipsis,
                             style: getPlusJakartaSans(
                                 textColor: AppColors.appWhite,
                                 fontsize: 10,

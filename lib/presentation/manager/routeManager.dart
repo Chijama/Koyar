@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import '../features/auth/signup/pages/ninPage.dart';
+import 'package:koyar/presentation/features/electionTimeline/electionTimelinePage.dart';
+import 'package:koyar/presentation/features/news/models/newsModel.dart';
+import '../features/auth/pages/ninPage.dart';
 import '../features/candidatesDetails/candidateDetails.dart';
 import '../features/candidatesDetails/candidatesComparisonPage.dart';
 import '../features/candidates/candidatesSelectionPage.dart';
@@ -14,9 +16,9 @@ import '../features/pollingUnitLocator/pollingUnitLocator.dart';
 import '../features/voterRegisterationCheck/voterRegistrationCheckPage.dart';
 import '../features/votersGuide/votersGuide.dart';
 import '../common/cutomePageTransition.dart';
-import '../features/auth/signup/pages/electionPreference.dart';
-import '../features/auth/signup/pages/lga.dart';
-import '../features/auth/signup/pages/stateOfOrigin.dart';
+import '../features/auth/pages/electionPreference.dart';
+import '../features/auth/pages/lga.dart';
+import '../features/auth/pages/stateOfOrigin.dart';
 import '../features/getStarted/getStarted.dart';
 import '../features/mainPages/home/homePage.dart';
 import '../features/splash.dart';
@@ -39,6 +41,7 @@ class BaseRouteName {
   static const candidatesComparisonPage =
       "/home/candidatesSelectionPage/candidatesComparisonPage";
   static const voterRegistrationCheckPage = "/home/voterRegistrationCheckPage";
+  static const electionTimelinePage = "/home/electionTimelinePage";
   static const pollingUnitLocatorPage = "/home/pollingUnitLocatorPage";
   static const votersGuidePage = "/home/votersGuidePage";
   static const candidatesDetailsPage =
@@ -51,6 +54,7 @@ class SubRouteName {
   static const candidatesSelectionPage = 'candidatesSelectionPage';
   static const profile = 'profile';
   static const electionPreferencePage = "electionPreferencePage";
+  static const electionTimelinePage = "electionTimelinePage";
 
   static const candidatesComparisonPage = "candidatesComparisonPage";
   static const voterRegistrationCheckPage = "voterRegistrationCheckPage";
@@ -247,6 +251,19 @@ class AppRouter {
             child: const VoterRegistrationCheckPage(),
           );
         },
+      ),//! Voter Registeration Check
+      GoRoute(
+        path: BaseRouteName.electionTimelinePage,
+        parentNavigatorKey: _rootNavigationKey,
+        pageBuilder: (context, state) {
+          if (kDebugMode) {
+            debugPrint(state.fullPath);
+          }
+          return customTransitionPage(
+            pageKey: state.pageKey,
+            child: const ElectionTimelinePage(),
+          );
+        },
       ),
       //! Polling Unit Locator
       GoRoute(
@@ -285,7 +302,7 @@ class AppRouter {
         parentNavigatorKey: _rootNavigationKey,
         builder: (context, state) {
           // Access the passed argument
-          final newsItem = state.extra as NewsItem;
+          final newsItem = state.extra as NewsModel;
           return NewsDetailPage(newsItem: newsItem);
         },
         path: BaseRouteName.newsDetailPage,

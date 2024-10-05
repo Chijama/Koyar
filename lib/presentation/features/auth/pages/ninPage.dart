@@ -1,20 +1,24 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:koyar/presentation/common/appButton.dart';
 import 'package:koyar/presentation/common/bottomModals.dart';
+import 'package:koyar/presentation/cubit/user/user_cubit.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
 import 'package:koyar/presentation/manager/routeManager.dart';
 import 'package:koyar/presentation/manager/stringManager.dart';
 import 'package:koyar/presentation/manager/styleManager.dart';
 
-import '../../../../common/customTextField.dart';
+import '../../../common/customTextField.dart';
 
-class NINPage extends StatelessWidget {
+class NINPage extends HookWidget {
   const NINPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final ninController = useTextEditingController();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -49,7 +53,11 @@ class NINPage extends StatelessWidget {
                   Semantics(
                     textField: true,
                     label: "National Identification Number, 11-digit format",
-                    child: const CustomTextField(hintText: '0000-0000-000', keyboardType: TextInputType.number,),
+                    child: CustomTextField(
+                      hintText: '0000-0000-000',
+                      controller: ninController,
+                      keyboardType: TextInputType.number,
+                    ),
                   ),
                 ],
               ),
@@ -93,6 +101,9 @@ class NINPage extends StatelessWidget {
                 button: true,
                 child: KoyarButton(
                   onPressed: () {
+                    context
+                        .read<UserCubit>()
+                        .updateNin(ninController.value.text);
                     context.go(BaseRouteName.stateOfOriginPage);
                   },
                   buttonText: "Next",

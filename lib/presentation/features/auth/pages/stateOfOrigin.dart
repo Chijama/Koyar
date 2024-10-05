@@ -1,16 +1,18 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:koyar/presentation/cubit/user/user_cubit.dart';
  import 'package:koyar/presentation/features/auth/dropDownWidget.dart';
 import 'package:nigerian_states_and_lga/nigerian_states_and_lga.dart';
 
-import '../../../../common/appButton.dart';
-import '../../../../common/bottomModals.dart';
-import '../../../../manager/colorManager.dart';
-import '../../../../manager/routeManager.dart';
-import '../../../../manager/stringManager.dart';
-import '../../../../manager/styleManager.dart';
+import '../../../common/appButton.dart';
+import '../../../common/bottomModals.dart';
+import '../../../manager/colorManager.dart';
+import '../../../manager/routeManager.dart';
+import '../../../manager/stringManager.dart';
+import '../../../manager/styleManager.dart';
 
 class StateOfOriginScreen extends HookWidget {
   const StateOfOriginScreen({super.key});
@@ -96,6 +98,10 @@ class StateOfOriginScreen extends HookWidget {
                       onPressed: () {
                         debugPrint('####selected item ${stateItemSelected.value}');
                         if (stateItemSelected.value.isNotEmpty) {
+                                              context
+                        .read<UserCubit>()
+                        .updateNin(stateItemSelected.value );
+                    context.go(BaseRouteName.stateOfOriginPage);
                           context.go(BaseRouteName.lgaPage, extra: stateItemSelected.value);
                         }
                       },

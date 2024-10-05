@@ -1,62 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:koyar/presentation/features/candidates/models/candidateModel.dart';
 import 'package:koyar/presentation/features/candidates/widgets/profileImageOverlay.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
 import 'package:koyar/presentation/manager/routeManager.dart';
 
 class CandidateItem extends StatelessWidget {
+  final List<bool> selectedCandidates;
+  final bool selectionMode;
+  final void Function(int) onTap;
+  final int index;
+  final CandidateModel candidateData;
+
   const CandidateItem({
-    super.key,
+    Key? key,
     required this.selectedCandidates,
     required this.selectionMode,
     required this.onTap,
     required this.index,
-  });
-  final int index;
-  final List<bool> selectedCandidates;
-  final bool selectionMode;
-  final void Function(int p1) onTap;
+    required this.candidateData,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    bool isSelected = selectedCandidates.length > index && selectedCandidates[index];
+
     return Semantics(
-      label: selectedCandidates[index]
-          ? "Candidate ${index + 1} selected. Tap to deselect."
-          : "Candidate ${index + 1}, tap to ${selectionMode ? 'select' : 'view profile'}.",
-      child: Stack(
-        children: [
-          GestureDetector(
-            onTap: () {
-              context.push(BaseRouteName.candidatesDetailsPage);
-            },
-            child: const ProfileImageOverlay(
-              imagePath: 'assets/profile_image.jpg',
-              name: 'James Doe',
-              title: 'VP, Product and Concierge',
+      label: isSelected
+          ? "Candidate ${candidateData.candidate} selected. Tap to deselect."
+          : "Candidate ${candidateData.candidate}, tap to ${selectionMode ? 'select' : 'view profile'}.",
+      child: GestureDetector(
+        onTap: () {
+          if (selectionMode) {
+            onTap(index);
+          } else {
+            context.push(BaseRouteName.candidatesDetailsPage, extra: candidateData);
+          }
+        },
+        child: Stack(
+          children: [
+            ProfileImageOverlay(
+              imagePath: candidateData.headshots,
+              name: candidateData.candidate,
+              title: candidateData.candidateInfo.qualification,
             ),
-          ),
-          if (selectionMode)
-            Positioned(
-              top: 8,
-              right: 8,
-              child: InkWell(
-                onTap: () {
-                  onTap(index);
-                },
+            if (selectionMode)
+              Positioned(
+                top: 8,
+                right: 8,
                 child: Container(
                   width: 24,
                   height: 24,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: selectedCandidates[index]
-                        ? AppColors.appLinkBlue
-                        : AppColors.appWhite,
+                    color: isSelected ? AppColors.appLinkBlue : AppColors.appWhite,
                     border: Border.all(color: Colors.white),
                   ),
+                  child: isSelected
+                      ? Icon(Icons.check, color: AppColors.appWhite, size: 18)
+                      : null,
                 ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

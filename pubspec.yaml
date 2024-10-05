@@ -12,6 +12,7 @@ dependencies:
   dio: null
   dropdown_search: ^6.0.1
   firebase_core: null
+  firebase_database: ^11.1.4
   firebase_messaging: null
   flutter:
     sdk: flutter

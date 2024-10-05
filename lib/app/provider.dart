@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:koyar/app/dependencyInj.dart';
 import 'package:koyar/presentation/cubit/customDropdown/custom_dropdownsearch_cubit.dart';
 import 'package:koyar/presentation/cubit/sliverScroll/sliver_scroll_cubit.dart';
+import 'package:koyar/presentation/cubit/user/user_cubit.dart';
 
 import '../presentation/cubit/bottomNavigation/bottom_navigation_cubit.dart';
 
@@ -16,6 +17,8 @@ MultiBlocProvider blocProviders(
         create: (context) => injector<CustomDropdownsearchCubit>(),
       ),BlocProvider(
         create: (context) => injector<SliverScrollCubit >(),
+      ),BlocProvider(
+        create: (context) => injector<UserCubit>(),
       ),
     ],
     child: child,

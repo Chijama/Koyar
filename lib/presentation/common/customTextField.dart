@@ -11,13 +11,13 @@ class CustomTextField extends StatelessWidget {
   const CustomTextField({
     super.key,
     this.hintText,
-    this.keyboardType,
+    this.keyboardType, this.controller,
   });
   final String? hintText;
-  final TextInputType? keyboardType;
+  final TextInputType? keyboardType;final TextEditingController? controller;
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    return TextFormField( controller:controller ,
       keyboardType: keyboardType,
       cursorColor: AppColors.appBlack,
       onTapOutside: (event) {

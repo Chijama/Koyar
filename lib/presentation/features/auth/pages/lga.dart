@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:koyar/presentation/cubit/user/user_cubit.dart';
 import 'package:koyar/presentation/features/auth/dropDownWidget.dart';
 import 'package:nigerian_states_and_lga/nigerian_states_and_lga.dart';
 
-import '../../../../common/appButton.dart';
-import '../../../../manager/routeManager.dart';
-import '../../../../manager/styleManager.dart';
+import '../../../common/appButton.dart';
+import '../../../manager/routeManager.dart';
+import '../../../manager/styleManager.dart';
+
 class LGAscreen extends HookWidget {
   const LGAscreen({super.key, required this.stateItemSelected});
 
@@ -38,7 +41,8 @@ class LGAscreen extends HookWidget {
                       "LOCAL\nGOVERNMENT OF\nREGISTERATION",
                       textAlign: TextAlign.center,
                       style: getBlackZodiak(fontsize: 32),
-                      semanticsLabel: "What is your Local Government of Registration",
+                      semanticsLabel:
+                          "What is your Local Government of Registration",
                       softWrap: true,
                     ),
                   ),
@@ -46,7 +50,8 @@ class LGAscreen extends HookWidget {
                   if (stateItemSelected.isNotEmpty)
                     Semantics(
                       button: true,
-                      label: "Select Your Local Government of Registration here",
+                      label:
+                          "Select Your Local Government of Registration here",
                       child: DropDownWidget(
                         itemSelected: lgaItemSelected.value,
                         items: lgaList,
@@ -57,12 +62,12 @@ class LGAscreen extends HookWidget {
                           }
                         },
                       ),
-                    )
-                  else
-                    const Text(
-                      "No state selected. Please go back and select a state.",
-                      style: TextStyle(color: Colors.red),
                     ),
+                  // else
+                  //   const Text(
+                  //     "No state selected. Please go back and select a state.",
+                  //     style: TextStyle(color: Colors.red),
+                  //   ),
                   const SizedBox(height: 100),
                 ],
               ),
@@ -73,6 +78,10 @@ class LGAscreen extends HookWidget {
                     child: KoyarButton(
                       onPressed: () {
                         if (lgaItemSelected.value.isNotEmpty) {
+                                              context
+                        .read<UserCubit>()
+                        .updateNin(lgaItemSelected.value);
+                    context.go(BaseRouteName.stateOfOriginPage);
                           context.go(BaseRouteName.electionPreferencePage);
                         }
                       },

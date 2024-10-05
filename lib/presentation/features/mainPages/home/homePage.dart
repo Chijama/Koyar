@@ -50,9 +50,10 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Row(
                   children: [
-                    const HomePageItem(
-                      label: "Election Dates",
-                      asset: SvgAssetManager.electionDates,
+                      HomePageItem(
+                      label: "Election Timeline",
+                      asset: SvgAssetManager.electionDates,   onTap: () =>
+                            context.push(BaseRouteName.electionTimelinePage)
                     ),
                     const SizedBox(width: 15),
                     HomePageItem(

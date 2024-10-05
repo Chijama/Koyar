@@ -1,27 +1,82 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:koyar/presentation/common/appBar.dart';
+import 'package:koyar/presentation/manager/colorManager.dart';
+import 'package:koyar/presentation/manager/styleManager.dart';
+import 'package:koyar/presentation/service/firebaseDatabaseService.dart';
 
-class ElectionTimelinePage extends StatelessWidget {
+class ElectionTimelinePage extends StatefulWidget {
   const ElectionTimelinePage({super.key});
+
+  @override
+ State<ElectionTimelinePage> createState() => _ElectionTimelinePageState();
+}
+
+
+class _ElectionTimelinePageState extends State<ElectionTimelinePage> {
+  final FirebaseDatabaseService _dataService = FirebaseDatabaseService();
+  late PageController _pageController;
+  late DateTime _currentMonth;
+  final List<DateTime> _months = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _currentMonth = DateTime.now();
+    _initializeMonths();
+    _pageController = PageController(initialPage: 6); // Start at current month
+  }
+
+  void _initializeMonths() {
+    DateTime startMonth = DateTime(_currentMonth.year, _currentMonth.month - 6, 1);
+    for (int i = 0; i < 13; i++) {
+      _months.add(DateTime(startMonth.year, startMonth.month + i, 1));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Election Timeline'),
-        centerTitle: true,
+      backgroundColor: AppColors.appWhite,
+      appBar: const CustomAppBar(
+        title: 'Election Timeline',
+        semanticsLabel: '',
       ),
-      body: Column(
+      body: FutureBuilder<Map<String, dynamic>>(
+        future: _dataService.getElectionTimeline(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(child: Text('No timeline data available'));
+          } else {
+            return _buildTimelineContent(snapshot.data!);
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildTimelineContent(Map<String, dynamic> electionEvents) {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
         children: [
           _buildMonthSelector(),
           Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
-                _buildEventCard('Voter Registration Drive', DateTime(2024, 9, 30)),
-                const SizedBox(height: 16),
-                _buildEventCard('Candidate Forum', DateTime(2024, 9, 30)),
-              ],
+            child: PageView.builder(
+              controller: _pageController,
+              onPageChanged: (index) {
+                setState(() {
+                  _currentMonth = _months[index];
+                });
+              },
+              itemCount: _months.length,
+              itemBuilder: (context, index) {
+                return _buildEventList(_months[index], electionEvents);
+              },
             ),
           ),
         ],
@@ -29,26 +84,96 @@ class ElectionTimelinePage extends StatelessWidget {
     );
   }
 
-  Widget _buildMonthSelector() {
+  Widget _buildEventList(DateTime month, Map<String, dynamic> electionEvents) {
+    List<MapEntry<String, dynamic>> eventsThisMonth = electionEvents.entries.where((entry) {
+      DateTime eventDate = DateTime.parse(entry.value['Date']);
+      return eventDate.year == month.year && eventDate.month == month.month;
+    }).toList();
+
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      color: Colors.grey[200],
-      child: const Row(
+      color: AppColors.appSecondaryBackgroundLightGray,
+      child: eventsThisMonth.isEmpty
+          ? Center(child: Text('No events for ${DateFormat('MMMM yyyy').format(month)}'))
+          : ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemCount: eventsThisMonth.length,
+              itemBuilder: (context, index) {
+                final event = eventsThisMonth[index];
+                final eventDate = DateTime.parse(event.value['Date']);
+                return Column(
+                  children: [
+                    _buildEventCard( event.value['Event'], eventDate),
+                    const SizedBox(height: 16),
+                  ],
+                );
+              },
+            ),
+    );
+  }
+
+  Widget _buildMonthSelector() {
+    int currentIndex = _months.indexOf(_currentMonth);
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      color: AppColors.appSecondaryBackgroundLightGray,
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Text('Jul', style: TextStyle(color: Colors.grey)),
-          Icon(Icons.chevron_left),
-          Text('May', style: TextStyle(fontWeight: FontWeight.bold)),
-          Icon(Icons.chevron_right),
-          Text('Jun', style: TextStyle(color: Colors.grey)),
+          Text(
+            currentIndex > 0
+                ? DateFormat('MMM').format(_months[currentIndex - 1])
+                : '',
+            style: const TextStyle(color: Colors.grey, fontSize: 14),
+          ),
+          IconButton(
+            icon: const Icon(Icons.chevron_left),
+            onPressed: currentIndex > 0
+                ? () {
+                    _pageController.previousPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
+                  }
+                : null,
+          ),
+          Text(
+            DateFormat('MMM').format(_currentMonth),
+            style: getPlusJakartaSans(
+              textColor: AppColors.appPrimaryTextDarkGray,
+              fontsize: 18,
+              fontweight: FontWeight.w500,
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.chevron_right),
+            onPressed: currentIndex < _months.length - 1
+                ? () {
+                    _pageController.nextPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
+                  }
+                : null,
+          ),
+          Text(
+            currentIndex < _months.length - 1
+                ? DateFormat('MMM').format(_months[currentIndex + 1])
+                : '',
+            style: const TextStyle(color: Colors.grey, fontSize: 14),
+          ),
         ],
       ),
     );
   }
 
+
+
   Widget _buildEventCard(String title, DateTime date) {
     return Card(
-      elevation: 2,
+      elevation: 0.5,
+      color: AppColors.appWhite,
+      shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.zero)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -80,31 +205,27 @@ class ElectionTimelinePage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        title,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        DateFormat('MMMM d, yyyy').format(date),
-                        style: TextStyle(color: Colors.grey[600]),
-                      ),
+                      Text(title,
+                          style: getBlackZodiak(
+                              fontsize: 18, fontweight: FontWeight.w500)),
+                      const SizedBox(height: 6),
+                      Text(DateFormat('MMMM d, yyyy').format(date),
+                          style: getPlusJakartaSans(
+                              textColor: AppColors.appSecondaryTextMediumGray,
+                              fontsize: 14,
+                              fontweight: FontWeight.w400)),
                     ],
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 16),
-            const Text(
-              'See details',
-              style: TextStyle(
-                color: Colors.blue,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            Text('See details',
+                style: getPlusJakartaSans(
+                        textColor: AppColors.appBlack,
+                        fontsize: 10,
+                        fontweight: FontWeight.w400)
+                    .copyWith(decoration: TextDecoration.underline)),
           ],
         ),
       ),

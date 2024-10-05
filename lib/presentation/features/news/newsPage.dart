@@ -1,10 +1,13 @@
-import "package:flutter/material.dart";
-import "package:go_router/go_router.dart";
-import "package:koyar/presentation/common/appBar.dart";
-import "package:koyar/presentation/features/news/newsModel.dart";
-import "package:koyar/presentation/manager/colorManager.dart";
-import "package:koyar/presentation/manager/routeManager.dart";
-import "package:koyar/presentation/manager/styleManager.dart";
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:koyar/presentation/common/appBar.dart';
+import 'package:koyar/presentation/common/customTextField.dart';
+import 'package:koyar/presentation/features/news/models/newsModel.dart';
+import 'package:koyar/presentation/features/news/newsModel.dart';
+import 'package:koyar/presentation/manager/colorManager.dart';
+import 'package:koyar/presentation/manager/routeManager.dart';
+import 'package:koyar/presentation/manager/styleManager.dart';
+import 'package:koyar/presentation/service/firebaseDatabaseService.dart';
 
 class NewsPage extends StatelessWidget {
   const NewsPage({super.key});
@@ -13,13 +16,41 @@ class NewsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.appBackgroundColor,
-      appBar: const CustomAppBar(title: "News", semanticsLabel: ' '),
+      appBar: const CustomAppBar(title: "Election News", semanticsLabel: ' '),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: ListView.builder(
-          itemCount: dummyNewsItems.length,
-          itemBuilder: (context, index) {
-            return NewsItemCard(newsItem: dummyNewsItems[index]);
+        child: FutureBuilder<List<NewsModel>>(
+          future: FirebaseDatabaseService()
+              .fetchArticles(), // Call the fetch function
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Center(child: Text('No news available'));
+            } else {
+              final newsItems = snapshot.data!;
+              return Column(
+                children: [
+                  Semantics(
+                      label: "Search for election news.",
+                      child: const CustomBoxTextField(
+                          hintText: 'Search election news...')),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: newsItems.length,
+                      itemBuilder: (context, index) {
+                        return NewsItemCard(newsItem: newsItems[index]);
+                      },
+                    ),
+                  ),
+                ],
+              );
+            }
           },
         ),
       ),
@@ -28,7 +59,7 @@ class NewsPage extends StatelessWidget {
 }
 
 class NewsItemCard extends StatelessWidget {
-  final NewsItem newsItem;
+  final NewsModel newsItem;
 
   const NewsItemCard({super.key, required this.newsItem});
 
@@ -36,20 +67,17 @@ class NewsItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.only(bottom: 20),
-
       color: AppColors.appBackgroundColor,
-      // decoration: BoxDecoration(
-      //     // color: AppColors.appMainBackgroundOffWhite,
-      //     border: Border.all(color: AppColors.appBlack.withOpacity(0.2)),
-      //     borderRadius: BorderRadius.vertical(
-      //         top: Radius.circular(0), bottom: Radius.circular(5))),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         decoration: BoxDecoration(
-            color: AppColors.appMainBackgroundOffWhite,
-            border: Border.all(color: AppColors.appBlack.withOpacity(0.2)),
-            borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(0), bottom: Radius.circular(5))),
+          color: AppColors.appMainBackgroundOffWhite,
+          border: Border.all(color: AppColors.appBlack.withOpacity(0.2)),
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(0),
+            bottom: Radius.circular(5),
+          ),
+        ),
         child: InkWell(
           onTap: () {
             context.push(BaseRouteName.newsDetailPage, extra: newsItem);
@@ -75,7 +103,7 @@ class NewsItemCard extends StatelessWidget {
                 child: AspectRatio(
                   aspectRatio: 16 / 9,
                   child: Image.network(
-                    newsItem.imageUrl,
+                    newsItem.image,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
@@ -91,27 +119,32 @@ class NewsItemCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(newsItem.title,
-                        textAlign: TextAlign.left,
-                        style: getPlusJakartaSans(
-                            textColor: AppColors.appBlack,
-                            fontsize: 18,
-                            fontweight: FontWeight.w700)),
+                    Text(
+                      newsItem.title,
+                      textAlign: TextAlign.left,
+                      style: getPlusJakartaSans(
+                        textColor: AppColors.appBlack,
+                        fontsize: 18,
+                        fontweight: FontWeight.w700,
+                      ),
+                    ),
                     const SizedBox(height: 4),
                     Text(
                       "By ${newsItem.author}",
                       style: getNormalZodiak(
-                          textColor: AppColors.appLinkBlue,
-                          fontsize: 12,
-                          fontweight: FontWeight.w600),
+                        textColor: AppColors.appLinkBlue,
+                        fontsize: 12,
+                        fontweight: FontWeight.w600,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       newsItem.content.split("\n").first,
                       style: getPlusJakartaSans(
-                          textColor: AppColors.appSecondaryTextMediumGray,
-                          fontsize: 13,
-                          fontweight: FontWeight.w400),
+                        textColor: AppColors.appSecondaryTextMediumGray,
+                        fontsize: 13,
+                        fontweight: FontWeight.w400,
+                      ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),

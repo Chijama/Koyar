@@ -11,6 +11,7 @@ void main() async {
 // import 'package:flutter/material.dart';
 // import 'package:koyar/presentation/features/candidates/candidatesSelectionPage.dart';
 // import 'package:koyar/presentation/features/candidatesDetails/candidateDetails.dart';
+// import 'package:koyar/presentation/features/electionTimeline/electionTimelinePage.dart';
 // import 'package:koyar/presentation/features/news/newsPage.dart';
 
 // void main() => runApp(const MyApp());
@@ -20,6 +21,6 @@ void main() async {
 
 //   @override
 //   Widget build(BuildContext context) {
-//     return   MaterialApp(title: 'Your app name', home: NewsPage());
+//     return MaterialApp(title: 'Your app name', home: ElectionTimelinePage());
 //   }
 // }
