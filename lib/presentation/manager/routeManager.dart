@@ -1,16 +1,25 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:koyar/presentation/features/auth/signup/pages/ninPage.dart';
-import 'package:koyar/presentation/features/mainPages/candidates/candidates.dart';
-import 'package:koyar/presentation/features/mainPages/education/education.dart';
-import 'package:koyar/presentation/features/mainPages/profile/profile.dart';
-import 'package:koyar/presentation/features/mainPages/scaffoldWithNavBar.dart';
-
+import 'package:koyar/presentation/features/candidates/models/candidateModel.dart';
+import 'package:koyar/presentation/features/electionTimeline/electionTimelinePage.dart';
+import 'package:koyar/presentation/features/news/models/newsModel.dart';
+import '../features/auth/pages/ninPage.dart';
+import '../features/candidatesDetails/candidateDetails.dart';
+import '../features/candidatesDetails/candidatesComparisonPage.dart';
+import '../features/candidates/candidatesSelectionPage.dart';
+import '../features/mainPages/profile/profile.dart';
+import '../features/mainPages/scaffoldWithNavBar.dart';
+import '../features/news/newsDetailsPage.dart';
+import '../features/news/newsModel.dart';
+import '../features/news/newsPage.dart';
+import '../features/pollingUnitLocator/pollingUnitLocator.dart';
+import '../features/voterRegisterationCheck/voterRegistrationCheckPage.dart';
+import '../features/votersGuide/votersGuide.dart';
 import '../common/cutomePageTransition.dart';
-import '../features/auth/signup/pages/electionPreference.dart';
-import '../features/auth/signup/pages/lga.dart';
-import '../features/auth/signup/pages/stateOfOrigin.dart';
+import '../features/auth/pages/electionPreference.dart';
+import '../features/auth/pages/lga.dart';
+import '../features/auth/pages/stateOfOrigin.dart';
 import '../features/getStarted/getStarted.dart';
 import '../features/mainPages/home/homePage.dart';
 import '../features/splash.dart';
@@ -20,24 +29,41 @@ final _shellNavidationKey = GlobalKey<NavigatorState>();
 
 class BaseRouteName {
   static const home = '/home';
-  static const candidates = '/home/candidates';
-  static const education = '/home/education';
+  static const candidatesSelectionPage = '/home/candidatesSelectionPage';
+  static const newsPage = '/home/newsPage';
   static const profile = '/home/profile';
   static const getStarted = '/getStarted';
   static const ninPage = '/ninPage';
   static const stateOfOriginPage = '/ninPage/stateOfOriginPage';
+  static const newsDetailPage = "/home/newsPage/newsDetailPage";
   static const lgaPage = '/ninPage/stateOfOriginPage/lgaPage';
   static const electionPreferencePage =
       '/ninPage/stateOfOriginPage/lgaPage/electionPreferencePage';
+  static const candidatesComparisonPage =
+      "/home/candidatesSelectionPage/candidatesComparisonPage";
+  static const voterRegistrationCheckPage = "/home/voterRegistrationCheckPage";
+  static const electionTimelinePage = "/home/electionTimelinePage";
+  static const pollingUnitLocatorPage = "/home/pollingUnitLocatorPage";
+  static const votersGuidePage = "/home/votersGuidePage";
+  static const candidatesDetailsPage =
+      "/home/candidatesSelectionPage/candidatesDetailsPage";
 }
 
 class SubRouteName {
   static const stateOfOriginPage = "stateOfOriginPage";
   static const lgaPage = "lgaPage";
-  static const candidates = 'candidates';
-  static const education = 'education';
+  static const candidatesSelectionPage = 'candidatesSelectionPage';
   static const profile = 'profile';
   static const electionPreferencePage = "electionPreferencePage";
+  static const electionTimelinePage = "electionTimelinePage";
+
+  static const candidatesComparisonPage = "candidatesComparisonPage";
+  static const voterRegistrationCheckPage = "voterRegistrationCheckPage";
+  static const pollingUnitLocatorPage = "pollingUnitLocatorPage";
+  static const candidatesDetailsPage = "candidatesDetailsPage";
+  static const votersGuidePage = "votersGuidePage";
+  static const newsPage = "newsPage";
+  static const newsDetailPage = "newsDetailPage";
 }
 
 class AppRouter {
@@ -69,7 +95,7 @@ class AppRouter {
           //! State of Origin
           GoRoute(
             routes: [
-              //! LGA page
+              // ! LGA of registeration
               GoRoute(
                 routes: [
                   //! Election Preference
@@ -86,13 +112,15 @@ class AppRouter {
                 ],
                 parentNavigatorKey: _rootNavigationKey,
                 pageBuilder: (context, state) {
+                  final stateItemSelected = state.extra as String?;
                   return customTransitionPage(
                     pageKey: state.pageKey,
-                    child: const LGAscreen(),
+                    child:
+                        LGAscreen(stateItemSelected: stateItemSelected ?? ''),
                   );
                 },
                 path: SubRouteName.lgaPage,
-              ),
+              )
             ],
             parentNavigatorKey: _rootNavigationKey,
             pageBuilder: (context, state) {
@@ -141,12 +169,12 @@ class AppRouter {
           );
         },
         routes: [
-          //!Home
+          //! Home
           GoRoute(
             routes: [
-              //! Candidates
+              //! Candidates Selection
               GoRoute(
-                path: SubRouteName.candidates,
+                path: SubRouteName.candidatesSelectionPage,
                 parentNavigatorKey: _shellNavidationKey,
                 pageBuilder: (context, state) {
                   if (kDebugMode) {
@@ -154,13 +182,13 @@ class AppRouter {
                   }
                   return customTransitionPage(
                     pageKey: state.pageKey,
-                    child: const CandidatesPage(),
+                    child: const CandidateSelectionPage(),
                   );
                 },
               ),
-              //! Education
+              //! News Page
               GoRoute(
-                path: SubRouteName.education,
+                path: SubRouteName.newsPage,
                 parentNavigatorKey: _shellNavidationKey,
                 pageBuilder: (context, state) {
                   if (kDebugMode) {
@@ -168,7 +196,7 @@ class AppRouter {
                   }
                   return customTransitionPage(
                     pageKey: state.pageKey,
-                    child: const EducationPage(),
+                    child: const NewsPage(),
                   );
                 },
               ),
@@ -200,6 +228,93 @@ class AppRouter {
             },
           ),
         ],
+      ),
+      //! Candidate Comparison
+      GoRoute(
+        parentNavigatorKey: _rootNavigationKey,
+        pageBuilder: (context, state) {
+          final candidates = state.extra as List<CandidateModel>;
+
+          return customTransitionPage(
+            pageKey: state.pageKey,
+            child: CandidatesComparisonPage(
+              candidates: candidates,
+            ),
+          );
+        },
+        path: BaseRouteName.candidatesComparisonPage,
+      ),
+      //! Voter Registeration Check
+      GoRoute(
+        path: BaseRouteName.voterRegistrationCheckPage,
+        parentNavigatorKey: _rootNavigationKey,
+        pageBuilder: (context, state) {
+          if (kDebugMode) {
+            debugPrint(state.fullPath);
+          }
+          return customTransitionPage(
+            pageKey: state.pageKey,
+            child: const VoterRegistrationCheckPage(),
+          );
+        },
+      ), //! Voter Registeration Check
+      GoRoute(
+        path: BaseRouteName.electionTimelinePage,
+        parentNavigatorKey: _rootNavigationKey,
+        pageBuilder: (context, state) {
+          if (kDebugMode) {
+            debugPrint(state.fullPath);
+          }
+          return customTransitionPage(
+            pageKey: state.pageKey,
+            child: const ElectionTimelinePage(),
+          );
+        },
+      ),
+      //! Polling Unit Locator
+      GoRoute(
+        parentNavigatorKey: _rootNavigationKey,
+        pageBuilder: (context, state) {
+          return customTransitionPage(
+            pageKey: state.pageKey,
+            child: const PollingUnitLocatorPage(),
+          );
+        },
+        path: BaseRouteName.pollingUnitLocatorPage,
+      ),
+      //! Voter's Guide
+      GoRoute(
+        parentNavigatorKey: _rootNavigationKey,
+        pageBuilder: (context, state) {
+          return customTransitionPage(
+            pageKey: state.pageKey,
+            child: const VotingGuidePage(),
+          );
+        },
+        path: BaseRouteName.votersGuidePage,
+      ), //! Candidate's Details
+      GoRoute(
+        parentNavigatorKey: _rootNavigationKey,
+        pageBuilder: (context, state) {
+          final candidate = state.extra as CandidateModel;
+          return customTransitionPage(
+            pageKey: state.pageKey,
+            child: CandidateDetailsPage(
+              candidateData: candidate,
+            ),
+          );
+        },
+        path: BaseRouteName.candidatesDetailsPage,
+      ),
+      //! News Details
+      GoRoute(
+        parentNavigatorKey: _rootNavigationKey,
+        builder: (context, state) {
+          // Access the passed argument
+          final newsItem = state.extra as NewsModel;
+          return NewsDetailPage(newsItem: newsItem);
+        },
+        path: BaseRouteName.newsDetailPage,
       ),
     ],
   );

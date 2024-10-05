@@ -1,15 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:koyar/app/api.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:koyar/presentation/cubit/user/user_cubit.dart';
+import 'package:koyar/presentation/service/firebaseNotficationService.dart';
 import 'package:koyar/presentation/common/bottomModals.dart';
 import 'package:koyar/presentation/manager/routeManager.dart';
 import 'package:koyar/presentation/manager/stringManager.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../common/appButton.dart';
-import '../../../../manager/colorManager.dart';
-import '../../../../manager/styleManager.dart';
+import '../../../common/appButton.dart';
+import '../../../manager/colorManager.dart';
+import '../../../manager/styleManager.dart';
 
-class ElectionPreferencePage extends StatelessWidget {
+class ElectionPreferencePage extends StatefulWidget {
   const ElectionPreferencePage({super.key});
+
+  @override
+  State<ElectionPreferencePage> createState() => _ElectionPreferencePageState();
+}
+
+class _ElectionPreferencePageState extends State<ElectionPreferencePage> {
+  final List<String> selectedButtons = [];
+
+  void toggleSelection(String buttonText) {
+    setState(() {
+      if (selectedButtons.contains(buttonText)) {
+        selectedButtons.remove(buttonText);
+      } else {
+        selectedButtons.add(buttonText);
+      }
+    });
+    print("Selected buttons: $selectedButtons");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +53,7 @@ class ElectionPreferencePage extends StatelessWidget {
                         style: getBlackZodiak(
                           fontsize: 36,
                         ),
+                        softWrap: true,
                       ),
                     ),
                   ),
@@ -43,8 +64,9 @@ class ElectionPreferencePage extends StatelessWidget {
                     children: [
                       Expanded(
                         child: KoyarHollowButton(
-                          onPressed: () {},
+                          onPressed: toggleSelection,
                           buttonText: "State",
+                          isSelected: selectedButtons.contains("State"),
                         ),
                       ),
                       const SizedBox(
@@ -53,8 +75,9 @@ class ElectionPreferencePage extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child: KoyarHollowButton(
-                          onPressed: () {},
-                          buttonText: "Presidential",
+                          onPressed: toggleSelection,
+                          buttonText: "Local",
+                          isSelected: selectedButtons.contains("Local"),
                         ),
                       )
                     ],
@@ -63,8 +86,9 @@ class ElectionPreferencePage extends StatelessWidget {
                     height: 20,
                   ),
                   KoyarHollowButton(
-                    onPressed: () {},
-                    buttonText: "Local Government",
+                    onPressed: toggleSelection,
+                    buttonText: "Federal",
+                    isSelected: selectedButtons.contains("Federal"),
                   ),
                 ],
               ),
@@ -74,11 +98,16 @@ class ElectionPreferencePage extends StatelessWidget {
               KoyarButton(
                 onPressed: () {
                   // context.go(BaseRouteName.electionPreferencePage);
+                  context.go(BaseRouteName.electionPreferencePage);
+                  context
+                      .read<UserCubit>()
+                      .updateElectionPreferences(selectedButtons);
+                  context.read<UserCubit>().saveUser();
                   showModalBottomSheet(
                       // enableDrag: true,
                       backgroundColor: Colors.transparent,
                       context: context,
-                      // barrierColor: Colors.transparent,
+                     
                       isScrollControlled: true,
                       builder: (context) {
                         return InquiryModalSheet(
@@ -130,11 +159,13 @@ class ElectionPreferencePage extends StatelessWidget {
                                   button: true,
                                   child: KoyarButton(
                                     onPressed: () async {
-                                      await FirebaseApi()
+                                      await FirebaseNotficationService()
                                           .initNotifications()
                                           .whenComplete(
                                         () {
-                                          context.go(BaseRouteName.home);
+                                          if (context.mounted) {
+                                            context.go(BaseRouteName.home);
+                                          }
                                         },
                                       );
                                     },

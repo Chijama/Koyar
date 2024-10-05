@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:koyar/presentation/manager/assetManager.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
+import 'package:koyar/presentation/manager/routeManager.dart';
 import 'package:koyar/presentation/manager/styleManager.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,7 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int daysTillNextElection = 5;
+  int daysTillNextElection = 42;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,30 +46,37 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            const Column(
+            Column(
               children: [
                 Row(
                   children: [
-                    HomePageItem(
-                      label: "Election Dates",
-                      asset: SvgAssetManager.electionDates,
+                      HomePageItem(
+                      label: "Election Timeline",
+                      asset: SvgAssetManager.electionDates,   onTap: () =>
+                            context.push(BaseRouteName.electionTimelinePage)
                     ),
-                    SizedBox(width: 15),
+                    const SizedBox(width: 15),
                     HomePageItem(
-                      label: "Voting guides",
-                      asset: SvgAssetManager.votersGuide,
-                    ),
+                        label: "Voting guides",
+                        asset: SvgAssetManager.votersGuide,
+                        onTap: () =>
+                            context.push(BaseRouteName.votersGuidePage)),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   children: [
                     HomePageItem(
                       label: "Polling Unit Locator",
                       asset: SvgAssetManager.map,
+                      onTap: () =>
+                          context.push(BaseRouteName.pollingUnitLocatorPage),
                     ),
-                    SizedBox(width: 15),
+                    const SizedBox(width: 15),
                     HomePageItem(
+                      onTap: () {
+                        context.push(BaseRouteName.voterRegistrationCheckPage);
+                      },
                       label: "Voter Registration Check",
                       asset: SvgAssetManager.userCheck,
                     ),
@@ -87,33 +96,39 @@ class HomePageItem extends StatelessWidget {
     super.key,
     required this.label,
     required this.asset,
+    this.onTap,
   });
   final String label;
   final String asset;
+  final void Function()? onTap;
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Container(
-        height: 140,
-        // width: 164,
-        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
-          border: Border.all(
-              color: HexColor.toHexColor('#000000').withOpacity(0.2)),
-          color: AppColors.applightGrey,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SvgPicture.asset(asset),
-            const SizedBox(height: 10),
-            Text(
-              label,
-              style: getBlackZodiak(fontsize: 15, fontweight: FontWeight.w500),
-            ),
-          ],
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          height: 140,
+          // width: 164,
+          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
+            border: Border.all(
+                color: HexColor.toHexColor('#000000').withOpacity(0.2)),
+            color: AppColors.applightGrey,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SvgPicture.asset(asset),
+              const SizedBox(height: 10),
+              Text(
+                label,
+                style:
+                    getBlackZodiak(fontsize: 15, fontweight: FontWeight.w500),
+              ),
+            ],
+          ),
         ),
       ),
     );

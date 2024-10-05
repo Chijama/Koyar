@@ -3,26 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
 import 'package:koyar/presentation/manager/styleManager.dart';
 
-class Filterwidget extends StatefulWidget {
+class FilterWidget extends StatefulWidget {
   final String text;
   final String itemSelected;
-  final List<String> itemsList;final void Function(String?)? onChanged;
-  const Filterwidget(
+  final List<String> itemsList;
+  final void Function(String?)? onChanged;
+  const FilterWidget(
       {super.key,
       required this.text,
       required this.itemSelected,
-      required this.itemsList, this.onChanged});
+      required this.itemsList,
+      this.onChanged});
 
   @override
-  State<Filterwidget> createState() => _FilterwidgetState();
+  State<FilterWidget> createState() => _FilterWidgetState();
 }
 
-class _FilterwidgetState extends State<Filterwidget> {
+class _FilterWidgetState extends State<FilterWidget> {
   @override
   Widget build(BuildContext context) {
     return IntrinsicHeight(
       child: IntrinsicWidth(
-        child: DropdownSearch<String>(onChanged: widget.onChanged,popupProps: const PopupProps.menu(fit: FlexFit.tight),
+        child: DropdownSearch<String>(
+          onChanged: widget.onChanged,
+          popupProps: const PopupProps.menu(fit: FlexFit.tight),
           decoratorProps: const DropDownDecoratorProps(
             decoration:
                 InputDecoration(border: InputBorder.none, filled: false),
@@ -31,7 +35,7 @@ class _FilterwidgetState extends State<Filterwidget> {
             containedInkWell: false,
           ),
           selectedItem: widget.itemSelected,
-          items: (f, cs) => widget.itemsList, 
+          items: (f, cs) => widget.itemsList,
           dropdownBuilder: (c, s) {
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -52,6 +56,5 @@ class _FilterwidgetState extends State<Filterwidget> {
         ),
       ),
     );
-
   }
 }

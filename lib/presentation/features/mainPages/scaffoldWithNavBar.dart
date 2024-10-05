@@ -65,7 +65,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       bottomnavcubit.navigateToScreen(pageNumber: 1);
-                      context.go(BaseRouteName.candidates);
+                      context.go(BaseRouteName.candidatesSelectionPage);
                     },
                     child: NavBarWidget(
                       navName: "Candidates",
@@ -77,10 +77,10 @@ class ScaffoldWithNavBar extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       bottomnavcubit.navigateToScreen(pageNumber: 2);
-                      context.go(BaseRouteName.education);
+                      context.go(BaseRouteName.newsPage);
                     },
                     child: NavBarWidget(
-                      navName: "Education",
+                      navName: "News",
                       svgicon: SvgAssetManager.educationpage,
                       isSvgIconSelected: bottomNavstate == 2,
                     ),

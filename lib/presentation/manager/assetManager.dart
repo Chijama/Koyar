@@ -18,4 +18,5 @@ class SvgAssetManager {
   static const candidatespage = "${svgPath}candidates.svg";
   static const educationpage = "${svgPath}education.svg";
   static const profilepage = "${svgPath}profile.svg";
+  static const chevronSelectorVertical = "${svgPath}chevron-selector-vertical.svg";
 }

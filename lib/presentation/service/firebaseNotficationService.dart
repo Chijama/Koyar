@@ -1,14 +1,21 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
-class FirebaseApi {
+class FirebaseNotficationService {
   // create an instance of Firebase Messaging
   final _firebaseMessaging = FirebaseMessaging.instance;
 
   Future<void> initNotifications() async {
     // request permission from user
-    await _firebaseMessaging.requestPermission();
-    // fetch the FCM token for thi device
+    try {
+      await _firebaseMessaging.requestPermission();
+      debugPrint('permission requested');
+    } catch (e) {
+      // No specified type, handles all
+      debugPrint('Something really unknown: $e');
+    }
+    // fetch the FCM token for the device
     final fCMToken = await _firebaseMessaging.getToken();
 
     // print the token
@@ -33,3 +40,4 @@ class FirebaseApi {
     FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
   }
 }
+ 

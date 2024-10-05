@@ -1,20 +1,24 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
-import 'package:koyar/presentation/common/customTextField.dart';
+import 'package:koyar/presentation/common/appButton.dart';
+import 'package:koyar/presentation/common/bottomModals.dart';
+import 'package:koyar/presentation/cubit/user/user_cubit.dart';
+import 'package:koyar/presentation/manager/colorManager.dart';
+import 'package:koyar/presentation/manager/routeManager.dart';
+import 'package:koyar/presentation/manager/stringManager.dart';
+import 'package:koyar/presentation/manager/styleManager.dart';
 
-import '../../../../common/appButton.dart';
-import '../../../../common/bottomModals.dart';
-import '../../../../manager/colorManager.dart';
-import '../../../../manager/routeManager.dart';
-import '../../../../manager/stringManager.dart';
-import '../../../../manager/styleManager.dart';
+import '../../../common/customTextField.dart';
 
-class StateOfOriginScreen extends StatelessWidget {
-  const StateOfOriginScreen({super.key});
+class NINPage extends HookWidget {
+  const NINPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final ninController = useTextEditingController();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -27,17 +31,17 @@ class StateOfOriginScreen extends StatelessWidget {
               Column(
                 children: [
                   Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                      ),
-                      child: Semantics(
-                        label: "State of Registeration",
+                    child: Semantics(
+                      label: '"Enter your National Identification Number',
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 100,
+                        ),
                         child: Text(
-                          'STATE OF REGISTERATION?',
+                          'YOUR NIN?',
                           textAlign: TextAlign.center,
                           style: getBlackZodiak(
-                            fontsize: 36,
+                            fontsize: 32,
                           ),
                         ),
                       ),
@@ -47,11 +51,12 @@ class StateOfOriginScreen extends StatelessWidget {
                     height: 30,
                   ),
                   Semantics(
-                    button: true,
-                    label: "Select Your State of Registeration here",
-                    // dropdown
-                    child: const CustomTextField(
-                      hintText: 'State of Registeration',
+                    textField: true,
+                    label: "National Identification Number, 11-digit format",
+                    child: CustomTextField(
+                      hintText: '0000-0000-000',
+                      controller: ninController,
+                      keyboardType: TextInputType.number,
                     ),
                   ),
                 ],
@@ -60,13 +65,11 @@ class StateOfOriginScreen extends StatelessWidget {
                 height: 100,
               ),
               Semantics(
-                label:
-                    "See why ${StringManager.appName} needs your State Registeration?",
+                label: "See why ${StringManager.appName} needs your NIN?",
                 button: true,
                 child: Text.rich(
                   TextSpan(
-                    text:
-                        "Why does ${StringManager.appName} need my state of Registeration?",
+                    text: "Why does ${StringManager.appName} need my NIN?",
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
                         showModalBottomSheet(
@@ -74,10 +77,8 @@ class StateOfOriginScreen extends StatelessWidget {
                           context: context,
                           builder: (context) {
                             return const InquiryModalSheet(
-                              answer: StringManager
-                                  .whyWeNeedYourStateOfOriginanswer,
-                              question: StringManager
-                                  .whyWeNeedYourStateOfOriginquestion,
+                              answer: StringManager.whyWeNeedYourNINAnswer,
+                              question: StringManager.whyWeNeedYourNINqueston,
                             );
                           },
                         );
@@ -88,7 +89,6 @@ class StateOfOriginScreen extends StatelessWidget {
                       fontweight: FontWeight.w500,
                     ).copyWith(
                       decoration: TextDecoration.underline,
-                      decorationColor: AppColors.appBlack.withOpacity(0.5),
                     ),
                   ),
                 ),
@@ -97,11 +97,14 @@ class StateOfOriginScreen extends StatelessWidget {
                 height: 30,
               ),
               Semantics(
+                label: "Next, submit your NIN",
                 button: true,
-                label: "Next, submit your State of Registeration",
                 child: KoyarButton(
                   onPressed: () {
-                    context.go(BaseRouteName.lgaPage);
+                    context
+                        .read<UserCubit>()
+                        .updateNin(ninController.value.text);
+                    context.go(BaseRouteName.stateOfOriginPage);
                   },
                   buttonText: "Next",
                 ),

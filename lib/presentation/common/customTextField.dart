@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:koyar/presentation/cubit/custom_dropdown_search_cubit.dart'  ;
 import 'package:koyar/presentation/manager/colorManager.dart';
 import 'package:koyar/presentation/manager/styleManager.dart';
 
@@ -12,12 +10,15 @@ class CustomTextField extends StatelessWidget {
     super.key,
     this.hintText,
     this.keyboardType,
+    this.controller,
   });
   final String? hintText;
   final TextInputType? keyboardType;
+  final TextEditingController? controller;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       keyboardType: keyboardType,
       cursorColor: AppColors.appBlack,
       onTapOutside: (event) {
@@ -188,7 +189,7 @@ class CustomBoxTextField extends StatelessWidget {
   }
 }
 
-class CustomDropDownSearch extends StatelessWidget {
+class CustomDropDownSearch extends StatefulWidget {
   const CustomDropDownSearch({
     super.key,
     required this.itemSelected,
@@ -199,102 +200,42 @@ class CustomDropDownSearch extends StatelessWidget {
     this.searchHintText,
   });
 
-  final String itemSelected;
+final  String itemSelected;
   final String? label;
   final String? hintText;
   final String? searchHintText;
   final void Function(String?)? onChanged;
   final FutureOr<List<String>> Function(String, LoadProps?)? items;
+
+  @override
+  State<CustomDropDownSearch> createState() => _CustomDropDownSearchState();
+}
+
+class _CustomDropDownSearchState extends State<CustomDropDownSearch> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DropdownSearchCubit, DropdownSearchxState>(
-      builder: (context, state) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              label!,
-              style: getPlusJakartaSans(
-                  textColor: AppColors.appBlack,
-                  fontsize: 14,
-                  fontweight: FontWeight.w500),
-            ),
-            const SizedBox(height: 9),
-            DropdownSearch<String>(
-              items: items,
-              mode: Mode.form,
-              popupProps: PopupProps.menu(
-                  showSearchBox: true,
-                  searchFieldProps: TextFieldProps(
-                    decoration: InputDecoration(
-                      // filled: true,
-                      // fillColor: Colors.transparent,
-                      hintText: searchHintText,
-                      hintStyle: getPlusJakartaSans(
-                          textColor: const Color(0xffB0BEC5),
-                          fontsize: 12,
-                          fontweight: FontWeight.w500),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                        borderSide: BorderSide(
-                          color: AppColors.appGreen,
-                          width: 1,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                        borderSide: const BorderSide(
-                          color: Color(0xffE0E0E0),
-                          width: 1,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                        borderSide: const BorderSide(
-                          color: Color(0xffE0E0E0),
-                          width: 1,
-                        ),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                        borderSide: BorderSide(
-                          color: AppColors.appDangerButtonRed,
-                          width: 1,
-                        ),
-                      ),
-                    ),
-                  ),
-                  itemBuilder: (context, item, isDisabled, isSelected) {
-                    return ListTile(
-                      title: Text(item,
-                          style: getPlusJakartaSans(
-                              textColor: AppColors.appPrimaryTextDarkGray,
-                              fontsize: 14,
-                              fontweight: FontWeight.w500)),
-                    );
-                  },
-                  menuProps: MenuProps(
-                    backgroundColor: AppColors.appBackgroundColor,
-                  )),
-              // dropdownBuilder: (context, selectedItem) => Icon(
-              //   Icons.keyboard_arrow_down_rounded,
-              //   color: AppColors.appBlack,
-              //   size: 10,
-              // ),
-
-              suffixProps: const DropdownSuffixProps(
-                dropdownButtonProps: DropdownButtonProps(
-                  iconClosed: Icon(Icons.keyboard_arrow_down_rounded),
-                  iconOpened: Icon(Icons.keyboard_arrow_up_rounded),
-                ),
-              ),
-              decoratorProps: DropDownDecoratorProps(
-                textAlignVertical: TextAlignVertical.center,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (widget.label != null) ...[
+          Text(
+            widget.label!,
+            style: getPlusJakartaSans(
+                textColor: AppColors.appBlack,
+                fontsize: 14,
+                fontweight: FontWeight.w500),
+          ),
+          const SizedBox(height: 9),
+        ],
+        DropdownSearch<String>(
+          items: widget.items,
+          mode: Mode.form,
+          popupProps: PopupProps.menu(
+              showSearchBox: true,
+              searchFieldProps: TextFieldProps(
                 decoration: InputDecoration(
-                  // filled: true,
-                  // fillColor: Colors.transparent,
-                  hintText: hintText,
+                  hintText: widget.searchHintText,
                   hintStyle: getPlusJakartaSans(
                       textColor: const Color(0xffB0BEC5),
                       fontsize: 12,
@@ -329,17 +270,67 @@ class CustomDropDownSearch extends StatelessWidget {
                   ),
                 ),
               ),
-              onChanged: (value) {
-                if (value != null) {
-                  context.read<DropdownSearchCubit>().selectItem(value);
-                }
+              itemBuilder: (context, item, isDisabled, isSelected) {
+                return ListTile(
+                  title: Text(item,
+                      style: getPlusJakartaSans(
+                          textColor: AppColors.appPrimaryTextDarkGray,
+                          fontsize: 14,
+                          fontweight: FontWeight.w500)),
+                );
               },
-              selectedItem: state.selectedItem,
+              menuProps: MenuProps(
+                backgroundColor: AppColors.appBackgroundColor,
+              )),
+          suffixProps: const DropdownSuffixProps(
+            dropdownButtonProps: DropdownButtonProps(
+              iconClosed: Icon(Icons.keyboard_arrow_down_rounded),
+              iconOpened: Icon(Icons.keyboard_arrow_up_rounded),
             ),
-            const SizedBox(height: 16)
-          ],
-        );
-      },
+          ),
+          decoratorProps: DropDownDecoratorProps(
+            textAlignVertical: TextAlignVertical.center,
+            decoration: InputDecoration(
+              hintText: widget.hintText,
+              hintStyle: getPlusJakartaSans(
+                  textColor: const Color(0xffB0BEC5),
+                  fontsize: 12,
+                  fontweight: FontWeight.w500),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4),
+                borderSide: BorderSide(
+                  color: AppColors.appGreen,
+                  width: 1,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4),
+                borderSide: const BorderSide(
+                  color: Color(0xffE0E0E0),
+                  width: 1,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4),
+                borderSide: const BorderSide(
+                  color: Color(0xffE0E0E0),
+                  width: 1,
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4),
+                borderSide: BorderSide(
+                  color: AppColors.appDangerButtonRed,
+                  width: 1,
+                ),
+              ),
+            ),
+          ),
+          onChanged: widget.onChanged  ,
+          selectedItem: widget.itemSelected,
+        ),
+        const SizedBox(height: 16)
+      ],
     );
   }
 }
