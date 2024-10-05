@@ -97,7 +97,8 @@ class FirebaseDatabaseService {
     List<CandidateModel> candidates = [];
 
     try {
-      DataSnapshot snapshot = await _dbRef.child('House of Assembly').get();
+      DataSnapshot snapshot =
+          await _dbRef.child('Ondo State House of Assembly').get();
 
       if (snapshot.value != null) {
         final data = snapshot.value as Map<dynamic, dynamic>;

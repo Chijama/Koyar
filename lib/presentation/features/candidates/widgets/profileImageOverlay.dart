@@ -12,7 +12,7 @@ class ProfileImageOverlay extends StatelessWidget {
   const ProfileImageOverlay({
     super.key,
     required this.imagePath,
-    required this.name ,
+    required this.name,
     required this.title,
   });
 
@@ -24,7 +24,7 @@ class ProfileImageOverlay extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.purple,
         image: DecorationImage(
-          image: Image.network(imagePath??"").image,
+          image: Image.network(imagePath ?? "").image,
           fit: BoxFit.cover,
         ),
       ),
@@ -42,17 +42,19 @@ class ProfileImageOverlay extends StatelessWidget {
                     // height: 70,
                     padding: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 20),
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.black.withOpacity(0.2),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(name?? "Jane Doe",overflow: TextOverflow.ellipsis,
+                        Text(name ?? "Jane Doe",
+                            overflow: TextOverflow.ellipsis,
                             style: getNormalZodiak(
                                 textColor: AppColors.appWhite,
                                 fontsize: 14,
                                 fontweight: FontWeight.w500)),
                         const SizedBox(height: 4),
-                        Text(title ?? "",overflow: TextOverflow.ellipsis,
+                        Text(title ?? "",
+                            overflow: TextOverflow.ellipsis,
                             style: getPlusJakartaSans(
                                 textColor: AppColors.appWhite,
                                 fontsize: 10,

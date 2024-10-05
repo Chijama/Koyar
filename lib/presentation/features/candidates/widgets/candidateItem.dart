@@ -23,7 +23,8 @@ class CandidateItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isSelected = selectedCandidates.length > index && selectedCandidates[index];
+    bool isSelected =
+        selectedCandidates.length > index && selectedCandidates[index];
 
     return Semantics(
       label: isSelected
@@ -34,7 +35,8 @@ class CandidateItem extends StatelessWidget {
           if (selectionMode) {
             onTap(index);
           } else {
-            context.push(BaseRouteName.candidatesDetailsPage, extra: candidateData);
+            context.push(BaseRouteName.candidatesDetailsPage,
+                extra: candidateData);
           }
         },
         child: Stack(
@@ -53,8 +55,9 @@ class CandidateItem extends StatelessWidget {
                   height: 24,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: isSelected ? AppColors.appLinkBlue : AppColors.appWhite,
-                    border: Border.all(color: Colors.white),
+                    color:
+                        isSelected ? AppColors.appLinkBlue : AppColors.appWhite,
+                    border: Border.all(color: Colors.black),
                   ),
                   child: isSelected
                       ? Icon(Icons.check, color: AppColors.appWhite, size: 18)

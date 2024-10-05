@@ -2,151 +2,121 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:koyar/presentation/cubit/sliverScroll/sliver_scroll_cubit.dart';
+import 'package:koyar/presentation/features/candidates/models/candidateModel.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
 import 'package:koyar/presentation/manager/styleManager.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CandidateDetailsPage extends StatelessWidget {
-  const CandidateDetailsPage({super.key});
-
+  const CandidateDetailsPage({super.key, required this.candidateData});
+  final CandidateModel candidateData;
   @override
   Widget build(BuildContext context) {
-    // Dummy data
-    final Map<String, dynamic> candidateData = {
-      'Headshots': 'https://example.com/candidate-image.jpg',
-      'candidateName': 'Jane Doechester',
-      'candidateInfogender': 'Male',
-      'candidateInfoage': '52',
-      'candidateInfoqualification':
-          'B.A. Political Science, PhD International Relations',
-      'candidateInfooccupation': 'Economist, Public Policy Consultant',
-      'Party': 'Progressive National Party (PNP)',
-      'ProfileOverview': 'Economist, Public Policy Consultant',
-      'ExpectedPolicies': 'Progressive National Party (PNP)\nSocial Democracy',
-      'NoteableFacts':
-          '- Served as mayor for two terms\n- Authored bestselling book on local governance',
-      'UsefulLinks': [
-        'https://johndoe.com',
-        'https://twitter.com/johndoe',
-        'https://facebook.com/johndoe'
-      ],
-    };
+    return BlocBuilder<SliverScrollCubit, SliverScrollState>(
+      builder: (context, state) {
+        final scrollCubit = context.read<SliverScrollCubit>();
 
-    return BlocProvider(
-      create: (context) => SliverScrollCubit()..initialize(),
-      child: BlocBuilder<SliverScrollCubit, SliverScrollState>(
-        builder: (context, state) {
-          final scrollCubit = context.read<SliverScrollCubit>();
-
-          return Scaffold(
-            backgroundColor: AppColors.appBackgroundColor,
-            body: CustomScrollView(
-              controller: scrollCubit.scrollController,
-              slivers: [
-                SliverAppBar(
-                  expandedHeight: scrollCubit.expandedBarHeight,
-                  collapsedHeight: scrollCubit.collapsedBarHeight,
-                  floating: false,
-                  pinned: true,
-                  elevation: 0,
-                  flexibleSpace: FlexibleSpaceBar(
-                    centerTitle: state.isCollapsed ? true : false,
-                    titlePadding: EdgeInsets.only(
-                      left: 40.0,
-                      right: 40,
-                      bottom: state.isCollapsed ? 16.0 : 24.0,
+        return Scaffold(
+          backgroundColor: AppColors.appBackgroundColor,
+          body: CustomScrollView(
+            controller: scrollCubit.scrollController,
+            slivers: [
+              SliverAppBar(
+                expandedHeight: scrollCubit.expandedBarHeight,
+                collapsedHeight: scrollCubit.collapsedBarHeight,
+                floating: false,
+                pinned: true,
+                backgroundColor: AppColors.appBackgroundColor,
+                elevation: 0,
+                flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: state.isCollapsed ? true : false,
+                  titlePadding: EdgeInsets.only(
+                    left: 40.0,
+                    right: 40,
+                    bottom: state.isCollapsed ? 16.0 : 24.0,
+                  ),
+                  title: Text(
+                    candidateData.candidate,
+                    softWrap: true,
+                    style: getNormalZodiak(
+                      textColor: state.isCollapsed
+                          ? AppColors.appBlack
+                          : AppColors.appWhite,
+                      fontsize: state.isCollapsed ? 14 : 24,
+                      fontweight: FontWeight.w500,
                     ),
-                    title: Text(
-                      candidateData['candidateName'],
-                      softWrap: true,
-                      style: getNormalZodiak(
-                        textColor: AppColors.appWhite,
-                        fontsize: state.isCollapsed ? 20 : 40,
-                        fontweight: FontWeight.w500,
+                  ),
+                  background: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Image.network(
+                        candidateData.headshots,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          color: Colors.grey,
+                          child:
+                              const Center(child: Text('Image not available')),
+                        ),
                       ),
-                    ),
-                    background: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        Image.network(
-                          candidateData['Headshots'],
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
-                              Container(
-                            color: Colors.grey,
-                            child: const Center(
-                                child: Text('Image not available')),
+                      Container(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                            colors: [Colors.black45, Colors.transparent],
                           ),
                         ),
-                        Container(
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
-                              colors: [Colors.black45, Colors.transparent],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  leading: Semantics(
-                    label: "Go back to the previous screen.",
-                    child: GestureDetector(
-                      onTap: () {
-                        context.pop();
-                      },
-                      child: const Icon(Icons.arrow_back_ios_new_rounded),
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildInfoSection('Personal Information', {
-                          'Age': candidateData['candidateInfoage'],
-                          'Sex': candidateData['candidateInfogender'],
-                          'Qualification':
-                              candidateData['candidateInfoqualification'],
-                        }),
-                        _buildTextSection(
-                          'Political Ideology',
-                          candidateData['ProfileOverview'] +
-                              '\n' +
-                              candidateData['ExpectedPolicies'],
-                        ),
-                        _buildTextSection(
-                            'Notable Facts', candidateData['NoteableFacts']),
-                        _buildLinksSection(
-                            'Useful Links', candidateData['UsefulLinks']),
-                        _buildInfoSection('Personal Information', {
-                          'Age': candidateData['candidateInfoage'],
-                          'Sex': candidateData['candidateInfogender'],
-                          'Qualification':
-                              candidateData['candidateInfoqualification'],
-                        }),
-                        _buildTextSection(
-                          'Political Ideology',
-                          candidateData['ProfileOverview'] +
-                              '\n' +
-                              candidateData['ExpectedPolicies'],
-                        ),
-                        _buildTextSection(
-                            'Notable Facts', candidateData['NoteableFacts']),
-                        _buildLinksSection(
-                            'Useful Links', candidateData['UsefulLinks']),
-                      ],
-                    ),
+                leading: Semantics(
+                  label: "Go back to the previous screen.",
+                  child: GestureDetector(
+                    onTap: () {
+                      context.pop();
+                    },
+                    child: const Icon(Icons.arrow_back_ios_new_rounded),
                   ),
                 ),
-              ],
-            ),
-          );
-        },
-      ),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildInfoSection('Personal Information', {
+                        'Age': candidateData.candidateInfo.age,
+                        'Sex': candidateData.candidateInfo.gender,
+                        'Qualification':
+                            candidateData.candidateInfo.qualification,
+                        'Occupation': candidateData.candidateInfo.occupation,
+                      }),
+                      _buildInfoSection('Deputy Information', {
+                        'Name': candidateData.deputyInfo.name,
+                        'Age': candidateData.deputyInfo.age,
+                        'Sex': candidateData.deputyInfo.gender,
+                        'Qualification': candidateData.deputyInfo.qualification,
+                      }),
+                      _buildTextSection(
+                          'Profile Overview', candidateData.profileOverview),
+                      _buildTextSection(
+                        'Expected Policies',
+                        candidateData.expectedPolicies,
+                      ),
+                      _buildTextSection(
+                          'Notable Facts', candidateData.noteableFacts),
+                      _buildLinksSection(
+                          'Useful Links', candidateData.usefulLinks.split(",")),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

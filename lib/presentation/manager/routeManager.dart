@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:koyar/presentation/features/candidates/models/candidateModel.dart';
 import 'package:koyar/presentation/features/electionTimeline/electionTimelinePage.dart';
 import 'package:koyar/presentation/features/news/models/newsModel.dart';
 import '../features/auth/pages/ninPage.dart';
@@ -290,9 +291,10 @@ class AppRouter {
       GoRoute(
         parentNavigatorKey: _rootNavigationKey,
         pageBuilder: (context, state) {
+          final candidate = state.extra as CandidateModel;
           return customTransitionPage(
             pageKey: state.pageKey,
-            child: const CandidateDetailsPage(),
+            child:  CandidateDetailsPage(candidateData: candidate,),
           );
         },
         path: BaseRouteName.candidatesDetailsPage,
