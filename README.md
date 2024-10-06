@@ -1,7 +1,5 @@
 # Koyar - Empowering Nigerian Voters
-
-
-![Koyar Logo] ![appLogoPng](https://github.com/user-attachments/assets/a9966eef-df48-4a6c-b728-28f6b1b09cbe)
+  ![appLogoPng](https://github.com/user-attachments/assets/a9966eef-df48-4a6c-b728-28f6b1b09cbe)
 
 Koyar is a mobile application built to address the issue of uninformed voting in Nigeria. It aims to educate Nigerian voters about candidates and their policies, encouraging objective, informed decision-making over emotional or cultural biases. By providing accessible, non-partisan, fact-based information and simplifying the voting process, Koyar empowers voters to make informed decisions for the betterment of their communities and the nation as a whole.
 
@@ -66,12 +64,12 @@ One of the major challenges we encountered during the development of Koyar was *
 
 3. Launch the app and start exploring features such as voter registration checks, polling unit locator, and unbiased candidate information.
 
-<!--## Screenshots
+## Screenshots
+![image](https://github.com/user-attachments/assets/b836115e-4a5f-4f43-b4a8-c956aec3e862)
+![image](https://github.com/user-attachments/assets/662c372b-5eb5-4c12-9394-1161103fcc6c)
+![image](https://github.com/user-attachments/assets/76e36366-d430-405e-8dd5-aa4446853af0)
 
- Add screenshots of the app here 
-![Screenshot 1](https://your-screenshot1-url.com) <!-- Replace with your actual screenshot URL  
-![Screenshot 2](https://your-screenshot2-url.com) --> <!-- Replace with your actual screenshot URL --> 
-
+ 
 ## Contribution
 
 If you're interested in contributing to Koyar, feel free to fork the repository and submit a pull request. We'd love to work together to make voting more informed and accessible.
@@ -82,5 +80,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-For any questions or support, feel free to reach out to me:
+For any questions or support, feel free to reach out to me
  
