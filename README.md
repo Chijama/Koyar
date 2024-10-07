@@ -17,7 +17,7 @@ Koyar is a mobile application built to address the issue of uninformed voting in
   
 - **Unbiased Candidate Information**: View candidate profiles and their policies in a non-partisan, fact-based manner, allowing voters to make informed decisions based on facts rather than emotions or biases.
 
-- **Educational Content**: Access articles and videos that simplify complex voting processes and provide educational resources for first-time voters.
+- **Election News**: Access to real-time election relate news
 
 - **Push Notifications**: Stay up-to-date with timely reminders about:
   - Voter registration deadlines.
@@ -41,6 +41,11 @@ We have exciting features planned for future versions of the Koyar app to furthe
 - **FAQ Section**: A frequently asked questions section to answer common voter concerns, including registration, polling unit locations, and voting procedures.
 
 - **Election Myths vs Facts**: An informational section dedicated to debunking common election myths and presenting facts, helping voters make decisions based on accurate information.
+
+- **Political Parties Information**: A detailed section providing information about the various political parties, including their history, ideologies, leadership, and policy focuses.
+
+- **Citizen Feedback Forms**: A feature allowing users to provide feedback on the voting process, candidate interactions, political events, and their overall election experience. This helps to gather voter sentiment and improve future elections.
+
 
 ## Challenges Faced
 
