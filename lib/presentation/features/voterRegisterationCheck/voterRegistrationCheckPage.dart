@@ -3,152 +3,101 @@ import 'package:koyar/presentation/common/appBar.dart';
 import 'package:koyar/presentation/common/appButton.dart';
 import 'package:koyar/presentation/common/bottomModals.dart';
 import 'package:koyar/presentation/common/customTextField.dart';
-import 'package:koyar/presentation/features/voterRegisterationCheck/date_time_picker.dart';
-import 'package:koyar/presentation/manager/assetManager.dart';
+import 'package:koyar/presentation/features/voterRegisterationCheck/widgets/date_time_picker.dart';
+import 'package:koyar/presentation/features/voterRegisterationCheck/widgets/regeristrationFeedback.dart';
 import 'package:koyar/presentation/manager/colorManager.dart';
-import 'package:koyar/presentation/manager/styleManager.dart';
+import 'package:nigerian_states_and_lga/nigerian_states_and_lga.dart';
 
-class VoterRegistrationCheckPage extends StatelessWidget {
+class VoterRegistrationCheckPage extends StatefulWidget {
   const VoterRegistrationCheckPage({super.key});
-
+  @override
+  State<VoterRegistrationCheckPage> createState() =>
+      _VoterRegistrationCheckPageState();
+}
+class _VoterRegistrationCheckPageState
+    extends State<VoterRegistrationCheckPage> {
+  String stateItemSelected = 'Ondo'; // Moved to the state class
+  String lgastateItemSelected = 'Ondo West';
   @override
   Widget build(BuildContext context) {
-    List<String> countriesList = [
-      'Pakistan',
-      'Afghanistan',
-      'America',
-      'China',
-      'Indonesia'
-    ];
-    String itemSelected = '';
     return Scaffold(
       appBar: const CustomAppBar(
-        title: 'Voter Registeration check',
-        semanticsLabel: "Check your voter's registeration status",
+        title: 'Voter Registration Check',
+        semanticsLabel: "Check your voter registration status",
       ),
       backgroundColor: AppColors.appBackgroundColor,
       body: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              CustomDropDownSearch(
-                itemSelected: itemSelected,
-                hintText: "Select  State",
-                searchHintText: "Search State",
-                label: 'State of Registration',
-                items: (f, cs) => countriesList,
-              ),
-              CustomDropDownSearch(
-                itemSelected: itemSelected,
-                hintText: "Select Local Government",
-                searchHintText: "Search Local Government",
-                label: 'Local Government of Registration',
-                items: (f, cs) => countriesList,
-              ),
-              Semantics(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                CustomDropDownSearch(
+                  itemSelected: stateItemSelected,
+                  onChanged: (value) {
+                    setState(() {
+                      stateItemSelected = value!;
+                      // Reset LGA selection when state changes
+                      lgastateItemSelected = '';
+                    });
+                  },
+                  hintText: "Select State",
+                  searchHintText: "Search State",
+                  label: 'State of Registration',
+                  items: (f, cs) => NigerianStatesAndLGA.allStates,
+                ),
+                CustomDropDownSearch(
+                  itemSelected: lgastateItemSelected,
+                  onChanged: (value) {
+                    setState(() {
+                      lgastateItemSelected = value!;
+                    });
+                  },
+                  hintText: "Select Local Government",
+                  searchHintText: "Search Local Government",
+                  label: 'Local Government of Registration',
+                  items: (f, cs) =>
+                      NigerianStatesAndLGA.getStateLGAs(stateItemSelected),
+                ),
+                Semantics(
                   label: "Enter Last Name",
                   textField: true,
                   child: const CustomBoxTextField(
                     hintText: "Enter Last Name",
                     label: "Last Name",
-                  )),
-              Semantics(
-                label: "Enter First Name",
-                textField: true,
-                child: const CustomBoxTextField(
-                  hintText: "Enter First Name",
-                  label: "First Name",
+                  ),
                 ),
-              ),
-              const DateTimePicker(label: 'Date of Birth'),
-              const SizedBox(height: 56),
-              KoyarButton(
-                buttonText: 'Check Voter Status',
-                onPressed: () {
-                  showModalBottomSheet(
+                Semantics(
+                  label: "Enter First Name",
+                  textField: true,
+                  child: const CustomBoxTextField(
+                    hintText: "Enter First Name",
+                    label: "First Name",
+                  ),
+                ),
+                const DateTimePicker(label: 'Date of Birth'),
+                const SizedBox(height: 56),
+                KoyarButton(
+                  buttonText: 'Check Voter Status',
+                  onPressed: () {
+                    showModalBottomSheet(
                       backgroundColor: Colors.transparent,
                       context: context,
                       isScrollControlled: true,
                       builder: (context) {
                         return const AppModalSheet(
                           content: Column(
-                            children: [GombeBottomSheet(isSuccess: false)],
+                            children: [Registeration(isSuccess: false)],
                           ),
                         );
-                      });
-                },
-              )
-            ],
+                      },
+                    );
+                  },
+                )
+              ],
+            ),
           ),
         ),
-      )),
-    );
-  }
-}
-
-class GombeBottomSheet extends StatelessWidget {
-  final bool isSuccess;
-
-  const GombeBottomSheet({super.key, required this.isSuccess});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: Wrap(
-        children: [
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                // width: double.infinity - 20,
-                child: isSuccess
-                    ? Image.asset(PngAssetManager.success)
-                    : Image.asset(PngAssetManager.failed),
-              ),
-              const SizedBox(height: 40),
-              Image.asset(PngAssetManager.card),
-              const SizedBox(height: 16),
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: isSuccess
-                      ? const Color(0xffB7F9B7)
-                      : const Color(0xffFF9F9F),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(
-                      isSuccess ? Icons.check_circle : Icons.cancel,
-                      color: isSuccess ? Colors.green : Colors.red,
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        isSuccess
-                            ? "Congratulations! Your voter's card status was successfully verified. You're all set to participate in the upcoming elections. Stay informed and make your voice heard!"
-                            : "Oops! We couldn't verify your voter's card status. Please double-check your details and try again, or contact support for further assistance.",
-                        style: getPlusJakartaSans(
-                          fontsize: 14,
-                          textColor: isSuccess
-                              ? AppColors.appBlack
-                              : const Color(0xff640000),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-            ],
-          ),
-        ],
       ),
     );
   }

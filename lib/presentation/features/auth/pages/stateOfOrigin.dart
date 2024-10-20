@@ -101,9 +101,8 @@ class StateOfOriginScreen extends HookWidget {
                                               context
                         .read<UserCubit>()
                         .updateNin(stateItemSelected.value );
-                    context.go(BaseRouteName.stateOfOriginPage);
-                          context.go(BaseRouteName.lgaPage, extra: stateItemSelected.value);
                         }
+                           context.go(BaseRouteName.lgaPage, extra: stateItemSelected.value);
                       },
                       buttonText: "Next",
                     ),

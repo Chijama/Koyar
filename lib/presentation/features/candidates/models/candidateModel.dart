@@ -1,7 +1,7 @@
 import 'package:uuid/uuid.dart';
 
 // Create a UUID generator
-final Uuid uuid = Uuid();
+const Uuid uuid = Uuid();
 
 class CandidateModel {
   final String id;

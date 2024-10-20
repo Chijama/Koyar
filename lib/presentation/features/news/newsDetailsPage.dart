@@ -24,15 +24,18 @@ class NewsDetailPage extends StatelessWidget {
               title: const Text(""),
               background: Hero(
                 tag: newsItem.title,
-                child: Image.network(
-                  newsItem.image,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      color: Colors.grey[300],
-                      child: const Icon(Icons.error, color: Colors.red),
-                    );
-                  },
+                child: Semantics(
+                  label: 'Image related to the news article',
+                  child: Image.network(
+                    newsItem.image,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        color: Colors.grey[300],
+                        child: const Icon(Icons.error, color: Colors.red),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
@@ -43,46 +46,65 @@ class NewsDetailPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(newsItem.title,
+                  Semantics(
+                    label: 'News title: ${newsItem.title}',
+                    child: Text(
+                      newsItem.title,
                       style: getPlusJakartaSans(
                           textColor: AppColors.appBlack,
                           fontsize: 18,
-                          fontweight: FontWeight.w700)),
+                          fontweight: FontWeight.w700),
+                    ),
+                  ),
                   const SizedBox(height: 8),
-                  Text("By ${newsItem.author}",
+                  Semantics(
+                    label: 'Author of the news: ${newsItem.author}',
+                    child: Text(
+                      "By ${newsItem.author}",
                       style: getNormalZodiak(
                           textColor: AppColors.appLinkBlue,
                           fontsize: 13,
-                          fontweight: FontWeight.w600)),
-                  const SizedBox(height: 8),
-                  Wrap(
-                    spacing: 8,
-                    children: newsItem.tags
-                        .split(",")
-                        .map((tag) => Chip(
-                              label: Text(
-                                tag,
-                                style: getPlusJakartaSans(
-                                    textColor: AppColors.appLinkBlue,
-                                    fontsize: 12,
-                                    fontweight: FontWeight.w600),
-                              ),
-                              backgroundColor: Colors.transparent,
-                            ))
-                        .toList(),
+                          fontweight: FontWeight.w600),
+                    ),
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    "Posted 24hrs ago",
-                    style: getPlusJakartaSans(
-                        textColor: AppColors.appPrimaryTextDarkGray,
-                        fontsize: 14,
-                        fontweight: FontWeight.w500),
+                  Semantics(
+                    label: 'Tags related to the news',
+                    child: Wrap(
+                      spacing: 8,
+                      children: newsItem.tags
+                          .split(",")
+                          .map((tag) => Chip(
+                                label: Text(
+                                  tag,
+                                  style: getPlusJakartaSans(
+                                      textColor: AppColors.appLinkBlue,
+                                      fontsize: 12,
+                                      fontweight: FontWeight.w600),
+                                ),
+                                backgroundColor: Colors.transparent,
+                              ))
+                          .toList(),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Semantics(
+                    label: 'The news was posted 24 hours ago',
+                    child: Text(
+                      "Posted 24hrs ago",
+                      style: getPlusJakartaSans(
+                          textColor: AppColors.appPrimaryTextDarkGray,
+                          fontsize: 14,
+                          fontweight: FontWeight.w500),
+                    ),
                   ),
                   const SizedBox(height: 16),
-                  Text(
-                    newsItem.content,
-                    style: const TextStyle(fontSize: 16),
+                  Semantics(
+                    label: 'News content',
+                    child: Text(
+                      newsItem.content,
+                      style: const TextStyle(fontSize: 16),
+                    ),
                   ),
                 ],
               ),

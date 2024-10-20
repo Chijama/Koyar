@@ -19,7 +19,7 @@ class LGAscreen extends HookWidget {
   Widget build(BuildContext context) {
     final lgaItemSelected = useState<String>('');
 
-    // Ensure we always have a valid list of LGAs
+    // Ensure we always have a valid list of LGAs or an empty list
     final List<String> lgaList = useMemoized(() {
       return stateItemSelected.isNotEmpty
           ? NigerianStatesAndLGA.getStateLGAs(stateItemSelected)
@@ -38,7 +38,7 @@ class LGAscreen extends HookWidget {
                   const SizedBox(height: 200),
                   Center(
                     child: Text(
-                      "LOCAL\nGOVERNMENT OF\nREGISTERATION",
+                      "LOCAL\nGOVERNMENT OF\nREGISTRATION",
                       textAlign: TextAlign.center,
                       style: getBlackZodiak(fontsize: 32),
                       semanticsLabel:
@@ -47,27 +47,20 @@ class LGAscreen extends HookWidget {
                     ),
                   ),
                   const SizedBox(height: 30),
-                  if (stateItemSelected.isNotEmpty)
-                    Semantics(
-                      button: true,
-                      label:
-                          "Select Your Local Government of Registration here",
-                      child: DropDownWidget(
-                        itemSelected: lgaItemSelected.value,
-                        items: lgaList,
-                        label: 'LGA of Registration',
-                        onChanged: (val) {
-                          if (val != null) {
-                            lgaItemSelected.value = val;
-                          }
-                        },
-                      ),
+                  Semantics(
+                    button: true,
+                    label: "Select Your Local Government of Registration here",
+                    child: DropDownWidget(
+                      itemSelected: lgaItemSelected.value,
+                      items: lgaList, // List of LGAs or an empty list
+                      label: 'LGA of Registration',
+                      onChanged: (val) {
+                        if (val != null) {
+                          lgaItemSelected.value = val;
+                        }
+                      },
                     ),
-                  // else
-                  //   const Text(
-                  //     "No state selected. Please go back and select a state.",
-                  //     style: TextStyle(color: Colors.red),
-                  //   ),
+                  ),
                   const SizedBox(height: 100),
                 ],
               ),
@@ -78,12 +71,12 @@ class LGAscreen extends HookWidget {
                     child: KoyarButton(
                       onPressed: () {
                         if (lgaItemSelected.value.isNotEmpty) {
-                                              context
-                        .read<UserCubit>()
-                        .updateNin(lgaItemSelected.value);
-                    context.go(BaseRouteName.stateOfOriginPage);
-                          context.go(BaseRouteName.electionPreferencePage);
+                          context
+                              .read<UserCubit>()
+                              .updateNin(lgaItemSelected.value);
+                           
                         }
+                          context.go(BaseRouteName.electionPreferencePage);
                       },
                       buttonText: "Next",
                     ),

@@ -28,7 +28,7 @@ class _ElectionPreferencePageState extends State<ElectionPreferencePage> {
         selectedButtons.add(buttonText);
       }
     });
-    print("Selected buttons: $selectedButtons");
+    debugPrint("Selected buttons: $selectedButtons");
   }
 
   @override

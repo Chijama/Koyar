@@ -9,7 +9,7 @@ import 'package:koyar/presentation/manager/routeManager.dart';
 import 'package:koyar/presentation/manager/styleManager.dart';
 
 class CandidateSelectionPage extends StatefulWidget {
-  const CandidateSelectionPage({Key? key}) : super(key: key);
+  const CandidateSelectionPage({super.key});
 
   @override
   State<CandidateSelectionPage> createState() => _CandidateSelectionPageState();

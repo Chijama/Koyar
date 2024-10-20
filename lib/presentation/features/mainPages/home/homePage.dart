@@ -29,19 +29,23 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "$daysTillNextElection\nDays",
-                    semanticsLabel: "$daysTillNextElection Days Countdown",
-                    style: getBlackZodiak(
-                        fontweight: FontWeight.w500, fontsize: 76),
+                  Semantics(
+                    label: "$daysTillNextElection Days Countdown",
+                    child: Text(
+                      "$daysTillNextElection\nDays",
+                      style: getBlackZodiak(
+                          fontweight: FontWeight.w500, fontsize: 76),
+                    ),
                   ),
-                  Text(
-                    "To Your Next Election",
-                    style: getPlusJakartaSans(
-                        textColor: AppColors.appSecondaryTextMediumGray,
-                        fontsize: 20,
-                        fontweight: FontWeight.w500),
-                    semanticsLabel: "To Your Next Election",
+                  Semantics(
+                    label: "To Your Next Election",
+                    child: Text(
+                      "To Your Next Election",
+                      style: getPlusJakartaSans(
+                          textColor: AppColors.appSecondaryTextMediumGray,
+                          fontsize: 20,
+                          fontweight: FontWeight.w500),
+                    ),
                   )
                 ],
               ),
@@ -50,17 +54,18 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Row(
                   children: [
-                      HomePageItem(
+                    HomePageItem(
                       label: "Election Timeline",
-                      asset: SvgAssetManager.electionDates,   onTap: () =>
-                            context.push(BaseRouteName.electionTimelinePage)
+                      asset: SvgAssetManager.electionDates,
+                      onTap: () =>
+                          context.push(BaseRouteName.electionTimelinePage),
                     ),
                     const SizedBox(width: 15),
                     HomePageItem(
-                        label: "Voting guides",
-                        asset: SvgAssetManager.votersGuide,
-                        onTap: () =>
-                            context.push(BaseRouteName.votersGuidePage)),
+                      label: "Voting guides",
+                      asset: SvgAssetManager.votersGuide,
+                      onTap: () => context.push(BaseRouteName.votersGuidePage),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -104,30 +109,36 @@ class HomePageItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
-          height: 140,
-          // width: 164,
-          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-            border: Border.all(
-                color: HexColor.toHexColor('#000000').withOpacity(0.2)),
-            color: AppColors.applightGrey,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SvgPicture.asset(asset),
-              const SizedBox(height: 10),
-              Text(
-                label,
-                style:
-                    getBlackZodiak(fontsize: 15, fontweight: FontWeight.w500),
-              ),
-            ],
+      child: Semantics(
+        label: label,
+        button: true,
+        child: InkWell(
+          onTap: onTap,
+          child: Container(
+            height: 140,
+            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              border: Border.all(
+                  color: HexColor.toHexColor('#000000').withOpacity(0.2)),
+              color: AppColors.applightGrey,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Semantics(
+                  label: "$label icon",
+                  child: SvgPicture.asset(asset),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  label,
+                  style:
+                      getBlackZodiak(fontsize: 15, fontweight: FontWeight.w500),
+                ),
+              ],
+            ),
           ),
         ),
       ),
