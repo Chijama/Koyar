@@ -11,7 +11,6 @@ import '../features/candidates/candidatesSelectionPage.dart';
 import '../features/mainPages/profile/profile.dart';
 import '../features/mainPages/scaffoldWithNavBar.dart';
 import '../features/news/newsDetailsPage.dart';
-import '../features/news/newsModel.dart';
 import '../features/news/newsPage.dart';
 import '../features/pollingUnitLocator/pollingUnitLocator.dart';
 import '../features/voterRegisterationCheck/voterRegistrationCheckPage.dart';

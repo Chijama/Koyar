@@ -18,39 +18,55 @@ class VotingGuidePage extends StatelessWidget {
       child: Scaffold(
         appBar: const CustomAppBar(
           title: "Voting Guides",
-          semanticsLabel: '',
+          semanticsLabel: 'Voting Guides Page',
         ),
         backgroundColor: AppColors.appBackgroundColor,
         body: Column(
           children: [
-            TabBar(
-              tabs: const [
-                Tab(text: "New Voter"),
-                Tab(text: "Returning Voter"),
-              ],
-              dividerColor: Colors.transparent,
-              indicatorSize: TabBarIndicatorSize.tab,
-              labelColor: AppColors.appLinkBlue,
-              labelStyle: getNormalZodiak(
-                  textColor: AppColors.appLinkBlue,
-                  fontsize: 14,
-                  fontweight: FontWeight.w500),
-              unselectedLabelColor: Colors.grey,
-              indicatorColor: AppColors.appLinkBlue,
+            Semantics(
+              label:
+                  "Tab bar to switch between New Voter and Returning Voter guides",
+              child: TabBar(
+                tabs: const [
+                  Tab(text: "New Voter"),
+                  Tab(text: "Returning Voter"),
+                ],
+                dividerColor: Colors.transparent,
+                indicatorSize: TabBarIndicatorSize.tab,
+                labelColor: AppColors.appLinkBlue,
+                labelStyle: getNormalZodiak(
+                    textColor: AppColors.appLinkBlue,
+                    fontsize: 14,
+                    fontweight: FontWeight.w500),
+                unselectedLabelColor: Colors.grey,
+                indicatorColor: AppColors.appLinkBlue,
+              ),
             ),
             FutureBuilder<Map<String, dynamic>>(
                 future: dataService.getVotersGuide(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        semanticsLabel: "Loading voter's guide data",
+                      ),
+                    );
                   } else if (snapshot.hasError) {
-                    return const Center(child: Text("Error fetching data"));
+                    return Center(
+                      child: Semantics(
+                        label: "Error fetching data",
+                        child: const Text("Error fetching data"),
+                      ),
+                    );
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text("No data available"));
+                    return Center(
+                      child: Semantics(
+                        label: "No data available for voter's guide",
+                        child: const Text("No data available"),
+                      ),
+                    );
                   }
-                  debugPrint("Voter's guide data ${snapshot.data}");
-                  debugPrint("Voter's guide data ${snapshot.data}");
-                  // Process the data from Firebase
+
                   final data = snapshot.data!;
                   final entries = data.entries
                       .map((e) => Map<String, dynamic>.from(e.value))
@@ -64,9 +80,6 @@ class VotingGuidePage extends StatelessWidget {
                   final returningVoterData = entries
                       .where((entry) => entry['Category'] == 'Returning Voters')
                       .toList();
-                  debugPrint("new Voter's guide data ${newVoterData}");
-                  debugPrint(
-                      "returning Voter's guide data ${returningVoterData}");
 
                   return Expanded(
                     child: TabBarView(
@@ -76,7 +89,7 @@ class VotingGuidePage extends StatelessWidget {
                       ],
                     ),
                   );
-                })
+                }),
           ],
         ),
       ),
@@ -126,58 +139,69 @@ class VotersGuideWidget extends StatelessWidget {
   final String content;
   final bool initiallyExpanded;
   final String url;
+
   @override
   Widget build(BuildContext context) {
-    return ExpansionTile(
-      shape: const Border(),
-      tilePadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 16),
-      title: Text(
-        title,
-        style: getPlusJakartaSans(
-            textColor: AppColors.appBlack,
-            fontsize: 17,
-            fontweight: FontWeight.w500),
-      ),
-      initiallyExpanded: initiallyExpanded,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-                border: Border.all(color: AppColors.appBlack.withOpacity(0.2)),
-                borderRadius: const BorderRadius.all(Radius.circular(4)),
-                color: AppColors.appMainBackgroundOffWhite),
-            child: RichText(
-              textAlign: TextAlign.left,
-              text: TextSpan(
-                text: content,
-                style:
-                    getBlackZodiak(fontsize: 13, fontweight: FontWeight.w400),
-                children: [
-                  TextSpan(
-                    text: " Click here to learn more",
-                    style: getNormalZodiak(
-                        textColor: AppColors.appLinkBlue,
-                        fontsize: 14,
-                        fontweight: FontWeight.w600),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () async {
-                        final Uri _url = Uri.parse(url);
+    return Semantics(
+      label: "Voter's guide section: $title",
+      child: ExpansionTile(
+        shape: const Border(),
+        tilePadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 16),
+        title: Semantics(
+          label: "Guide title: $title",
+          child: Text(
+            title,
+            style: getPlusJakartaSans(
+                textColor: AppColors.appBlack,
+                fontsize: 17,
+                fontweight: FontWeight.w500),
+          ),
+        ),
+        initiallyExpanded: initiallyExpanded,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  border:
+                      Border.all(color: AppColors.appBlack.withOpacity(0.2)),
+                  borderRadius: const BorderRadius.all(Radius.circular(4)),
+                  color: AppColors.appMainBackgroundOffWhite),
+              child: Semantics(
+                label: "Guide content: $content",
+                child: RichText(
+                  textAlign: TextAlign.left,
+                  text: TextSpan(
+                    text: content,
+                    style: getBlackZodiak(
+                        fontsize: 13, fontweight: FontWeight.w400),
+                    children: [
+                      TextSpan(
+                        text: " Click here to learn more",
+                        style: getNormalZodiak(
+                            textColor: AppColors.appLinkBlue,
+                            fontsize: 14,
+                            fontweight: FontWeight.w600),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () async {
+                            final Uri uri = Uri.parse(url);
 
-                        if (await canLaunchUrl(_url)) {
-                          await launchUrl(_url);
-                        } else {
-                          throw 'Could not launch $url';
-                        }
-                      },
+                            if (await canLaunchUrl(uri)) {
+                              await launchUrl(uri);
+                            } else {
+                              throw 'Could not launch $url';
+                            }
+                          },
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -5,7 +5,7 @@ CustomTransitionPage customTransitionPage(
     {required LocalKey pageKey, required Widget child}) {
   return CustomTransitionPage(
     key: pageKey,
-    transitionDuration: const Duration(seconds: 1),
+    transitionDuration: const Duration(milliseconds: 700),
     child: child,
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0);
